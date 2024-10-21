@@ -37,7 +37,7 @@ const drejerSchema = new Schema(
 );
 export const models = [
   {
-    name: "drejer",
+    name: "drejers",
     schema: drejerSchema,
     collection: "drejers",
   },
