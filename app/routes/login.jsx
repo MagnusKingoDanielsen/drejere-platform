@@ -17,7 +17,7 @@ export default function LoginPage() {
       <div className="loginContainer">
         <Form method="post" className="loginForm">
           <h1>Login</h1>
-          <input placeholder="email" name="email" type="email" required />
+          <input placeholder="username" name="username" type="text" required />
           <input
             placeholder="password"
             name="password"
@@ -26,12 +26,6 @@ export default function LoginPage() {
           />
           {error && <p>{error}</p>}
           <button>Log in</button>
-          <p className="goToSignup">
-            Dont have an acount?{" "}
-            <a href="/signup" className="signupLink">
-              Sign up
-            </a>
-          </p>
         </Form>
       </div>
     </div>
@@ -40,10 +34,10 @@ export default function LoginPage() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const { email, password } = Object.fromEntries(formData);
-  const { result, username } = await login(email, password);
+  const { username, password } = Object.fromEntries(formData);
+  const { result } = await login(username, password);
   if (!result) {
-    return "Invalid email or password";
+    return "Invalid username or password";
   }
 
   const session = await getSession();

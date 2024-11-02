@@ -6,9 +6,9 @@ export function hashPassword(password) {
   return bcrypt.hash(password, saltRounds);
 }
 
-export async function login(loginEmail, loginPassword) {
+export async function login(loginUsername, loginPassword) {
   const users = await mongoose.models.drejers.find({});
-  const user = users.find((user) => user.email === loginEmail);
+  const user = users.find((user) => user.username === loginUsername);
 
   if (user) {
     const hashedpassword = user.password;
