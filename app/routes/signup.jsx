@@ -52,8 +52,7 @@ export async function action({ request }) {
   const { userEmail, userPassword, userName, userPhone, userAddress } =
     Object.fromEntries(formData);
   //check if email is valid
-  let regexForEmailValidation =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  let regexForEmailValidation = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (regexForEmailValidation.test(userEmail)) {
     const users = await mongoose.models.drejers.find({});
