@@ -80,25 +80,10 @@ export const action = async ({ request }) => {
     throw new Error("Bad request");
   }
 
-  const formatDateTime = (dateTimeString) => {
-    const date = new Date(dateTimeString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  };
-
-  const formattedStartDateTime = formatDateTime(StartDate);
-  const formattedEndDateTime = formatDateTime(EndDate);
-
-  console.log(formattedStartDateTime, formattedEndDateTime);
-
   await mongoose.models.camps.create({
     CampName,
-    StartDate: formattedStartDateTime,
-    EndDate: formattedEndDateTime,
+    StartDate,
+    EndDate,
     CampLeader,
     CampDescription,
     Participants,
