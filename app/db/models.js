@@ -42,11 +42,11 @@ const campsSchema = new Schema({
     required: true,
   },
   StartDate: {
-    type: String,
+    type: Date,
     required: true,
   },
   EndDate: {
-    type: String,
+    type: Date,
     required: true,
   },
   CampLeader: {
@@ -58,7 +58,7 @@ const campsSchema = new Schema({
     required: true,
   },
   Participants: {
-    type: String,
+    type: Array,
     required: true,
   },
 });
