@@ -3,8 +3,8 @@ import { createCookieSessionStorage } from "@remix-run/node";
 export const { getSession, commitSession, destroySession } =
   createCookieSessionStorage({
     cookie: {
-      name: "Eventplatform-session",
-      secrets: ["MadeByMeAndOnlyMe"],
+      name: "DrejerPortalSession",
+      secrets: ["assenbaekmoellerdrejer"],
 
       sameSite: "lax",
       path: "/",
