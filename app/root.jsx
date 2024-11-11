@@ -14,8 +14,8 @@ export const links = () => [
     href: styles,
   },
 ];
-export async function loader({ }) {
-  return null
+export async function loader() {
+  return null;
 }
 
 export function meta() {
@@ -41,6 +41,6 @@ export default function App() {
   );
 }
 
-export async function action({ }) {
-  
-}
+// export async function action({ }) {
+
+// }
