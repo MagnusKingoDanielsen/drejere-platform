@@ -1,0 +1,107 @@
+import { redirect } from "@remix-run/react";
+
+import mongoose from "mongoose";
+import { getSession } from "../services/session.server.jsx";
+
+export async function loader({ request }) {
+  const session = await getSession(request.headers.get("Cookie"));
+  if (!session.data.user) {
+    return redirect("/login");
+  }
+
+  return { session: session.data };
+}
+
+export default function CreateCampPage() {
+  return (
+    <div>
+      <h1>Create a New Camp</h1>
+      <form method="post" action="/createCamp">
+        <div>
+          <label htmlFor="CampName">Camp Name:</label>
+          <input type="text" id="CampName" name="CampName" required />
+        </div>
+        <div>
+          <label htmlFor="StartDate">Start Date and Time:</label>
+          <input
+            type="datetime-local"
+            id="StartDate"
+            name="StartDate"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="EndDate">End Date and Time:</label>
+          <input type="datetime-local" id="EndDate" name="EndDate" required />
+        </div>
+        <div>
+          <label htmlFor="CampLeader">Camp Leader:</label>
+          <input type="text" id="CampLeader" name="CampLeader" required />
+        </div>
+        <div>
+          <label htmlFor="CampDescription">Camp Description:</label>
+          <textarea
+            id="CampDescription"
+            name="CampDescription"
+            required
+          ></textarea>
+        </div>
+        <button type="submit">Create Camp</button>
+      </form>
+    </div>
+  );
+}
+
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const { CampName, StartDate, EndDate, CampLeader, CampDescription } =
+    Object.fromEntries(formData);
+  const session = await getSession(request.headers.get("cookie"));
+  if (!session.data.user) {
+    throw new Response("Not authenticated", { status: 401 });
+  }
+  const Participants = [session.data.username];
+  console.log(
+    CampName,
+    StartDate,
+    EndDate,
+    CampLeader,
+    CampDescription,
+    Participants,
+  );
+  if (
+    typeof CampName !== "string" ||
+    typeof StartDate !== "string" ||
+    typeof EndDate !== "string" ||
+    typeof CampLeader !== "string" ||
+    typeof CampDescription !== "string" ||
+    typeof Participants !== "object"
+  ) {
+    throw new Error("Bad request");
+  }
+
+  const formatDateTime = (dateTimeString) => {
+    const date = new Date(dateTimeString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
+  const formattedStartDateTime = formatDateTime(StartDate);
+  const formattedEndDateTime = formatDateTime(EndDate);
+
+  console.log(formattedStartDateTime, formattedEndDateTime);
+
+  await mongoose.models.camps.create({
+    CampName,
+    StartDate: formattedStartDateTime,
+    EndDate: formattedEndDateTime,
+    CampLeader,
+    CampDescription,
+    Participants,
+  });
+  return redirect("/camps");
+};
