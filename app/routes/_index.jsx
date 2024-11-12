@@ -11,7 +11,6 @@ export async function loader({ request }) {
 
 export default function Index() {
   const sessionData = useLoaderData();
-  console.log(sessionData);
   return (
     <div>
       <h1>Welcome, {sessionData.username}!</h1>
