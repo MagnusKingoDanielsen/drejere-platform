@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { redirect } from "@remix-run/react";
 import { getSession } from "../services/session.server.jsx";
 
@@ -9,9 +9,9 @@ export async function loader({ request }) {
   if (!session.data.user) {
     return redirect("/");
   }
-  const camps = await mongoose.models.camps.find().lean();
+  const camps = await mongoose.models.camps.find().lean().exec();
 
-  return { session: session.data, camps };
+  return { session: session.data, camps: camps };
 }
 
 export default function CampPage() {
@@ -44,9 +44,7 @@ export default function CampPage() {
                 minute: "2-digit",
               })}
             </p>
-            <p>Leader: {camp.CampLeader}</p>
-            <p>Description: {camp.CampDescription}</p>
-            <p>Participants: {camp.Participants.join(", ")}</p>
+            <Link to={`/camp/${camp._id}`}>View Details</Link>
           </li>
         ))}
       </ul>
