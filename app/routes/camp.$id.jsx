@@ -26,7 +26,7 @@ export default function CampDetailPage() {
   const fetcher = useFetcher();
   const userName = session.username;
   const isAttending = camp.Participants.includes(userName);
-  console.log(userName, isAttending);
+
   return (
     <div>
       <h1>{camp.CampName}</h1>
@@ -65,10 +65,16 @@ export async function action({ request, params }) {
   }
 
   const userName = session.data.username;
-  if (!camp.Participants.includes(userName)) {
+  const isAttending = camp.Participants.includes(userName);
+
+  if (isAttending) {
+    camp.Participants = camp.Participants.filter(
+      (participant) => participant !== userName,
+    );
+  } else {
     camp.Participants.push(userName);
-    await camp.save();
   }
 
-  return redirect(`/camp/${params.id}`);
+  await camp.save();
+  return null;
 }
