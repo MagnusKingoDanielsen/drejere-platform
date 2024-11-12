@@ -1,6 +1,7 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { redirect } from "@remix-run/react";
 import { getSession } from "../services/session.server.jsx";
+
 import mongoose from "mongoose";
 
 export async function loader({ request }) {
@@ -8,27 +9,9 @@ export async function loader({ request }) {
   if (!session.data.user) {
     return redirect("/");
   }
-  const camps = await mongoose.models.camps.find().lean().exec();
-  return {
-    session: session.data,
-    camps: camps.map((camp) => ({
-      ...camp,
-      StartDate: new Date(camp.StartDate).toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-      EndDate: new Date(camp.EndDate).toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    })),
-  };
+  const camps = await mongoose.models.camps.find().lean();
+
+  return { session: session.data, camps };
 }
 
 export default function CampPage() {
@@ -47,8 +30,20 @@ export default function CampPage() {
         {camps.map((camp) => (
           <li key={camp._id}>
             <h2>{camp.CampName}</h2>
-            <p>Start Date: {new Date(camp.StartDate).toLocaleString()}</p>
-            <p>End Date: {new Date(camp.EndDate).toLocaleString()}</p>
+            <p>
+              Start Date: {new Date(camp.StartDate).toLocaleDateString()}{" "}
+              {new Date(camp.StartDate).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </p>
+            <p>
+              End Date: {new Date(camp.EndDate).toLocaleDateString()}{" "}
+              {new Date(camp.EndDate).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </p>
             <p>Leader: {camp.CampLeader}</p>
             <p>Description: {camp.CampDescription}</p>
             <p>Participants: {camp.Participants.join(", ")}</p>
