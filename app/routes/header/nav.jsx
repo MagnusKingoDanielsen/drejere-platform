@@ -1,27 +1,25 @@
-import { redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { getSession } from "../../services/session.server";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
+import { getSession } from "~/services/session.server";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
   if (!session.data.user) {
-    return redirect("/login");
+    return { user: null };
   }
-  //   const username = session.data.username;
-  const usertype = session.data.usertype;
-
-  return { usertype };
+  return { user: session.data.usertype };
 }
 
 const Nav = () => {
-  const { usertype } = useLoaderData();
+  const { user: usertype } = useLoaderData();
+  if (!usertype) {
+    return null;
+  }
   return (
     <header className="sticky-header">
       <nav className="nav-container">
         <ul className="nav-menu">
           <li>
-            <Link to="camp">Lejre</Link>
+            <Link to="/camp">Lejre</Link>
           </li>
           <li>
             <Link to="/tidligere-lejre">Tidligere Lejre</Link>
