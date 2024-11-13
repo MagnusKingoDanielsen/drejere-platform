@@ -103,7 +103,7 @@ const Nav = () => {
               <Link to="/tidligereLejre">Tidligere Lejre</Link>
             </li>
             <li>
-              <Link to="/drejerliste">Drejerliste</Link>
+              <Link to="/drejerListe">Drejerliste</Link>
             </li>
             <li>
               <Link to="/noegleliste">Nøgleliste</Link>
