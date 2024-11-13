@@ -1,27 +1,25 @@
-import { redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { getSession } from "../../services/session.server";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
+import { getSession } from "~/services/session.server";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
   if (!session.data.user) {
-    return redirect("/login");
+    return { user: null };
   }
-  //   const username = session.data.username;
-  const usertype = session.data.usertype;
-
-  return { usertype };
+  return { user: session.data.usertype };
 }
 
 const Nav = () => {
-  const { usertype } = useLoaderData();
+  const { user: usertype } = useLoaderData();
+  if (!usertype) {
+    return null;
+  }
   return (
     <header className="sticky-header">
       <nav className="nav-container">
         <ul className="nav-menu">
           <li>
-            <Link to="lejre">Lejre</Link>
+            <Link to="/camp">Lejre</Link>
           </li>
           <li>
             <Link to="/tidligere-lejre">Tidligere Lejre</Link>
@@ -36,7 +34,7 @@ const Nav = () => {
             <li className="dropdown">
               <button className="dropbtn">Admin</button>
               <div className="dropdown-content">
-                <Link to="/admin/option1">Option 1</Link>
+                <Link to="/createcamp">opret lejr</Link>
                 <Link to="/admin/option2">Option 2</Link>
                 <Link to="/admin/option3">Option 3</Link>
               </div>
