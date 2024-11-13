@@ -1,4 +1,4 @@
-import { Link, Outlet, useLoaderData, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLoaderData } from "react-router-dom";
 import { redirect } from "@remix-run/react";
 import { getSession } from "../../services/session.server.jsx";
 
@@ -16,15 +16,9 @@ export async function loader({ request }) {
 
 export default function CampPage() {
   const { camps } = useLoaderData();
-  const navigate = useNavigate();
-
-  const handleButtonClick = () => {
-    navigate("/createCamp");
-  };
 
   return (
     <div>
-      <button onClick={handleButtonClick}>Create Camp</button>
       <h1>List of Camps</h1>
       <ul>
         {camps.map((camp) => (

@@ -21,7 +21,7 @@ const Nav = () => {
       <nav className="nav-container">
         <ul className="nav-menu">
           <li>
-            <Link to="lejre">Lejre</Link>
+            <Link to="camp">Lejre</Link>
           </li>
           <li>
             <Link to="/tidligere-lejre">Tidligere Lejre</Link>
@@ -36,7 +36,7 @@ const Nav = () => {
             <li className="dropdown">
               <button className="dropbtn">Admin</button>
               <div className="dropdown-content">
-                <Link to="/admin/option1">Option 1</Link>
+                <Link to="/createcamp">opret lejr</Link>
                 <Link to="/admin/option2">Option 2</Link>
                 <Link to="/admin/option3">Option 3</Link>
               </div>
