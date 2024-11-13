@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { getSession } from "~/services/session.server";
 
@@ -11,54 +12,86 @@ export async function loader({ request }) {
 
 const Nav = () => {
   const { user: usertype } = useLoaderData();
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize(); // Check on mount
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
   if (!usertype) {
     return null;
   }
+
   return (
     <header className="sticky-header">
       <nav className="nav-container">
-        <ul className="nav-menu">
-          <li>
-            <Link to="/camp">Lejre</Link>
-          </li>
-          <li>
-            <Link to="/tidligere-lejre">Tidligere Lejre</Link>
-          </li>
-          <li>
-            <Link to="/drejerliste">Drejerliste</Link>
-          </li>
-          <li>
-            <Link to="/noegleliste">Nøgleliste</Link>
-          </li>
-          {usertype === "admin" && (
-            <li className="dropdown">
-              <button className="dropbtn">Admin</button>
-              <div className="dropdown-content">
-                <Link to="/createcamp">opret lejr</Link>
-                <Link to="/admin/option2">Option 2</Link>
-                <Link to="/admin/option3">Option 3</Link>
-              </div>
+        {isMobile ? (
+          <>
+            <button className="burger-menu" onClick={toggleMenu}>
+              ☰
+            </button>
+            {isMenuOpen && (
+              <ul className="nav-menu-mobile">
+                <li>
+                  <Link to="/camp">Lejre</Link>
+                </li>
+                <li>
+                  <Link to="/tidligere-lejre">Tidligere Lejre</Link>
+                </li>
+                <li>
+                  <Link to="/drejerliste">Drejerliste</Link>
+                </li>
+                <li>
+                  <Link to="/noegleliste">Nøgleliste</Link>
+                </li>
+                {usertype === "admin" && (
+                  <li className="dropdown">
+                    <button className="dropbtn">Admin</button>
+                    <div className="dropdown-content">
+                      <Link to="/createcamp">opret lejr</Link>
+                      <Link to="/admin/option2">Option 2</Link>
+                    </div>
+                  </li>
+                )}
+              </ul>
+            )}
+          </>
+        ) : (
+          <ul className="nav-menu">
+            <li>
+              <Link to="/camp">Lejre</Link>
             </li>
-          )}
-          <li>
-            <Link to="/drejers-online">Drejers Online</Link>
-          </li>
-          <li>
-            <Link to="/print">
-              <i className="fas fa-print"></i>
-            </Link>
-          </li>
-          <li>
-            <Link to="/profile">
-              <i className="fas fa-user"></i>
-            </Link>
-          </li>
-          <li>
-            <Link to="/logout">
-              <i className="fas fa-sign-out-alt"></i>
-            </Link>
-          </li>
-        </ul>
+            <li>
+              <Link to="/tidligere-lejre">Tidligere Lejre</Link>
+            </li>
+            <li>
+              <Link to="/drejerliste">Drejerliste</Link>
+            </li>
+            <li>
+              <Link to="/noegleliste">Nøgleliste</Link>
+            </li>
+            {usertype === "admin" && (
+              <li className="dropdown">
+                <button className="dropbtn">Admin</button>
+                <div className="dropdown-content">
+                  <Link to="/createcamp">opret lejr</Link>
+                  <Link to="/admin/option2">Option 2</Link>
+                </div>
+              </li>
+            )}
+          </ul>
+        )}
       </nav>
     </header>
   );
