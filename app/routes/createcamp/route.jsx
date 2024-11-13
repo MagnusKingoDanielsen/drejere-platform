@@ -8,6 +8,9 @@ export async function loader({ request }) {
   if (!session.data.user) {
     return redirect("/login");
   }
+  if (session.data.usertype !== "admin") {
+    return redirect("/camps");
+  }
 
   return { session: session.data };
 }

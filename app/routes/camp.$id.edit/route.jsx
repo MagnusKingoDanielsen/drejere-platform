@@ -8,6 +8,10 @@ export async function loader({ request, params }) {
   if (!session.data.user) {
     return redirect("/");
   }
+  if (session.data.usertype !== "admin") {
+    return redirect("/camps");
+  }
+
   if (typeof params.id !== "string") {
     throw new Response("Not found", { status: 404 });
   }
