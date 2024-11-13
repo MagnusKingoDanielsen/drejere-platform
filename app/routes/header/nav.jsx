@@ -106,7 +106,7 @@ const Nav = () => {
               <Link to="/drejerListe">Drejerliste</Link>
             </li>
             <li>
-              <Link to="/noegleliste">Nøgleliste</Link>
+              <Link to="/noegleListe">Nøgleliste</Link>
             </li>
             {usertype === "admin" && (
               <li className="dropdown">
