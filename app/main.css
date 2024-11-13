@@ -13,6 +13,9 @@ body {
   display: block;
 }
 
+.nav-container img {
+  height: 50px;
+}
 .burger-menu {
   font-size: 24px;
   background: none;
