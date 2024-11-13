@@ -38,8 +38,26 @@ export default function CampDetailPage() {
   return (
     <div>
       <h1>{camp.CampName}</h1>
-      <p>Start Date: {new Date(camp.StartDate).toLocaleDateString()}</p>
-      <p>End Date: {new Date(camp.EndDate).toLocaleDateString()}</p>
+      <p>
+        Start Date:{" "}
+        {new Date(camp.StartDate).toLocaleString([], {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
+      </p>
+      <p>
+        End Date:{" "}
+        {new Date(camp.EndDate).toLocaleString([], {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
+      </p>
       <p>Leader: {camp.CampLeader}</p>
       <p>Description: {camp.CampDescription}</p>
       <p>Participants: {camp.Participants.join(", ")}</p>

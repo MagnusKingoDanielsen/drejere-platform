@@ -1,4 +1,4 @@
-import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import { redirect } from "@remix-run/react";
 import { getSession } from "../../services/session.server.jsx";
 
@@ -48,6 +48,7 @@ export default function CampPage() {
           </li>
         ))}
       </ul>
+      <Outlet />
     </div>
   );
 }
