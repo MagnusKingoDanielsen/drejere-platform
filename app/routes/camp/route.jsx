@@ -18,10 +18,7 @@ export async function loader({ request }) {
 }
 
 export default function CampPage() {
-  const { camps, session } = useLoaderData();
-  const usertype = session.usertype;
-  console.log(usertype);
-
+  const { camps } = useLoaderData();
   return (
     <div>
       <h1>List of Camps</h1>
