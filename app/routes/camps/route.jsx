@@ -1,6 +1,6 @@
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { redirect } from "@remix-run/react";
-import { getSession } from "../services/session.server.jsx";
+import { getSession } from "../../services/session.server.jsx";
 
 import mongoose from "mongoose";
 
