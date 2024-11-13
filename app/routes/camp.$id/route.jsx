@@ -66,7 +66,7 @@ export default function CampDetailPage() {
           {camp.Participants.includes(userName) ? "Attending" : "Join"}
         </button>
       </Form>
-      {userName === camp.CampLeader && (
+      {session.usertype === "admin" && (
         <>
           <Form method="post" onSubmit={handleDelete}>
             <button name="_action" value="delete" type="submit">
