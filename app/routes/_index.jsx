@@ -1,5 +1,6 @@
 import { getSession, destroySession } from "../services/session.server.jsx";
 import { redirect, useLoaderData, Form } from "@remix-run/react";
+import Nav from "./header/nav.jsx";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -11,9 +12,9 @@ export async function loader({ request }) {
 
 export default function Index() {
   const sessionData = useLoaderData();
-  console.log(sessionData);
   return (
     <div>
+      <Nav />
       <h1>Welcome, {sessionData.username}!</h1>
       <Form method="post">
         <button type="submit">Logout</button>
