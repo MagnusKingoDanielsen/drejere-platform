@@ -97,7 +97,7 @@ const Nav = () => {
         ) : (
           <ul className="nav-menu">
             <li>
-              <Link to="/camp">Lejre</Link>
+              <Link to="/lejre">Lejre</Link>
             </li>
             <li>
               <Link to="/tidligereLejre">Tidligere Lejre</Link>

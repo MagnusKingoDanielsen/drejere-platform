@@ -9,7 +9,7 @@ export async function loader({ request, params }) {
     return redirect("/");
   }
   if (session.data.usertype !== "admin") {
-    return redirect("/camps");
+    return redirect("/lejre");
   }
 
   if (typeof params.id !== "string") {
@@ -97,5 +97,5 @@ export async function action({ request, params }) {
   };
 
   await mongoose.models.camps.findByIdAndUpdate(params.id, updatedCamp);
-  return redirect(`/camp/${params.id}`);
+  return redirect(`/lejre/${params.id}`);
 }

@@ -8,7 +8,7 @@ export async function loader({ request }) {
     return redirect("/login");
   }
   if (session.data.usertype !== "admin") {
-    return redirect("/camps");
+    return redirect("/lejre");
   }
 
   return { session: session.data };
@@ -90,5 +90,5 @@ export const action = async ({ request }) => {
     CampDescription,
     Participants,
   });
-  return redirect("/camps");
+  return redirect("/lejre");
 };
