@@ -1,7 +1,6 @@
 import { Link, Outlet, useLoaderData } from "react-router-dom";
 import { redirect } from "@remix-run/react";
 import { getSession } from "../../services/session.server.jsx";
-
 import mongoose from "mongoose";
 
 export async function loader({ request }) {
@@ -9,13 +8,19 @@ export async function loader({ request }) {
   if (!session.data.user) {
     return redirect("/");
   }
-  const camps = await mongoose.models.camps.find().lean().exec();
+  const camps = await mongoose.models.camps
+    .find()
+    .select("-EndDate -campLeader -CampDescription -__v")
+    .lean()
+    .exec();
 
   return { session: session.data, camps: camps };
 }
 
 export default function CampPage() {
-  const { camps } = useLoaderData();
+  const { camps, session } = useLoaderData();
+  const usertype = session.usertype;
+  console.log(usertype);
 
   return (
     <div>
@@ -31,13 +36,7 @@ export default function CampPage() {
                 minute: "2-digit",
               })}
             </p>
-            <p>
-              End Date: {new Date(camp.EndDate).toLocaleDateString()}{" "}
-              {new Date(camp.EndDate).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </p>
+            <p>participants: {camp.Participants.length} </p>
             <Link to={`/camp/${camp._id}`}>View Details</Link>
           </li>
         ))}
