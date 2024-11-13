@@ -14,6 +14,8 @@ const Nav = () => {
   const { user: usertype } = useLoaderData();
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -28,6 +30,9 @@ const Nav = () => {
   }, []);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+  const toggleAdminMenu = () => {
+    setIsAdminMenuOpen(!isAdminMenuOpen);
   };
   if (!usertype) {
     return null;
@@ -44,24 +49,46 @@ const Nav = () => {
             {isMenuOpen && (
               <ul className="nav-menu-mobile">
                 <li>
-                  <Link to="/camp">Lejre</Link>
+                  <Link to="/camp" onClick={() => setIsMenuOpen(false)}>
+                    Lejre
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/tidligere-lejre">Tidligere Lejre</Link>
+                  <Link
+                    to="/tidligere-lejre"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Tidligere Lejre
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/drejerliste">Drejerliste</Link>
+                  <Link to="/drejerliste" onClick={() => setIsMenuOpen(false)}>
+                    Drejerliste
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/noegleliste">Nøgleliste</Link>
+                  <Link to="/noegleliste" onClick={() => setIsMenuOpen(false)}>
+                    Nøgleliste
+                  </Link>
                 </li>
                 {usertype === "admin" && (
                   <li className="dropdown">
-                    <button className="dropbtn">Admin</button>
-                    <div className="dropdown-content">
-                      <Link to="/createcamp">opret lejr</Link>
-                      <Link to="/admin/option2">Option 2</Link>
-                    </div>
+                    <button className="dropbtn" onClick={toggleAdminMenu}>
+                      Admin
+                    </button>
+                    {isAdminMenuOpen && (
+                      <div className="dropdown-content">
+                        <Link
+                          to="/createcamp"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          opret lejr
+                        </Link>
+                        <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
+                          opret drejer
+                        </Link>
+                      </div>
+                    )}
                   </li>
                 )}
               </ul>
@@ -86,7 +113,7 @@ const Nav = () => {
                 <button className="dropbtn">Admin</button>
                 <div className="dropdown-content">
                   <Link to="/createcamp">opret lejr</Link>
-                  <Link to="/admin/option2">Option 2</Link>
+                  <Link to="/signup">opret drejer</Link>
                 </div>
               </li>
             )}

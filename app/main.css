@@ -2,16 +2,31 @@ body {
   margin: 0;
   padding: 0;
 }
+.sticky-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: #333;
+  z-index: 1000;
+}
+.nav-container {
+  display: block;
+}
 
 .burger-menu {
   font-size: 24px;
   background: none;
+  color: white;
   border: none;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-menu-mobile {
-  display: none;
+  display: block;
+  height: calc(100vh - 50px);
   list-style: none;
   padding: 0;
 }
@@ -20,22 +35,38 @@ body {
   margin: 10px 0;
 }
 
-@media (max-width: 768px) {
-  .nav-menu {
-    display: none;
-  }
-  .nav-menu-mobile {
-    display: block;
-  }
+.nav-menu-mobile li:last-child {
+  margin-top: 0;
 }
 
-.sticky-header {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  background-color: #333;
-  z-index: 1000;
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
 }
+
+.nav-menu-mobile a,
+.nav-menu a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: block;
+}
+
+.dropbtn {
+  background-color: #333;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
 @media (min-width: 768px) {
   .nav-container {
     display: flex;
@@ -43,42 +74,13 @@ body {
     align-items: center;
     padding: 1rem;
   }
-
-  .nav-menu {
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-    margin: 0;
-    padding: 0;
-  }
-
   .nav-menu li {
     display: inline;
-  }
-
-  .nav-menu a {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    display: block;
   }
 
   .nav-menu a:hover {
     background-color: #575757;
     border-radius: 4px;
-  }
-
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
-
-  .dropbtn {
-    background-color: #333;
-    color: white;
-    padding: 0.5rem 1rem;
-    border: none;
-    cursor: pointer;
   }
 
   .dropdown-content {
@@ -97,6 +99,9 @@ body {
     display: block;
   }
 
+  .dropbtn {
+    height: 100%;
+  }
   .dropdown-content a:hover {
     background-color: #f1f1f1;
   }

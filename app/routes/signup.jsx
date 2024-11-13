@@ -5,7 +5,7 @@ import { hashPassword } from "../services/encryption.server.jsx";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (session.data.user) {
+  if (!session.data.user) {
     return redirect("/");
   }
   return session.data;
@@ -26,21 +26,15 @@ export default function LoginPage() {
             type="password"
             required
           />
-          <input placeholder="phone" name="userPhone" type="text" required />
+          <input placeholder="mobilnr" name="userPhone" type="text" required />
           <input
-            placeholder="address"
+            placeholder="addresse"
             name="userAddress"
             type="text"
             required
           />
           {error && <p>{error}</p>}
-          <button>Create account</button>
-          <p className="goTologin">
-            already have an acount?{" "}
-            <a href="/login" className="loginLink">
-              Login
-            </a>
-          </p>
+          <button>opret drejer</button>
         </Form>
       </div>
     </div>
