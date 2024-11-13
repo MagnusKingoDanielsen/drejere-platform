@@ -18,7 +18,7 @@ export async function login(loginUsername, loginPassword) {
 
     if (result) {
       // Passwords match
-      return { result: true, username: user.username };
+      return { result: true, username: user.username, usertype: user.type };
     } else {
       // Passwords don't match
       return false;

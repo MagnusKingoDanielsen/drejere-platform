@@ -11,10 +11,14 @@ export async function loader({ request }) {
 
 export default function Index() {
   const sessionData = useLoaderData();
-  console.log(sessionData);
   return (
     <div>
       <h1>Welcome, {sessionData.username}!</h1>
+      <p>You are now logged in.</p>
+      <Form action="/camp">
+        <button type="submit">Go to Camps</button>
+      </Form>
+
       <Form method="post">
         <button type="submit">Logout</button>
       </Form>

@@ -35,14 +35,18 @@ export default function LoginPage() {
 export async function action({ request }) {
   const formData = await request.formData();
   const { username, password } = Object.fromEntries(formData);
-  const { result } = await login(username, password);
-  if (!result) {
+
+  const loginResult = await login(username, password);
+
+  if (!loginResult || !loginResult.result) {
     return "Invalid username or password";
   }
 
-  const session = await getSession();
+  const session = await getSession(request.headers.get("Cookie"));
   session.set("user", true);
-  session.set("username", username);
+  session.set("username", loginResult.username);
+  session.set("usertype", loginResult.usertype);
+
   return redirect("/", {
     headers: { "Set-Cookie": await commitSession(session) },
   });

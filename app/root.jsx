@@ -7,6 +7,8 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import styles from "./main.css";
+import Nav from "./routes/header/nav";
+import { getSession } from "./services/session.server";
 
 export const links = () => [
   {
@@ -14,8 +16,12 @@ export const links = () => [
     href: styles,
   },
 ];
-export async function loader({ }) {
-  return null
+export async function loader({ request }) {
+  const session = await getSession(request.headers.get("Cookie"));
+  if (!session.data.user) {
+    return { user: null };
+  }
+  return { user: session.data.usertype };
 }
 
 export function meta() {
@@ -32,6 +38,7 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <Nav />
         <Outlet />
         <ScrollRestoration />
         <Scripts />
@@ -41,6 +48,6 @@ export default function App() {
   );
 }
 
-export async function action({ }) {
-  
-}
+// export async function action({ }) {
+
+// }
