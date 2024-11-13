@@ -70,6 +70,21 @@ body {
   display: inline-block;
 }
 
+.profileIcon,
+.logoutIcon {
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+}
+.printerIconButton {
+  background: none;
+  border: none;
+  color: white;
+  margin: auto;
+  height: 100%;
+  font-size: 24px;
+}
+
 @media (min-width: 768px) {
   .nav-container {
     display: flex;
