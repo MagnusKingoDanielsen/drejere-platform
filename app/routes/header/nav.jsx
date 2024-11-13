@@ -100,7 +100,7 @@ const Nav = () => {
               <Link to="/camp">Lejre</Link>
             </li>
             <li>
-              <Link to="/tidligere-lejre">Tidligere Lejre</Link>
+              <Link to="/tidligereLejre">Tidligere Lejre</Link>
             </li>
             <li>
               <Link to="/drejerliste">Drejerliste</Link>
