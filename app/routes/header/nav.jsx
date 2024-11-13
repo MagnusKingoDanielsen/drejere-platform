@@ -79,7 +79,7 @@ const Nav = () => {
                     {isAdminMenuOpen && (
                       <div className="dropdown-content">
                         <Link
-                          to="/createcamp"
+                          to="/opretLejr"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           opret lejr
@@ -112,7 +112,7 @@ const Nav = () => {
               <li className="dropdown">
                 <button className="dropbtn">Admin</button>
                 <div className="dropdown-content">
-                  <Link to="/createcamp">opret lejr</Link>
+                  <Link to="/opretLejr">opret lejr</Link>
                   <Link to="/signup">opret drejer</Link>
                 </div>
               </li>
