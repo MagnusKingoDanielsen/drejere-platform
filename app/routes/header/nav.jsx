@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLoaderData, Form } from "@remix-run/react";
+import {
+  RiPrinterLine,
+  RiAccountCircleLine,
+  RiLogoutBoxRLine,
+} from "react-icons/ri";
 import { getSession } from "~/services/session.server";
-import { RiAccountCircleLine } from "react-icons/ri";
-import { RiPrinterLine } from "react-icons/ri";
-import { RiLogoutBoxRLine } from "react-icons/ri";
-import logo from "../../img/Logo_hvid.svg";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -14,7 +15,7 @@ export async function loader({ request }) {
   return { user: session.data.usertype };
 }
 
-const Nav = () => {
+export default function Nav() {
   const { user: usertype } = useLoaderData();
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,15 +33,19 @@ const Nav = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
   const toggleAdminMenu = () => {
     setIsAdminMenuOpen(!isAdminMenuOpen);
   };
+
   const handlePrint = () => {
     window.print();
   };
+
   if (!usertype) {
     return null;
   }
@@ -48,9 +53,6 @@ const Nav = () => {
   return (
     <header className="sticky-header">
       <nav className="nav-container">
-        <Link to="/">
-          <img src={logo} alt="logo" />
-        </Link>
         {isMobile ? (
           <>
             <button className="burger-menu" onClick={toggleMenu}>
@@ -59,7 +61,7 @@ const Nav = () => {
             {isMenuOpen && (
               <ul className="nav-menu-mobile">
                 <li>
-                  <Link to="/lejr" onClick={() => setIsMenuOpen(false)}>
+                  <Link to="/lejre" onClick={() => setIsMenuOpen(false)}>
                     Lejre
                   </Link>
                 </li>
@@ -112,9 +114,11 @@ const Nav = () => {
                   </Link>
                 </li>
                 <li className="logoutIcon">
-                  <Link to="/logout" onClick={() => setIsMenuOpen(false)}>
-                    <RiLogoutBoxRLine />
-                  </Link>
+                  <Form method="post">
+                    <button type="submit" className="logoutIconButton">
+                      <RiLogoutBoxRLine />
+                    </button>
+                  </Form>
                 </li>
               </ul>
             )}
@@ -153,15 +157,15 @@ const Nav = () => {
               </Link>
             </li>
             <li className="logoutIcon">
-              <Link to="/logout">
-                <RiLogoutBoxRLine />
-              </Link>
+              <Form method="post">
+                <button type="submit" className="logoutIconButton">
+                  <RiLogoutBoxRLine />
+                </button>
+              </Form>
             </li>
           </ul>
         )}
       </nav>
     </header>
   );
-};
-
-export default Nav;
+}
