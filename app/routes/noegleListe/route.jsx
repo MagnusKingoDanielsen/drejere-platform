@@ -1,5 +1,6 @@
 import { getSession } from "../../services/session.server.jsx";
 import { redirect, useLoaderData } from "@remix-run/react";
+import Modal from "../../components/modal"; // Adjust the path as necessary
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -11,10 +12,11 @@ export async function loader({ request }) {
 
 export default function NoegleListe() {
   const sessionData = useLoaderData();
+
   return (
-    <div>
+    <Modal>
       <h1>Welcome, {sessionData.username}!</h1>
       <p>Nøgleliste</p>
-    </div>
+    </Modal>
   );
 }
