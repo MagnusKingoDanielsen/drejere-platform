@@ -9,12 +9,12 @@ export async function loader({ request }) {
   return session.data;
 }
 
-export default function TidligereLejre() {
+export default function Profil() {
   const sessionData = useLoaderData();
   return (
     <div>
       <h1>Welcome, {sessionData.username}!</h1>
-      <p>tidlidere lejre</p>
+      <p>This is your profile</p>
     </div>
   );
 }
