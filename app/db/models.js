@@ -4,10 +4,6 @@ const { Schema } = mongoose;
 
 const drejerSchema = new Schema(
   {
-    date: {
-      type: String,
-      required: true,
-    },
     username: {
       type: String,
       required: true,
@@ -34,6 +30,14 @@ const drejerSchema = new Schema(
     },
     type: {
       type: String,
+      required: true,
+    },
+    tags: {
+      type: Array,
+      required: true,
+    },
+    activities: {
+      type: Array,
       required: true,
     },
   },
