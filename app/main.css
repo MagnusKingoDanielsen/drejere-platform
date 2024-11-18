@@ -132,3 +132,24 @@ body {
     background-color: #575757;
   }
 }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #2a5d67;
+  color: white;
+  padding: 25px 50px;
+  height: 600px;
+  width: 1000px;
+  border-radius: 25px;
+  position: relative;
+}
