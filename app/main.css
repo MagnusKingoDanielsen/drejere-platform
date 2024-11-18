@@ -143,13 +143,19 @@ body {
   justify-content: center;
   align-items: center;
 }
-
 .modal-content {
   background: #2a5d67;
   color: white;
   padding: 25px 50px;
-  height: 600px;
-  width: 1000px;
   border-radius: 25px;
   position: relative;
+  width: 500px;
+  height: 300px;
+}
+
+@media (min-width: 768px) {
+  .modal-content {
+    height: 600px;
+    width: 1000px;
+  }
 }
