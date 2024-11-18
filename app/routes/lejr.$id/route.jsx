@@ -99,7 +99,7 @@ export async function action({ request, params }) {
   if (formData.get("_action") === "delete") {
     if (camp.CampLeader === userName) {
       await mongoose.models.camps.findByIdAndDelete(params.id);
-      return redirect("/camps");
+      return redirect("/lejre");
     } else {
       return json({ error: "Unauthorized" }, { status: 403 });
     }

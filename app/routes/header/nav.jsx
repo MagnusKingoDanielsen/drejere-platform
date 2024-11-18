@@ -1,5 +1,10 @@
-import { useEffect, useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLoaderData, Form } from "@remix-run/react";
+import {
+  RiPrinterLine,
+  RiAccountCircleLine,
+  RiLogoutBoxRLine,
+} from "react-icons/ri";
 import { getSession } from "~/services/session.server";
 
 export async function loader({ request }) {
@@ -10,7 +15,7 @@ export async function loader({ request }) {
   return { user: session.data.usertype };
 }
 
-const Nav = () => {
+export default function Nav() {
   const { user: usertype } = useLoaderData();
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,12 +33,19 @@ const Nav = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
   const toggleAdminMenu = () => {
     setIsAdminMenuOpen(!isAdminMenuOpen);
   };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
   if (!usertype) {
     return null;
   }
@@ -49,25 +61,25 @@ const Nav = () => {
             {isMenuOpen && (
               <ul className="nav-menu-mobile">
                 <li>
-                  <Link to="/camp" onClick={() => setIsMenuOpen(false)}>
+                  <Link to="/lejre" onClick={() => setIsMenuOpen(false)}>
                     Lejre
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to="/tidligere-lejre"
+                    to="/tidligereLejre"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Tidligere Lejre
                   </Link>
                 </li>
                 <li>
-                  <Link to="/drejerliste" onClick={() => setIsMenuOpen(false)}>
+                  <Link to="/drejerListe" onClick={() => setIsMenuOpen(false)}>
                     Drejerliste
                   </Link>
                 </li>
                 <li>
-                  <Link to="/noegleliste" onClick={() => setIsMenuOpen(false)}>
+                  <Link to="/noegleListe" onClick={() => setIsMenuOpen(false)}>
                     Nøgleliste
                   </Link>
                 </li>
@@ -79,7 +91,7 @@ const Nav = () => {
                     {isAdminMenuOpen && (
                       <div className="dropdown-content">
                         <Link
-                          to="/createcamp"
+                          to="/opretLejr"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           opret lejr
@@ -91,37 +103,69 @@ const Nav = () => {
                     )}
                   </li>
                 )}
+                <li className="printerIcon">
+                  <button onClick={handlePrint} className="printerIconButton">
+                    <RiPrinterLine />
+                  </button>
+                </li>
+                <li className="profileIcon">
+                  <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
+                    <RiAccountCircleLine />
+                  </Link>
+                </li>
+                <li className="logoutIcon">
+                  <Form method="post">
+                    <button type="submit" className="logoutIconButton">
+                      <RiLogoutBoxRLine />
+                    </button>
+                  </Form>
+                </li>
               </ul>
             )}
           </>
         ) : (
           <ul className="nav-menu">
             <li>
-              <Link to="/camp">Lejre</Link>
+              <Link to="/lejre">Lejre</Link>
             </li>
             <li>
-              <Link to="/tidligere-lejre">Tidligere Lejre</Link>
+              <Link to="/tidligereLejre">Tidligere Lejre</Link>
             </li>
             <li>
-              <Link to="/drejerliste">Drejerliste</Link>
+              <Link to="/drejerListe">Drejerliste</Link>
             </li>
             <li>
-              <Link to="/noegleliste">Nøgleliste</Link>
+              <Link to="/noegleListe">Nøgleliste</Link>
             </li>
             {usertype === "admin" && (
               <li className="dropdown">
                 <button className="dropbtn">Admin</button>
                 <div className="dropdown-content">
-                  <Link to="/createcamp">opret lejr</Link>
+                  <Link to="/opretLejr">opret lejr</Link>
                   <Link to="/signup">opret drejer</Link>
                 </div>
               </li>
             )}
+            <li className="printerIcon">
+              <button onClick={handlePrint} className="printerIconButton">
+                <RiPrinterLine />
+              </button>
+            </li>
+            <li className="profileIcon">
+              <Link to="/profile">
+                <RiAccountCircleLine />
+              </Link>
+            </li>
+            <li className="logoutIcon">
+              <Form method="post">
+                <button type="submit" className="logoutIconButton">
+                  <RiLogoutBoxRLine />
+                </button>
+              </Form>
+            </li>
           </ul>
         )}
       </nav>
     </header>
   );
-};
-
-export default Nav;
+}

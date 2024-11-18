@@ -13,6 +13,9 @@ body {
   display: block;
 }
 
+.nav-container img {
+  height: 50px;
+}
 .burger-menu {
   font-size: 24px;
   background: none;
@@ -65,6 +68,21 @@ body {
 .dropdown {
   position: relative;
   display: inline-block;
+}
+
+.profileIcon,
+.logoutIcon {
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+}
+.printerIconButton {
+  background: none;
+  border: none;
+  color: white;
+  margin: auto;
+  height: 100%;
+  font-size: 24px;
 }
 
 @media (min-width: 768px) {
