@@ -3,12 +3,13 @@ import {
   LiveReload,
   Meta,
   Outlet,
+  redirect,
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
 import styles from "./main.css";
 import Nav from "./routes/header/nav";
-import { getSession } from "./services/session.server";
+import { destroySession, getSession } from "./services/session.server";
 
 export const links = () => [
   {
@@ -48,6 +49,11 @@ export default function App() {
   );
 }
 
-// export async function action({ }) {
-
-// }
+export async function action({ request }) {
+  const session = await getSession(request.headers.get("Cookie"));
+  return redirect("/login", {
+    headers: {
+      "Set-Cookie": await destroySession(session),
+    },
+  });
+}

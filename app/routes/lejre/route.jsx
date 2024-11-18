@@ -34,7 +34,7 @@ export default function CampPage() {
               })}
             </p>
             <p>participants: {camp.Participants.length} </p>
-            <Link to={`/camp/${camp._id}`}>View Details</Link>
+            <Link to={`/lejr/${camp._id}`}>View Details</Link>
           </li>
         ))}
       </ul>

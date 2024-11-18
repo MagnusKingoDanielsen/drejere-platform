@@ -8,17 +8,17 @@ export async function loader({ request }) {
     return redirect("/login");
   }
   if (session.data.usertype !== "admin") {
-    return redirect("/camps");
+    return redirect("/lejre");
   }
 
   return { session: session.data };
 }
 
-export default function CreateCampPage() {
+export default function OpretLejr() {
   return (
     <div>
       <h1>Create a New Camp</h1>
-      <form method="post" action="/createCamp">
+      <form method="post" action="/opretLejr">
         <div>
           <label htmlFor="CampName">Camp Name:</label>
           <input type="text" id="CampName" name="CampName" required />
@@ -90,5 +90,5 @@ export const action = async ({ request }) => {
     CampDescription,
     Participants,
   });
-  return redirect("/camps");
+  return redirect("/lejre");
 };
