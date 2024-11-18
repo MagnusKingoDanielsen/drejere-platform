@@ -6,6 +6,7 @@ import {
   RiLogoutBoxRLine,
 } from "react-icons/ri";
 import { getSession } from "~/services/session.server";
+import Logo from "../../img/Logo_hvid.svg";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -125,6 +126,11 @@ export default function Nav() {
           </>
         ) : (
           <ul className="nav-menu">
+            <li>
+              <Link to="/">
+                <img src={Logo} alt="Logo" />
+              </Link>
+            </li>
             <li>
               <Link to="/lejre">Lejre</Link>
             </li>

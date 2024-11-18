@@ -2,6 +2,7 @@
   --primary-color: #2a5d67;
   --secondary-color: #f2f2f2;
   --black-color: #1e1e1e;
+  --light-primary-color: #3e7a8a;
 }
 
 body {
@@ -25,10 +26,6 @@ button,
   background-color: var(--primary-color);
   color: var(--secondary-color);
   z-index: 1000;
-}
-
-.nav-container {
-  display: block;
 }
 
 .burger-menu {
@@ -112,32 +109,75 @@ button,
   width: 100%;
   text-align: left;
 }
-.nav-menu {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin: 0;
-  padding: 0;
-}
+
 @media (min-width: 768px) {
+  .sticky-header {
+    height: auto;
+  }
+
   .nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    background-color: var(--primary-color);
   }
+
   .nav-container img {
-    height: 50px;
+    height: 60px;
+    margin-left: 1rem;
   }
-  .nav-menu li {
-    display: inline;
+
+  .nav-menu {
+    display: flex;
+    width: 100%;
+    list-style: none;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 7.5px 0;
+    padding: 0;
+  }
+
+  .nav-menu li a {
+    font-size: 14px;
+    padding: 0.5rem 1rem;
+  }
+
+  .nav-menu li:first-child {
+    margin-right: auto;
+    padding: 0;
+    height: 60px;
+  }
+
+  .nav-menu li:first-child a {
+    padding: 0;
+  }
+
+  .nav-menu li:last-child {
+    margin-right: 1rem;
+  }
+
+  .dropdown,
+  .printerIconButton,
+  .printerIcon,
+  .profileIcon,
+  .logoutIconButton,
+  .logoutIcon {
+    width: fit-content;
+  }
+
+  .dropdown,
+  .printerIcon,
+  .logoutIcon {
+    padding: 0;
+  }
+
+  .dropbtn {
+    font-size: 14px;
   }
 
   .nav-menu a:hover {
-    background-color: #575757;
-    border-radius: 4px;
+    text-decoration: underline;
   }
 
   .dropdown-content {
@@ -156,9 +196,6 @@ button,
     display: block;
   }
 
-  .dropbtn {
-    height: 100%;
-  }
   .dropdown-content a:hover {
     background-color: #f1f1f1;
   }
@@ -168,9 +205,23 @@ button,
   }
 
   .dropdown:hover .dropbtn {
-    background-color: #575757;
+    text-decoration: underline;
   }
 }
+@media (min-width: 1000px) {
+  .nav-menu {
+    gap: 1rem;
+  }
+
+  .nav-menu li a {
+    font-size: 18px;
+  }
+
+  .dropbtn {
+    font-size: 18px;
+  }
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
