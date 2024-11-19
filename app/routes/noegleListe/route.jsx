@@ -1,6 +1,6 @@
 import { getSession } from "../../services/session.server.jsx";
 import { redirect, useLoaderData } from "@remix-run/react";
-import Modal from "../../components/modal"; // Adjust the path as necessary
+import Modal from "../../components/modal";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
