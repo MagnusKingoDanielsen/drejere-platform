@@ -3,12 +3,14 @@ import {
   LiveReload,
   Meta,
   Outlet,
+  redirect,
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
 import styles from "./main.css";
 import Nav from "./routes/header/nav";
-import { getSession } from "./services/session.server";
+import { destroySession, getSession } from "./services/session.server";
+import backgroundimg from "./img/drejerbackground.png";
 
 export const links = () => [
   {
@@ -38,16 +40,33 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Nav />
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
+        <div className="backgroundimg">
+          <img
+            src={backgroundimg}
+            alt="background"
+            style={{
+              position: "absolute",
+              bottom: "0",
+              zIndex: "-1",
+              width: "100%",
+            }}
+          />
+          <Nav />
+          <Outlet />
+          <ScrollRestoration />
+          <Scripts />
+          <LiveReload />
+        </div>
       </body>
     </html>
   );
 }
 
-// export async function action({ }) {
-
-// }
+export async function action({ request }) {
+  const session = await getSession(request.headers.get("Cookie"));
+  return redirect("/login", {
+    headers: {
+      "Set-Cookie": await destroySession(session),
+    },
+  });
+}

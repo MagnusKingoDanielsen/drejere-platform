@@ -1,19 +1,22 @@
-import { getSession } from "../services/session.server.jsx";
+import { getSession } from "../../services/session.server.jsx";
 import { redirect, useLoaderData } from "@remix-run/react";
+import Modal from "../../components/modal";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
   if (!session.data.user) {
-    return redirect("/login");
+    return redirect("/");
   }
   return session.data;
 }
 
-export default function Index() {
+export default function NoegleListe() {
   const sessionData = useLoaderData();
+
   return (
-    <div className="welcome">
-      <h1>Velkommen tilbage {sessionData.username}!</h1>
-    </div>
+    <Modal>
+      <h1>Welcome, {sessionData.username}!</h1>
+      <p>Nøgleliste</p>
+    </Modal>
   );
 }
