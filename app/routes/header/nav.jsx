@@ -6,6 +6,7 @@ import {
   RiLogoutBoxRLine,
 } from "react-icons/ri";
 import { getSession } from "~/services/session.server";
+import Logo from "../../img/Logo_hvid.svg";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -94,10 +95,10 @@ export default function Nav() {
                           to="/opretLejr"
                           onClick={() => setIsMenuOpen(false)}
                         >
-                          opret lejr
+                          Opret lejr
                         </Link>
                         <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
-                          opret drejer
+                          Opret drejer
                         </Link>
                       </div>
                     )}
@@ -126,6 +127,11 @@ export default function Nav() {
         ) : (
           <ul className="nav-menu">
             <li>
+              <Link to="/">
+                <img src={Logo} alt="Logo" />
+              </Link>
+            </li>
+            <li>
               <Link to="/lejre">Lejre</Link>
             </li>
             <li>
@@ -141,8 +147,8 @@ export default function Nav() {
               <li className="dropdown">
                 <button className="dropbtn">Admin</button>
                 <div className="dropdown-content">
-                  <Link to="/opretLejr">opret lejr</Link>
-                  <Link to="/signup">opret drejer</Link>
+                  <Link to="/opretLejr">Opret lejr</Link>
+                  <Link to="/signup">Opret drejer</Link>
                 </div>
               </li>
             )}
