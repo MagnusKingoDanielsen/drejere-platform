@@ -189,7 +189,7 @@ button,
     background-color: var(--primary-color);
     color: var(--secondary-color);
     min-width: 160px;
-    top: 50px;
+    padding-top: 20px;
     z-index: 1;
   }
 
