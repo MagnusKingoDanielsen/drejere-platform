@@ -397,11 +397,12 @@ button:hover {
 .tablewrapper {
   overflow-x: auto;
   width: 100%;
+  border-left: solid 1px var(--light-primary-color);
+  margin-top: 20px;
 }
 .participants-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
   overflow-x: scroll;
 }
 
@@ -416,6 +417,14 @@ button:hover {
   font-weight: bold;
 }
 
+.participants-table th:first-child,
+.participants-table td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: var(--primary-color);
+  border-left: 0px solid var(--light-primary-color);
+  z-index: 1;
+}
 button {
   background-color: var(--primary-color);
   color: white;

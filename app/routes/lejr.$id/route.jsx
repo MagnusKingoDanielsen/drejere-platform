@@ -34,9 +34,17 @@ export default function CampDetailPage() {
     const start = new Date(startDate);
     const end = new Date(endDate);
     const days = [];
-    for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
-      days.push(new Date(d));
+
+    // Remove the time component from the start and end dates
+    start.setHours(0, 0, 0, 0);
+    end.setHours(0, 0, 0, 0);
+
+    let currentDate = new Date(start);
+    while (currentDate <= end) {
+      days.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
     }
+
     return days;
   };
   const handleDelete = (event) => {
