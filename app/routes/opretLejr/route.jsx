@@ -65,7 +65,7 @@ export const action = async ({ request }) => {
   if (!session.data.user) {
     throw new Response("Not authenticated", { status: 401 });
   }
-  const Participants = [session.data.username];
+  const Participants = [];
   console.log(
     CampName,
     StartDate,
