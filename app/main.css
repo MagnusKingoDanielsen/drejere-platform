@@ -426,8 +426,8 @@ button:hover {
   left: 0;
   background-color: var(--primary-color);
   border-left: 0px solid var(--light-primary-color);
-  z-index: 1;
 }
+
 button {
   background-color: var(--primary-color);
   color: white;

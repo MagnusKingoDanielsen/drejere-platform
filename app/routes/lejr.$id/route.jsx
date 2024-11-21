@@ -22,6 +22,7 @@ export async function loader({ request, params }) {
   if (!camp) {
     throw new Response("Not found", { status: 404 });
   }
+  console.log(camp.Participants);
 
   return { session: session.data, camp: camp };
 }
@@ -47,6 +48,8 @@ export default function CampDetailPage() {
 
     return days;
   };
+  const days = calculateDays(camp.StartDate, camp.EndDate);
+
   const handleDelete = (event) => {
     if (!confirm("Er du sikker på du vil slette denne lejr?")) {
       event.preventDefault();
@@ -90,37 +93,50 @@ export default function CampDetailPage() {
             <thead>
               <tr>
                 <th>Name</th>
-                {calculateDays(camp.StartDate, camp.EndDate).map(
-                  (day, index) => (
-                    <th key={index}>
-                      {day.toLocaleDateString([], {
-                        month: "2-digit",
-                        day: "2-digit",
-                      })}
-                    </th>
-                  ),
-                )}
+                {days.map((day, index) => (
+                  <th key={index}>
+                    {day.toLocaleDateString([], {
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
               {camp.Participants.map((participant, index) => (
                 <tr key={index}>
-                  <td>{participant}</td>
-                  {calculateDays(camp.StartDate, camp.EndDate).map(
-                    (day, dayIndex) => (
-                      <td key={dayIndex}></td>
-                    ),
-                  )}
+                  <td>{participant.name}</td>
+                  {days.map((day, dayIndex) => {
+                    const attendance = participant.attendance.find(
+                      (att) => att.date === day.toLocaleDateString(),
+                    );
+                    return (
+                      <td key={dayIndex}>
+                        {attendance &&
+                          attendance.meals.includes("breakfast") && (
+                            <span>🍳</span>
+                          )}
+                        {attendance && attendance.meals.includes("lunch") && (
+                          <span>🥪</span>
+                        )}
+                        {attendance && attendance.meals.includes("dinner") && (
+                          <span>🍽️</span>
+                        )}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <Form method="post">
-          <button type="submit">
+        <Link to="attend">
+          <button type="button">
             {camp.Participants.includes(userName) ? "Attending" : "Join"}
           </button>
-        </Form>
+        </Link>
+
         {session.usertype === "admin" && (
           <>
             <Form method="post" onSubmit={handleDelete}>
@@ -159,14 +175,6 @@ export async function action({ request, params }) {
     } else {
       return json({ error: "Unauthorized" }, { status: 403 });
     }
-  }
-
-  if (camp.Participants.includes(userName)) {
-    camp.Participants = camp.Participants.filter(
-      (participant) => participant !== userName,
-    );
-  } else {
-    camp.Participants.push(userName);
   }
 
   await camp.save();
