@@ -30,18 +30,28 @@ export default function CampDetailPage() {
   const { camp, session } = useLoaderData();
   const userName = session.username;
 
+  const calculateDays = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const days = [];
+    for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
+      days.push(new Date(d));
+    }
+    return days;
+  };
   const handleDelete = (event) => {
-    if (!confirm("Are you sure you want to delete this camp?")) {
+    if (!confirm("Er du sikker på du vil slette denne lejr?")) {
       event.preventDefault();
     }
   };
 
   return (
     <Modal>
-      <div>
-        <h1>{camp.CampName}</h1>
-        <p>
-          Start Date:{" "}
+      <div className="camp-details">
+        <h1 className="camp-title">{camp.CampName}</h1>
+        <p className="camp-leader">Lejr leder: {camp.CampLeader}</p>
+        <p className="camp-date">
+          Start:{" "}
           {new Date(camp.StartDate).toLocaleString([], {
             year: "numeric",
             month: "2-digit",
@@ -49,9 +59,8 @@ export default function CampDetailPage() {
             hour: "2-digit",
             minute: "2-digit",
           })}
-        </p>
-        <p>
-          End Date:{" "}
+          {" | "}
+          slut:{" "}
           {new Date(camp.EndDate).toLocaleString([], {
             year: "numeric",
             month: "2-digit",
@@ -60,9 +69,45 @@ export default function CampDetailPage() {
             minute: "2-digit",
           })}
         </p>
-        <p>Leader: {camp.CampLeader}</p>
-        <p>Description: {camp.CampDescription}</p>
-        <p>Participants: {camp.Participants.join(", ")}</p>
+        {/* <p className="camp-date"></p> */}
+        <p className="camp-description">{camp.CampDescription}</p>
+        <p className="camp-remember">
+          <strong>Husk:</strong> Du kan ændre i din tilmelding indtil lejren går
+          i gang. Ændrer du din tilmelding herefter, skal du stadig betale for
+          de måltider, hvor du ikke spiser med. Det gælder også for drejere, der
+          er tilmeldt guldkort-plus-ordningen.
+        </p>
+        <div className="tablewrapper">
+          <table className="participants-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                {calculateDays(camp.StartDate, camp.EndDate).map(
+                  (day, index) => (
+                    <th key={index}>
+                      {day.toLocaleDateString([], {
+                        month: "2-digit",
+                        day: "2-digit",
+                      })}
+                    </th>
+                  ),
+                )}
+              </tr>
+            </thead>
+            <tbody>
+              {camp.Participants.map((participant, index) => (
+                <tr key={index}>
+                  <td>{participant}</td>
+                  {calculateDays(camp.StartDate, camp.EndDate).map(
+                    (day, dayIndex) => (
+                      <td key={dayIndex}></td>
+                    ),
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <Form method="post">
           <button type="submit">
             {camp.Participants.includes(userName) ? "Attending" : "Join"}
