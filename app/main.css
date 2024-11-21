@@ -189,7 +189,7 @@ button,
     background-color: var(--primary-color);
     color: var(--secondary-color);
     min-width: 160px;
-    top: 50px;
+    padding-top: 20px;
     z-index: 1;
   }
 
@@ -237,10 +237,11 @@ button,
 
 .modal-content {
   width: 100%;
-  height: calc(100% - 100px);
+  height: 100%;
   background: var(--primary-color);
   color: white;
-  padding: 50px;
+  padding: 25px;
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
@@ -269,4 +270,53 @@ button,
     border-radius: 25px;
     padding: 50px;
   }
+}
+
+.welcome {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.lejreTabel {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  text-align: left;
+}
+
+.lejreTabel tr {
+  border-top: solid 1px var(--light-primary-color);
+  border-bottom: solid 1px var(--light-primary-color);
+}
+.lejreTabel td {
+  padding: 12px 10px;
+}
+
+.lejreTabel th,
+.lejreTabel td {
+  padding: 12px 10px;
+}
+
+.lejreTabel th:first-child,
+.lejreTabel td:first-child {
+  width: 160px;
+}
+.lejreTabel th:nth-child(3),
+.lejreTabel td:nth-child(3) {
+  text-align: center;
+}
+.lejreTabel th {
+  font-weight: bold;
+}
+
+.lejreTabel a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.lejreTabel a:hover {
+  text-decoration: underline;
 }

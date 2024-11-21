@@ -1,8 +1,8 @@
 import { useLoaderData, Form, redirect, json } from "@remix-run/react";
 import { getSession } from "../../services/session.server.jsx";
 import mongoose from "mongoose";
+import Modal from "../../components/modal";
 
-// Loader
 export async function loader({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
   if (!session.data.user) {
@@ -23,7 +23,6 @@ export async function loader({ request, params }) {
   return { session: session.data, camp: camp };
 }
 
-// Page
 export default function CampEditPage() {
   const { camp, session } = useLoaderData();
 
@@ -34,39 +33,49 @@ export default function CampEditPage() {
   }
 
   return (
-    <div className="modal">
-      <h1>Edit Camp</h1>
-      <Form method="post">
-        <label>
-          Camp Name:
-          <input type="text" name="CampName" defaultValue={camp.CampName} />
-        </label>
-        <label>
-          Start Date:
-          <input
-            type="datetime-local"
-            name="StartDate"
-            defaultValue={startDate}
-          />
-        </label>
-        <label>
-          End Date:
-          <input type="datetime-local" name="EndDate" defaultValue={endDate} />
-        </label>
-        <label>
-          Camp Leader:
-          <input type="text" name="CampLeader" defaultValue={camp.CampLeader} />
-        </label>
-        <label>
-          Description:
-          <textarea
-            name="CampDescription"
-            defaultValue={camp.CampDescription}
-          />
-        </label>
-        <button type="submit">Save</button>
-      </Form>
-    </div>
+    <Modal>
+      <div className="modal">
+        <h1>Edit Camp</h1>
+        <Form method="post">
+          <label>
+            Camp Name:
+            <input type="text" name="CampName" defaultValue={camp.CampName} />
+          </label>
+          <label>
+            Start Date:
+            <input
+              type="datetime-local"
+              name="StartDate"
+              defaultValue={startDate}
+            />
+          </label>
+          <label>
+            End Date:
+            <input
+              type="datetime-local"
+              name="EndDate"
+              defaultValue={endDate}
+            />
+          </label>
+          <label>
+            Camp Leader:
+            <input
+              type="text"
+              name="CampLeader"
+              defaultValue={camp.CampLeader}
+            />
+          </label>
+          <label>
+            Description:
+            <textarea
+              name="CampDescription"
+              defaultValue={camp.CampDescription}
+            />
+          </label>
+          <button type="submit">Save</button>
+        </Form>
+      </div>
+    </Modal>
   );
 }
 

@@ -2,6 +2,7 @@ import { Form, redirect, useActionData } from "@remix-run/react";
 import { getSession } from "../services/session.server.jsx";
 import mongoose from "mongoose";
 import { hashPassword } from "../services/encryption.server.jsx";
+import Modal from "../components/modal";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -14,30 +15,42 @@ export async function loader({ request }) {
 export default function LoginPage() {
   const error = useActionData();
   return (
-    <div className="signupPage">
-      <div className="signupContainer">
-        <Form method="post">
-          <h1>Sign up</h1>
-          <input placeholder="email" name="userEmail" type="email" required />
-          <input placeholder="username" name="userName" type="text" required />
-          <input
-            placeholder="password"
-            name="userPassword"
-            type="password"
-            required
-          />
-          <input placeholder="mobilnr" name="userPhone" type="text" required />
-          <input
-            placeholder="addresse"
-            name="userAddress"
-            type="text"
-            required
-          />
-          {error && <p>{error}</p>}
-          <button>opret drejer</button>
-        </Form>
+    <Modal>
+      <div className="signupPage">
+        <div className="signupContainer">
+          <Form method="post">
+            <h1>Sign up</h1>
+            <input placeholder="email" name="userEmail" type="email" required />
+            <input
+              placeholder="username"
+              name="userName"
+              type="text"
+              required
+            />
+            <input
+              placeholder="password"
+              name="userPassword"
+              type="password"
+              required
+            />
+            <input
+              placeholder="mobilnr"
+              name="userPhone"
+              type="text"
+              required
+            />
+            <input
+              placeholder="addresse"
+              name="userAddress"
+              type="text"
+              required
+            />
+            {error && <p>{error}</p>}
+            <button>opret drejer</button>
+          </Form>
+        </div>
       </div>
-    </div>
+    </Modal>
   );
 }
 
