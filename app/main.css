@@ -304,6 +304,10 @@ button,
 .lejreTabel td:first-child {
   width: 160px;
 }
+.lejreTabel th:nth-child(3),
+.lejreTabel td:nth-child(3) {
+  text-align: center;
+}
 .lejreTabel th {
   font-weight: bold;
 }

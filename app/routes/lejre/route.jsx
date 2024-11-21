@@ -48,7 +48,7 @@ export default function CampPage() {
                     minute: "2-digit",
                   })}
                 </td>
-                <td>{camp.Participants.length}/10</td>
+                <td>{camp.Participants.length}</td>
                 <td>
                   <Link to={`/lejr/${camp._id}`}>Læs mere</Link>
                 </td>
