@@ -401,8 +401,9 @@ button:hover {
   margin-top: 20px;
 }
 
-#BorderLeft {
+#BorderSides {
   border-left: solid 1px var(--light-primary-color);
+  border-right: solid 1px var(--light-primary-color);
 }
 
 .participants-table {
