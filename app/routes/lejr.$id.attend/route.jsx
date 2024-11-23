@@ -44,6 +44,17 @@ export default function AttendCampPage() {
 
   const days = calculateDays(camp.StartDate, camp.EndDate);
 
+  const userAttendance =
+    camp.Participants.find((participant) => participant.name === userName)
+      ?.attendance || [];
+
+  const isChecked = (day, meal) => {
+    const attendance = userAttendance.find(
+      (att) => att.date === formatDateTable(day),
+    );
+    return attendance?.meals.includes(meal) || false;
+  };
+
   const renderCheckboxes = (day, isStartDate, isEndDate) => {
     const checkboxes = [];
     const startTime = new Date(camp.StartDate).getHours();
@@ -54,20 +65,27 @@ export default function AttendCampPage() {
         checkboxes.push(
           <input
             type="checkbox"
-            key={`${day}-breakfast`}
-            name={`${day}-breakfast`}
+            key={`${formatDateTable(day)}-breakfast`}
+            name={`${formatDateTable(day)}-breakfast`}
+            defaultChecked={isChecked(day, "breakfast")}
           />,
         );
       if (startTime <= 13)
         checkboxes.push(
-          <input type="checkbox" key={`${day}-lunch`} name={`${day}-lunch`} />,
+          <input
+            type="checkbox"
+            key={`${formatDateTable(day)}-lunch`}
+            name={`${formatDateTable(day)}-lunch`}
+            defaultChecked={isChecked(day, "lunch")}
+          />,
         );
       if (startTime <= 18)
         checkboxes.push(
           <input
             type="checkbox"
-            key={`${day}-dinner`}
-            name={`${day}-dinner`}
+            key={`${formatDateTable(day)}-dinner`}
+            name={`${formatDateTable(day)}-dinner`}
+            defaultChecked={isChecked(day, "dinner")}
           />,
         );
     } else if (isEndDate) {
@@ -75,35 +93,53 @@ export default function AttendCampPage() {
         checkboxes.push(
           <input
             type="checkbox"
-            key={`${day}-breakfast`}
-            name={`${day}-breakfast`}
+            key={`${formatDateTable(day)}-breakfast`}
+            name={`${formatDateTable(day)}-breakfast`}
+            defaultChecked={isChecked(day, "breakfast")}
           />,
         );
       if (endTime >= 13)
         checkboxes.push(
-          <input type="checkbox" key={`${day}-lunch`} name={`${day}-lunch`} />,
+          <input
+            type="checkbox"
+            key={`${formatDateTable(day)}-lunch`}
+            name={`${formatDateTable(day)}-lunch`}
+            defaultChecked={isChecked(day, "lunch")}
+          />,
         );
       if (endTime >= 18)
         checkboxes.push(
           <input
             type="checkbox"
-            key={`${day}-dinner`}
-            name={`${day}-dinner`}
+            key={`${formatDateTable(day)}-dinner`}
+            name={`${formatDateTable(day)}-dinner`}
+            defaultChecked={isChecked(day, "dinner")}
           />,
         );
     } else {
       checkboxes.push(
         <input
           type="checkbox"
-          key={`${day}-breakfast`}
-          name={`${day}-breakfast`}
+          key={`${formatDateTable(day)}-breakfast`}
+          name={`${formatDateTable(day)}-breakfast`}
+          defaultChecked={isChecked(day, "breakfast")}
         />,
       );
       checkboxes.push(
-        <input type="checkbox" key={`${day}-lunch`} name={`${day}-lunch`} />,
+        <input
+          type="checkbox"
+          key={`${formatDateTable(day)}-lunch`}
+          name={`${formatDateTable(day)}-lunch`}
+          defaultChecked={isChecked(day, "lunch")}
+        />,
       );
       checkboxes.push(
-        <input type="checkbox" key={`${day}-dinner`} name={`${day}-dinner`} />,
+        <input
+          type="checkbox"
+          key={`${formatDateTable(day)}-dinner`}
+          name={`${formatDateTable(day)}-dinner`}
+          defaultChecked={isChecked(day, "dinner")}
+        />,
       );
     }
 
@@ -117,10 +153,13 @@ export default function AttendCampPage() {
 
     days.forEach((day) => {
       const dayAttendance = [];
-      if (formData.get(`${day}-breakfast`)) dayAttendance.push("breakfast");
-      if (formData.get(`${day}-lunch`)) dayAttendance.push("lunch");
-      if (formData.get(`${day}-dinner`)) dayAttendance.push("dinner");
-      attendance.push({ date: day.toLocaleDateString(), meals: dayAttendance });
+      if (formData.get(`${formatDateTable(day)}-breakfast`))
+        dayAttendance.push("breakfast");
+      if (formData.get(`${formatDateTable(day)}-lunch`))
+        dayAttendance.push("lunch");
+      if (formData.get(`${formatDateTable(day)}-dinner`))
+        dayAttendance.push("dinner");
+      attendance.push({ date: formatDateTable(day), meals: dayAttendance });
     });
 
     fetcher.submit(
@@ -132,21 +171,25 @@ export default function AttendCampPage() {
     );
   };
 
+  const formatDateTable = (date) => {
+    return new Date(date)
+      .toLocaleDateString("da-DK", {
+        month: "2-digit",
+        day: "2-digit",
+      })
+      .replace(/\//g, ".");
+  };
+
   return (
     <Modal>
-      <div className="tablewrapper">
-        <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
+        <div className="tablewrapper">
           <table className="participants-table">
             <thead>
               <tr>
                 <th>Name</th>
                 {days.map((day, index) => (
-                  <th key={index}>
-                    {day.toLocaleDateString([], {
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
-                  </th>
+                  <th key={index}>{formatDateTable(day)}</th>
                 ))}
               </tr>
             </thead>
@@ -165,9 +208,9 @@ export default function AttendCampPage() {
               </tr>
             </tbody>
           </table>
-          <button type="submit">Save Attendance</button>
-        </form>
-      </div>
+        </div>
+        <button type="submit">Save Attendance</button>
+      </form>
     </Modal>
   );
 }
@@ -177,9 +220,25 @@ export async function action({ request, params }) {
   const userName = formData.get("userName");
   const attendance = JSON.parse(formData.get("attendance"));
 
-  await mongoose.models.camps.findByIdAndUpdate(params.id, {
-    $push: { Participants: { name: userName, attendance } },
-  });
+  const camp = await mongoose.models.camps.findById(params.id).exec();
+  if (!camp) {
+    throw new Response("Not found", { status: 404 });
+  }
+
+  const participantIndex = camp.Participants.findIndex(
+    (participant) => participant.name === userName,
+  );
+
+  if (participantIndex !== -1) {
+    // Update existing participant's attendance
+    camp.Participants[participantIndex].attendance = attendance;
+    camp.markModified(`Participants.${participantIndex}.attendance`);
+  } else {
+    // Add new participant
+    camp.Participants.push({ name: userName, attendance });
+  }
+
+  await camp.save();
 
   return redirect(`/lejr/${params.id}`);
 }

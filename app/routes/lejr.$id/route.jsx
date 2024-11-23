@@ -64,21 +64,17 @@ export default function CampDetailPage() {
         hour: "2-digit",
         minute: "2-digit",
         hour12: false,
-        // Ensure consistent formatting by removing the comma
-        // timeZone: "UTC",
       })
       .replace(",", "");
   };
-  const formatDateTable = (date) => {
-    return new Date(date).toLocaleDateString("da-DK", {
-      month: "2-digit",
-      day: "2-digit",
-    });
-  };
 
-  const parseDate = (dateString) => {
-    const [day, month, year] = dateString.split("/");
-    return new Date(`${year}-${month}-${day}`);
+  const formatDateTable = (date) => {
+    return new Date(date)
+      .toLocaleDateString("da-DK", {
+        month: "2-digit",
+        day: "2-digit",
+      })
+      .replace(/\//g, ".");
   };
 
   return (
@@ -113,11 +109,7 @@ export default function CampDetailPage() {
                   <td>{participant.name}</td>
                   {days.map((day, dayIndex) => {
                     const attendance = participant.attendance.find(
-                      (att) =>
-                        parseDate(att.date).toLocaleDateString("da-DK", {
-                          month: "2-digit",
-                          day: "2-digit",
-                        }) === formatDateTable(day),
+                      (att) => att.date === formatDateTable(day),
                     );
                     return (
                       <td key={dayIndex}>
@@ -141,7 +133,11 @@ export default function CampDetailPage() {
         </div>
         <Link to="attend">
           <button type="button">
-            {camp.Participants.includes(userName) ? "Attending" : "Join"}
+            {camp.Participants.some(
+              (participant) => participant.name === userName,
+            )
+              ? "Attending"
+              : "Join"}
           </button>
         </Link>
 
