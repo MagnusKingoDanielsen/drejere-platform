@@ -115,13 +115,13 @@ export default function CampDetailPage() {
                       <td key={dayIndex}>
                         {attendance &&
                           attendance.meals.includes("breakfast") && (
-                            <span>🍳</span>
+                            <span title="Breakfast">🍳</span>
                           )}
                         {attendance && attendance.meals.includes("lunch") && (
-                          <span>🥪</span>
+                          <span title="Lunch">🥪</span>
                         )}
                         {attendance && attendance.meals.includes("dinner") && (
-                          <span>🍽️</span>
+                          <span title="Dinner">🍽️</span>
                         )}
                       </td>
                     );
