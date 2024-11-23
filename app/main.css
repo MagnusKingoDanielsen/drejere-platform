@@ -283,46 +283,44 @@ button,
   height: 100%;
 }
 
-.lejreTabel {
+.Tabel {
   width: 100%;
   border-collapse: collapse;
-  margin: 20px 0;
   font-size: 14px;
   text-align: left;
 }
 
-.lejreTabel tr {
+.Tabel tr {
   border-top: solid 1px var(--light-primary-color);
   border-bottom: solid 1px var(--light-primary-color);
 }
-.lejreTabel td {
+.Tabel td {
   padding: 12px 10px;
 }
 
-.lejreTabel th,
-.lejreTabel td {
+.Tabel th,
+.Tabel td {
   padding: 12px 10px;
 }
 
-.lejreTabel th:first-child,
-.lejreTabel td:first-child {
+.Tabel th:first-child,
+.Tabel td:first-child {
   width: 140px;
   box-sizing: border-box;
 }
-.lejreTabel th:nth-child(3),
-.lejreTabel td:nth-child(3) {
+#ParticipantsRow {
   text-align: center;
 }
-.lejreTabel th {
+.Tabel th {
   font-weight: bold;
 }
 
-.lejreTabel a {
+.Tabel a {
   color: #3498db;
   text-decoration: none;
 }
 
-.lejreTabel a:hover {
+.Tabel a:hover {
   text-decoration: underline;
 }
 
@@ -400,9 +398,13 @@ button:hover {
 .tablewrapper {
   overflow-x: auto;
   width: 100%;
-  border-left: solid 1px var(--light-primary-color);
   margin-top: 20px;
 }
+
+#BorderLeft {
+  border-left: solid 1px var(--light-primary-color);
+}
+
 .participants-table {
   width: 100%;
   border-collapse: collapse;
