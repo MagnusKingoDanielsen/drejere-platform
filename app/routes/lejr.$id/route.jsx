@@ -88,7 +88,7 @@ export default function CampDetailPage() {
           de måltider, hvor du ikke spiser med. Det gælder også for drejere, der
           er tilmeldt guldkort-plus-ordningen.
         </p>
-        <div className="tablewrapper">
+        <div className="tablewrapper" id="BorderLeft">
           <table className="participants-table">
             <thead>
               <tr>

@@ -25,7 +25,7 @@ export default function CampPage() {
     <Modal>
       <div>
         <h1>Lejre</h1>
-        <table className="lejreTabel">
+        <table className="Tabel">
           <thead>
             <tr>
               <th>Lejre </th>
@@ -48,7 +48,7 @@ export default function CampPage() {
                     minute: "2-digit",
                   })}
                 </td>
-                <td>{camp.Participants.length}</td>
+                <td id="ParticipantsRow">{camp.Participants.length}</td>
                 <td>
                   <Link to={`/lejr/${camp._id}`}>Læs mere</Link>
                 </td>
