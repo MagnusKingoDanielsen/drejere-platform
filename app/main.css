@@ -229,6 +229,9 @@ button,
 .modal-overlay {
   background: none;
   display: flex;
+  position: fixed;
+  top: 50px;
+  left: 0;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -303,7 +306,8 @@ button,
 
 .lejreTabel th:first-child,
 .lejreTabel td:first-child {
-  width: 160px;
+  width: 140px;
+  box-sizing: border-box;
 }
 .lejreTabel th:nth-child(3),
 .lejreTabel td:nth-child(3) {
@@ -320,4 +324,120 @@ button,
 
 .lejreTabel a:hover {
   text-decoration: underline;
+}
+
+.camp-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.camp-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.camp-leader,
+.camp-date {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.camp-description {
+  font-size: 14px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.camp-remember {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.camp-participants {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: darken(var(--primary-color), 10%);
+}
+
+/* ------------------------------------------------------------ */
+.camp-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.camp-title {
+  font-size: 24px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.camp-leader,
+.camp-date {
+  font-size: 16px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+.camp-description,
+.camp-remember {
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.tablewrapper {
+  overflow-x: auto;
+  width: 100%;
+  border-left: solid 1px var(--light-primary-color);
+  margin-top: 20px;
+}
+.participants-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: scroll;
+}
+
+.participants-table th,
+.participants-table td {
+  border: 1px solid var(--light-primary-color);
+  padding: 8px;
+  text-align: left;
+}
+
+.participants-table th {
+  font-weight: bold;
+}
+
+.participants-table th:first-child,
+.participants-table td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: var(--primary-color);
+  border-left: 0px solid var(--light-primary-color);
+}
+
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: darken(var(--primary-color), 10%);
 }
