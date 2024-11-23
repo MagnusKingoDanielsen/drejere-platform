@@ -22,6 +22,7 @@ export async function loader({ request, params }) {
   if (!camp) {
     throw new Response("Not found", { status: 404 });
   }
+  console.log(camp.Participants);
 
   return { session: session.data, camp: camp };
 }
@@ -30,18 +31,38 @@ export default function CampDetailPage() {
   const { camp, session } = useLoaderData();
   const userName = session.username;
 
+  const calculateDays = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const days = [];
+
+    // Remove the time component from the start and end dates
+    start.setHours(0, 0, 0, 0);
+    end.setHours(0, 0, 0, 0);
+
+    let currentDate = new Date(start);
+    while (currentDate <= end) {
+      days.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return days;
+  };
+  const days = calculateDays(camp.StartDate, camp.EndDate);
+
   const handleDelete = (event) => {
-    if (!confirm("Are you sure you want to delete this camp?")) {
+    if (!confirm("Er du sikker på du vil slette denne lejr?")) {
       event.preventDefault();
     }
   };
 
   return (
     <Modal>
-      <div>
-        <h1>{camp.CampName}</h1>
-        <p>
-          Start Date:{" "}
+      <div className="camp-details">
+        <h1 className="camp-title">{camp.CampName}</h1>
+        <p className="camp-leader">Lejr leder: {camp.CampLeader}</p>
+        <p className="camp-date">
+          Start:{" "}
           {new Date(camp.StartDate).toLocaleString([], {
             year: "numeric",
             month: "2-digit",
@@ -49,9 +70,8 @@ export default function CampDetailPage() {
             hour: "2-digit",
             minute: "2-digit",
           })}
-        </p>
-        <p>
-          End Date:{" "}
+          {" | "}
+          slut:{" "}
           {new Date(camp.EndDate).toLocaleString([], {
             year: "numeric",
             month: "2-digit",
@@ -60,14 +80,63 @@ export default function CampDetailPage() {
             minute: "2-digit",
           })}
         </p>
-        <p>Leader: {camp.CampLeader}</p>
-        <p>Description: {camp.CampDescription}</p>
-        <p>Participants: {camp.Participants.join(", ")}</p>
-        <Form method="post">
-          <button type="submit">
+        {/* <p className="camp-date"></p> */}
+        <p className="camp-description">{camp.CampDescription}</p>
+        <p className="camp-remember">
+          <strong>Husk:</strong> Du kan ændre i din tilmelding indtil lejren går
+          i gang. Ændrer du din tilmelding herefter, skal du stadig betale for
+          de måltider, hvor du ikke spiser med. Det gælder også for drejere, der
+          er tilmeldt guldkort-plus-ordningen.
+        </p>
+        <div className="tablewrapper">
+          <table className="participants-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                {days.map((day, index) => (
+                  <th key={index}>
+                    {day.toLocaleDateString([], {
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {camp.Participants.map((participant, index) => (
+                <tr key={index}>
+                  <td>{participant.name}</td>
+                  {days.map((day, dayIndex) => {
+                    const attendance = participant.attendance.find(
+                      (att) => att.date === day.toLocaleDateString(),
+                    );
+                    return (
+                      <td key={dayIndex}>
+                        {attendance &&
+                          attendance.meals.includes("breakfast") && (
+                            <span title="Breakfast">🍳</span>
+                          )}
+                        {attendance && attendance.meals.includes("lunch") && (
+                          <span title="Lunch">🥪</span>
+                        )}
+                        {attendance && attendance.meals.includes("dinner") && (
+                          <span title="Dinner">🍽️</span>
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <Link to="attend">
+          <button type="button">
             {camp.Participants.includes(userName) ? "Attending" : "Join"}
           </button>
-        </Form>
+        </Link>
+
         {session.usertype === "admin" && (
           <>
             <Form method="post" onSubmit={handleDelete}>
@@ -106,14 +175,6 @@ export async function action({ request, params }) {
     } else {
       return json({ error: "Unauthorized" }, { status: 403 });
     }
-  }
-
-  if (camp.Participants.includes(userName)) {
-    camp.Participants = camp.Participants.filter(
-      (participant) => participant !== userName,
-    );
-  } else {
-    camp.Participants.push(userName);
   }
 
   await camp.save();
