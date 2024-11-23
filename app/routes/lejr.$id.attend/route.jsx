@@ -166,6 +166,7 @@ export default function AttendCampPage() {
       {
         userName,
         attendance: JSON.stringify(attendance),
+        _action: "save",
       },
       { method: "post" },
     );
