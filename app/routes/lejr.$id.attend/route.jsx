@@ -171,6 +171,20 @@ export default function AttendCampPage() {
     );
   };
 
+  const handleDelete = (event) => {
+    if (!confirm("Are you sure you want to delete your attendance?")) {
+      event.preventDefault();
+    } else {
+      fetcher.submit(
+        {
+          userName,
+          _action: "delete",
+        },
+        { method: "post" },
+      );
+    }
+  };
+
   const formatDateTable = (date) => {
     return new Date(date)
       .toLocaleDateString("da-DK", {
@@ -210,6 +224,9 @@ export default function AttendCampPage() {
           </table>
         </div>
         <button type="submit">Save Attendance</button>
+        <button type="button" onClick={handleDelete}>
+          Delete Attendance
+        </button>
       </form>
     </Modal>
   );
@@ -218,7 +235,7 @@ export default function AttendCampPage() {
 export async function action({ request, params }) {
   const formData = await request.formData();
   const userName = formData.get("userName");
-  const attendance = JSON.parse(formData.get("attendance"));
+  const actionType = formData.get("_action");
 
   const camp = await mongoose.models.camps.findById(params.id).exec();
   if (!camp) {
@@ -228,14 +245,22 @@ export async function action({ request, params }) {
   const participantIndex = camp.Participants.findIndex(
     (participant) => participant.name === userName,
   );
+  if (actionType === "save") {
+    const attendance = JSON.parse(formData.get("attendance"));
 
-  if (participantIndex !== -1) {
-    // Update existing participant's attendance
-    camp.Participants[participantIndex].attendance = attendance;
-    camp.markModified(`Participants.${participantIndex}.attendance`);
-  } else {
-    // Add new participant
-    camp.Participants.push({ name: userName, attendance });
+    if (participantIndex !== -1) {
+      // Update existing participant's attendance
+      camp.Participants[participantIndex].attendance = attendance;
+      camp.markModified(`Participants.${participantIndex}.attendance`);
+    } else {
+      // Add new participant
+      camp.Participants.push({ name: userName, attendance });
+    }
+  } else if (actionType === "delete") {
+    if (participantIndex !== -1) {
+      // Remove participant
+      camp.Participants.splice(participantIndex, 1);
+    }
   }
 
   await camp.save();
