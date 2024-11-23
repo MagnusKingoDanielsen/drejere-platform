@@ -22,7 +22,6 @@ export async function loader({ request, params }) {
   if (!camp) {
     throw new Response("Not found", { status: 404 });
   }
-  console.log(camp.Participants);
 
   return { session: session.data, camp: camp };
 }
@@ -56,31 +55,41 @@ export default function CampDetailPage() {
     }
   };
 
+  const formatDate = (date) => {
+    return new Date(date)
+      .toLocaleString("da-DK", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+        // Ensure consistent formatting by removing the comma
+        // timeZone: "UTC",
+      })
+      .replace(",", "");
+  };
+  const formatDateTable = (date) => {
+    return new Date(date).toLocaleDateString("da-DK", {
+      month: "2-digit",
+      day: "2-digit",
+    });
+  };
+
+  const parseDate = (dateString) => {
+    const [day, month, year] = dateString.split("/");
+    return new Date(`${year}-${month}-${day}`);
+  };
+
   return (
     <Modal>
       <div className="camp-details">
         <h1 className="camp-title">{camp.CampName}</h1>
         <p className="camp-leader">Lejr leder: {camp.CampLeader}</p>
         <p className="camp-date">
-          Start:{" "}
-          {new Date(camp.StartDate).toLocaleString([], {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-          {" | "}
-          slut:{" "}
-          {new Date(camp.EndDate).toLocaleString([], {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+          Start: {formatDate(camp.StartDate)} {" | "} slut:{" "}
+          {formatDate(camp.EndDate)}
         </p>
-        {/* <p className="camp-date"></p> */}
         <p className="camp-description">{camp.CampDescription}</p>
         <p className="camp-remember">
           <strong>Husk:</strong> Du kan ændre i din tilmelding indtil lejren går
@@ -88,18 +97,13 @@ export default function CampDetailPage() {
           de måltider, hvor du ikke spiser med. Det gælder også for drejere, der
           er tilmeldt guldkort-plus-ordningen.
         </p>
-        <div className="tablewrapper" id="BorderLeft">
+        <div className="tablewrapper" id="BorderSides">
           <table className="participants-table">
             <thead>
               <tr>
                 <th>Name</th>
                 {days.map((day, index) => (
-                  <th key={index}>
-                    {day.toLocaleDateString([], {
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
-                  </th>
+                  <th key={index}>{formatDateTable(day)}</th>
                 ))}
               </tr>
             </thead>
@@ -109,7 +113,11 @@ export default function CampDetailPage() {
                   <td>{participant.name}</td>
                   {days.map((day, dayIndex) => {
                     const attendance = participant.attendance.find(
-                      (att) => att.date === day.toLocaleDateString(),
+                      (att) =>
+                        parseDate(att.date).toLocaleDateString("da-DK", {
+                          month: "2-digit",
+                          day: "2-digit",
+                        }) === formatDateTable(day),
                     );
                     return (
                       <td key={dayIndex}>
