@@ -186,6 +186,19 @@ export default function AttendCampPage() {
     }
   };
 
+  const formatDate = (date) => {
+    return new Date(date)
+      .toLocaleString("da-DK", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+      .replace(",", "");
+  };
+
   const formatDateTable = (date) => {
     return new Date(date)
       .toLocaleDateString("da-DK", {
@@ -195,39 +208,69 @@ export default function AttendCampPage() {
       .replace(/\//g, ".");
   };
 
+  const isUserSignedUp = camp.Participants.some(
+    (participant) => participant.name === userName,
+  );
+
   return (
     <Modal>
       <form onSubmit={handleSubmit}>
-        <div className="tablewrapper">
-          <table className="participants-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                {days.map((day, index) => (
-                  <th key={index}>{formatDateTable(day)}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{userName}</td>
-                {days.map((day, dayIndex) => (
-                  <td key={dayIndex}>
-                    {renderCheckboxes(
-                      day,
-                      dayIndex === 0,
-                      dayIndex === days.length - 1,
-                    )}
-                  </td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
+        <div className="camp-details">
+          <h1 className="camp-title">{camp.CampName}</h1>
+          <p className="camp-leader">Lejr leder: {camp.CampLeader}</p>
+          <p className="camp-date">
+            Start: {formatDate(camp.StartDate)} {" | "} slut:{" "}
+            {formatDate(camp.EndDate)}
+          </p>
+          <p className="camp-description">
+            <strong>Beskrivelse:</strong>
+            <br />
+            {camp.CampDescription}
+          </p>
+          <p className="camp-remember">
+            <strong>Husk:</strong>
+            <br />
+            Du kan ændre i din tilmelding indtil lejren går i gang. Ændrer du
+            din tilmelding herefter, skal du stadig betale for de måltider, hvor
+            du ikke spiser med. Det gælder også for drejere, der er tilmeldt
+            guldkort-plus-ordningen.
+          </p>
+
+          <div className="tablewrapper">
+            <table className="participants-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  {days.map((day, index) => (
+                    <th key={index}>{formatDateTable(day)}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{userName}</td>
+                  {days.map((day, dayIndex) => (
+                    <td key={dayIndex}>
+                      <div className="meals">
+                        {renderCheckboxes(
+                          day,
+                          dayIndex === 0,
+                          dayIndex === days.length - 1,
+                        )}
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <button type="submit">Gem ændringer</button>
+          {isUserSignedUp && (
+            <button type="button" onClick={handleDelete}>
+              Fjern tilmelding
+            </button>
+          )}
         </div>
-        <button type="submit">Save Attendance</button>
-        <button type="button" onClick={handleDelete}>
-          Delete Attendance
-        </button>
       </form>
     </Modal>
   );

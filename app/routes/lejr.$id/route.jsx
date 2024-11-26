@@ -30,6 +30,12 @@ export default function CampDetailPage() {
   const { camp, session } = useLoaderData();
   const userName = session.username;
 
+  const isUserSignedUp = camp.Participants.some(
+    (participant) => participant.name === userName,
+  );
+
+  const isPastStartDate = new Date() > new Date(camp.StartDate);
+
   const calculateDays = (startDate, endDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -86,18 +92,24 @@ export default function CampDetailPage() {
           Start: {formatDate(camp.StartDate)} {" | "} slut:{" "}
           {formatDate(camp.EndDate)}
         </p>
-        <p className="camp-description">{camp.CampDescription}</p>
-        <p className="camp-remember">
-          <strong>Husk:</strong> Du kan ændre i din tilmelding indtil lejren går
-          i gang. Ændrer du din tilmelding herefter, skal du stadig betale for
-          de måltider, hvor du ikke spiser med. Det gælder også for drejere, der
-          er tilmeldt guldkort-plus-ordningen.
+        <p className="camp-description">
+          <strong>Beskrivelse:</strong>
+          <br />
+          {camp.CampDescription}
         </p>
-        <div className="tablewrapper" id="BorderSides">
+        <p className="camp-remember">
+          <strong>Husk:</strong>
+          <br />
+          Du kan ændre i din tilmelding indtil lejren går i gang. Ændrer du din
+          tilmelding herefter, skal du stadig betale for de måltider, hvor du
+          ikke spiser med. Det gælder også for drejere, der er tilmeldt
+          guldkort-plus-ordningen.
+        </p>
+        <div className="tablewrapper">
           <table className="participants-table">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Navn/Dato</th>
                 {days.map((day, index) => (
                   <th key={index}>{formatDateTable(day)}</th>
                 ))}
@@ -113,43 +125,89 @@ export default function CampDetailPage() {
                     );
                     return (
                       <td key={dayIndex}>
-                        {attendance &&
-                          attendance.meals.includes("breakfast") && (
-                            <span title="Breakfast">🍳</span>
-                          )}
-                        {attendance && attendance.meals.includes("lunch") && (
-                          <span title="Lunch">🥪</span>
-                        )}
-                        {attendance && attendance.meals.includes("dinner") && (
-                          <span title="Dinner">🍽️</span>
-                        )}
+                        <div className="meals">
+                          <span title="Breakfast">
+                            {attendance &&
+                            attendance.meals.includes("breakfast")
+                              ? "🍳"
+                              : ""}
+                          </span>
+                          <span title="Lunch">
+                            {attendance && attendance.meals.includes("lunch")
+                              ? "🥪"
+                              : ""}
+                          </span>
+                          <span title="Dinner">
+                            {attendance && attendance.meals.includes("dinner")
+                              ? "🍽️"
+                              : ""}
+                          </span>
+                        </div>
                       </td>
                     );
                   })}
                 </tr>
               ))}
+              <tr>
+                <td>Total</td>
+                {days.map((day, dayIndex) => {
+                  let breakfastCount = 0;
+                  let lunchCount = 0;
+                  let dinnerCount = 0;
+
+                  camp.Participants.forEach((participant) => {
+                    const attendance = participant.attendance.find(
+                      (att) => att.date === formatDateTable(day),
+                    );
+                    if (attendance) {
+                      if (attendance.meals.includes("breakfast")) {
+                        breakfastCount++;
+                      }
+                      if (attendance.meals.includes("lunch")) {
+                        lunchCount++;
+                      }
+                      if (attendance.meals.includes("dinner")) {
+                        dinnerCount++;
+                      }
+                    }
+                  });
+
+                  return (
+                    <td key={dayIndex}>
+                      <div className="meals">
+                        <span title="Breakfast">{breakfastCount}</span>
+                        <span title="Lunch">{lunchCount}</span>
+                        <span title="Dinner">{dinnerCount}</span>
+                      </div>
+                    </td>
+                  );
+                })}
+              </tr>
             </tbody>
           </table>
         </div>
-        <Link to="attend">
+        {!isPastStartDate && (
           <button type="button">
-            {camp.Participants.some(
-              (participant) => participant.name === userName,
-            )
-              ? "Attending"
-              : "Join"}
+            <Link to="attend" className="campButton">
+              {isUserSignedUp ? "Deltager" : "Tilmeld"}
+            </Link>
           </button>
-        </Link>
+        )}
+        {isPastStartDate && (
+          <button type="button" disabled>
+            Lejren er startet
+          </button>
+        )}
 
         {session.usertype === "admin" && (
           <>
             <Form method="post" onSubmit={handleDelete}>
               <button name="_action" value="delete" type="submit">
-                Delete Camp
+                Slet lejr
               </button>
             </Form>
             <Link to="edit">
-              <button type="button">Edit Camp</button>
+              <button type="button">Rediger lejr</button>
             </Link>
           </>
         )}
