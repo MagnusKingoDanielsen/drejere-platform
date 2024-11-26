@@ -50,7 +50,9 @@ export default function CampPage() {
                 </td>
                 <td id="ParticipantsRow">{camp.Participants.length}</td>
                 <td>
-                  <Link to={`/lejr/${camp._id}`}>Læs mere</Link>
+                  <Link to={`/lejr/${camp._id}`}>
+                    <button> Læs mere</button>
+                  </Link>
                 </td>
               </tr>
             ))}
