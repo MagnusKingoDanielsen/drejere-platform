@@ -30,7 +30,7 @@ export default function CampPage() {
             <tr>
               <th>Lejre </th>
               <th>start dato</th>
-              <th>
+              <th id="ParticipantsRow">
                 <TbUsers />
               </th>
               <th></th>
