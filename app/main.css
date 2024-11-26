@@ -3,6 +3,7 @@
   --secondary-color: #f2f2f2;
   --black-color: #1e1e1e;
   --light-primary-color: #3e7a8a;
+  --light2-primary-color: #336877;
 }
 
 body {
@@ -13,7 +14,7 @@ body {
   color: var(--secondary-color);
   /* font-family: "Courier New", Courier, monospace; */
 }
-
+/* -------------------------Nav------------------------------ */
 button,
 .sticky-header,
 .nav-container,
@@ -225,7 +226,7 @@ button,
     font-size: 18px;
   }
 }
-
+/* -------------------Modal------------------------------ */
 .modal-overlay {
   background: none;
   display: flex;
@@ -276,6 +277,7 @@ button,
   }
 }
 
+/* -------------------landingPage------------------------------ */
 .welcome {
   display: flex;
   justify-content: center;
@@ -283,6 +285,7 @@ button,
   height: 100%;
 }
 
+/* -------------------Table Camp list------------------------------ */
 .Tabel {
   width: 100%;
   border-collapse: collapse;
@@ -293,9 +296,6 @@ button,
 .Tabel tr {
   border-top: solid 1px var(--light-primary-color);
   border-bottom: solid 1px var(--light-primary-color);
-}
-.Tabel td {
-  padding: 12px 10px;
 }
 
 .Tabel th,
@@ -308,9 +308,11 @@ button,
   width: 140px;
   box-sizing: border-box;
 }
+
 #ParticipantsRow {
   text-align: center;
 }
+
 .Tabel th {
   font-weight: bold;
 }
@@ -324,53 +326,13 @@ button,
   text-decoration: underline;
 }
 
-.camp-details {
-  display: flex;
-  flex-direction: column;
-}
+/* -------------------Table Camp details ------------------------------ */
 
-.camp-title {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.camp-leader,
-.camp-date {
-  font-size: 16px;
-  margin-bottom: 5px;
-}
-
-.camp-description {
-  font-size: 14px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.camp-remember {
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-.camp-participants {
+/* .camp-participants {
   font-size: 14px;
   margin-bottom: 10px;
-}
+} */
 
-button {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-button:hover {
-  background-color: darken(var(--primary-color), 10%);
-}
-
-/* ------------------------------------------------------------ */
 .camp-details {
   display: flex;
   flex-direction: column;
@@ -395,16 +357,37 @@ button:hover {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
 .tablewrapper {
   overflow-x: auto;
   width: 100%;
-  margin-top: 20px;
+}
+/* ------------------- Scrollbar ------------------------------ */
+/* Height of the horizontal scrollbar */
+.tablewrapper::-webkit-scrollbar {
+  height: 8px;
 }
 
-#BorderSides {
+/* Color of the scrollbar track */
+.tablewrapper::-webkit-scrollbar-track {
+  background: var(--primary-color);
+}
+
+/* Style of the scrollbar thumb */
+.tablewrapper::-webkit-scrollbar-thumb {
+  background: var(--light-primary-color);
+  border-radius: 4px;
+}
+
+.tablewrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--black-color);
+}
+
+/* ------------------- Table styling ------------------------------ */
+/* #BorderSides {
   border-left: solid 1px var(--light-primary-color);
   border-right: solid 1px var(--light-primary-color);
-}
+} */
 
 .participants-table {
   width: 100%;
@@ -415,32 +398,56 @@ button:hover {
 .participants-table th,
 .participants-table td {
   border: 1px solid var(--light-primary-color);
-  padding: 8px;
   text-align: left;
+  min-width: 65px;
 }
 
 .participants-table th {
+  padding: 8px;
   font-weight: bold;
+}
+
+.meals {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  box-sizing: border-box;
+}
+.meals span {
+  flex: 1;
+  text-align: center;
 }
 
 .participants-table th:first-child,
 .participants-table td:first-child {
   position: sticky;
   left: 0;
-  background-color: var(--primary-color);
-  border-left: 0px solid var(--light-primary-color);
+  background-color: var(--light2-primary-color);
+  border-left: 0px;
+  padding: 8px;
+}
+
+.participants-table th:last-child,
+.participants-table td:last-child {
+  border-right: 0px solid var(--light-primary-color);
+}
+
+.campButton {
+  color: white;
+  text-decoration: none;
 }
 
 button {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
+  max-width: 175px;
+  margin: 10px 10px 10px 0;
+
   padding: 10px 20px;
+  font-size: 16px;
+  background-color: var(--light-primary-color);
+  color: white;
+  font-weight: bold;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
-}
-
-button:hover {
-  background-color: darken(var(--primary-color), 10%);
 }
