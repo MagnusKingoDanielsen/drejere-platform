@@ -234,12 +234,14 @@ export default function AttendCampPage() {
               </tbody>
             </table>
           </div>
-          <button type="submit">Gem ændringer</button>
-          {isUserSignedUp && (
-            <button type="button" onClick={handleDelete}>
-              Fjern tilmelding
-            </button>
-          )}
+          <div className="buttonWrapper">
+            <button type="submit">Gem ændringer</button>
+            {isUserSignedUp && (
+              <button type="button" onClick={handleDelete}>
+                Fjern tilmelding
+              </button>
+            )}
+          </div>
         </div>
       </form>
     </Modal>

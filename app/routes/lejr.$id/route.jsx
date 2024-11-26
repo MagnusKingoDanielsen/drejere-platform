@@ -186,30 +186,32 @@ export default function CampDetailPage() {
             </tbody>
           </table>
         </div>
-        {!isPastStartDate && (
-          <button type="button">
+        <div className="buttonWrapper">
+          {!isPastStartDate && (
             <Link to="attend" className="campButton">
-              {isUserSignedUp ? "Deltager" : "Tilmeld"}
+              <button type="button">
+                {isUserSignedUp ? "Deltager" : "Tilmeld"}
+              </button>
             </Link>
-          </button>
-        )}
-        {isPastStartDate && (
-          <button type="button" disabled>
-            Lejren er startet
-          </button>
-        )}
+          )}
+          {isPastStartDate && (
+            <button type="button" disabled>
+              Lejren er startet
+            </button>
+          )}
+        </div>
 
         {session.usertype === "admin" && (
-          <>
-            <Form method="post" onSubmit={handleDelete}>
+          <div className="adminButtons">
+            <Link to="edit" className="campButton">
+              <button type="button">Rediger lejr</button>
+            </Link>
+            <Form method="post" onSubmit={handleDelete} className="warning">
               <button name="_action" value="delete" type="submit">
                 Slet lejr
               </button>
             </Form>
-            <Link to="edit">
-              <button type="button">Rediger lejr</button>
-            </Link>
-          </>
+          </div>
         )}
         <Outlet />
       </div>

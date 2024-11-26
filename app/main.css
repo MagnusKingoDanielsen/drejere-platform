@@ -434,11 +434,11 @@ button,
 .campButton {
   color: white;
   text-decoration: none;
+  width: fit-content;
 }
 
 button {
   max-width: 175px;
-  margin: 10px 10px 10px 0;
   padding: 10px 20px;
   font-size: 16px;
   background-color: var(--light-primary-color);
@@ -447,4 +447,23 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.adminButtons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.warning button {
+  background-color: rgb(200, 0, 0);
+  font-size: 14px;
+}
+
+.buttonWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 20px;
 }
