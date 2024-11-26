@@ -60,87 +60,57 @@ export default function AttendCampPage() {
     const startTime = new Date(camp.StartDate).getHours();
     const endTime = new Date(camp.EndDate).getHours();
 
+    const breakfastCheckbox = (
+      <input
+        type="checkbox"
+        key={`${formatDateTable(day)}-breakfast`}
+        name={`${formatDateTable(day)}-breakfast`}
+        defaultChecked={isChecked(day, "breakfast")}
+      />
+    );
+    const lunchCheckbox = (
+      <input
+        type="checkbox"
+        key={`${formatDateTable(day)}-lunch`}
+        name={`${formatDateTable(day)}-lunch`}
+        defaultChecked={isChecked(day, "lunch")}
+      />
+    );
+    const dinnerCheckbox = (
+      <input
+        type="checkbox"
+        key={`${formatDateTable(day)}-dinner`}
+        name={`${formatDateTable(day)}-dinner`}
+        defaultChecked={isChecked(day, "dinner")}
+      />
+    );
+    const disabledCheckbox = (
+      <input
+        type="checkbox"
+        key={`${formatDateTable(day)}-disabled`}
+        disabled
+        style={{ visibility: "hidden" }}
+      />
+    );
+
     if (isStartDate) {
-      if (startTime <= 9)
-        checkboxes.push(
-          <input
-            type="checkbox"
-            key={`${formatDateTable(day)}-breakfast`}
-            name={`${formatDateTable(day)}-breakfast`}
-            defaultChecked={isChecked(day, "breakfast")}
-          />,
-        );
-      if (startTime <= 13)
-        checkboxes.push(
-          <input
-            type="checkbox"
-            key={`${formatDateTable(day)}-lunch`}
-            name={`${formatDateTable(day)}-lunch`}
-            defaultChecked={isChecked(day, "lunch")}
-          />,
-        );
-      if (startTime <= 18)
-        checkboxes.push(
-          <input
-            type="checkbox"
-            key={`${formatDateTable(day)}-dinner`}
-            name={`${formatDateTable(day)}-dinner`}
-            defaultChecked={isChecked(day, "dinner")}
-          />,
-        );
+      if (startTime <= 9) checkboxes.push(breakfastCheckbox);
+      else checkboxes.push(disabledCheckbox);
+      if (startTime <= 13) checkboxes.push(lunchCheckbox);
+      else checkboxes.push(disabledCheckbox);
+      if (startTime <= 18) checkboxes.push(dinnerCheckbox);
+      else checkboxes.push(disabledCheckbox);
     } else if (isEndDate) {
-      if (endTime >= 9)
-        checkboxes.push(
-          <input
-            type="checkbox"
-            key={`${formatDateTable(day)}-breakfast`}
-            name={`${formatDateTable(day)}-breakfast`}
-            defaultChecked={isChecked(day, "breakfast")}
-          />,
-        );
-      if (endTime >= 13)
-        checkboxes.push(
-          <input
-            type="checkbox"
-            key={`${formatDateTable(day)}-lunch`}
-            name={`${formatDateTable(day)}-lunch`}
-            defaultChecked={isChecked(day, "lunch")}
-          />,
-        );
-      if (endTime >= 18)
-        checkboxes.push(
-          <input
-            type="checkbox"
-            key={`${formatDateTable(day)}-dinner`}
-            name={`${formatDateTable(day)}-dinner`}
-            defaultChecked={isChecked(day, "dinner")}
-          />,
-        );
+      if (endTime >= 9) checkboxes.push(breakfastCheckbox);
+      else checkboxes.push(disabledCheckbox);
+      if (endTime >= 13) checkboxes.push(lunchCheckbox);
+      else checkboxes.push(disabledCheckbox);
+      if (endTime >= 18) checkboxes.push(dinnerCheckbox);
+      else checkboxes.push(disabledCheckbox);
     } else {
-      checkboxes.push(
-        <input
-          type="checkbox"
-          key={`${formatDateTable(day)}-breakfast`}
-          name={`${formatDateTable(day)}-breakfast`}
-          defaultChecked={isChecked(day, "breakfast")}
-        />,
-      );
-      checkboxes.push(
-        <input
-          type="checkbox"
-          key={`${formatDateTable(day)}-lunch`}
-          name={`${formatDateTable(day)}-lunch`}
-          defaultChecked={isChecked(day, "lunch")}
-        />,
-      );
-      checkboxes.push(
-        <input
-          type="checkbox"
-          key={`${formatDateTable(day)}-dinner`}
-          name={`${formatDateTable(day)}-dinner`}
-          defaultChecked={isChecked(day, "dinner")}
-        />,
-      );
+      checkboxes.push(breakfastCheckbox);
+      checkboxes.push(lunchCheckbox);
+      checkboxes.push(dinnerCheckbox);
     }
 
     return checkboxes;
@@ -240,7 +210,7 @@ export default function AttendCampPage() {
             <table className="participants-table">
               <thead>
                 <tr>
-                  <th>Name</th>
+                  <th>Navn/Dato</th>
                   {days.map((day, index) => (
                     <th key={index}>{formatDateTable(day)}</th>
                   ))}

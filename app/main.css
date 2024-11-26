@@ -384,10 +384,6 @@ button,
 }
 
 /* ------------------- Table styling ------------------------------ */
-/* #BorderSides {
-  border-left: solid 1px var(--light-primary-color);
-  border-right: solid 1px var(--light-primary-color);
-} */
 
 .participants-table {
   width: 100%;
@@ -398,8 +394,9 @@ button,
 .participants-table th,
 .participants-table td {
   border: 1px solid var(--light-primary-color);
-  text-align: left;
+  text-align: center;
   min-width: 65px;
+  max-width: 100px;
 }
 
 .participants-table th {
@@ -414,7 +411,8 @@ button,
   padding: 8px;
   box-sizing: border-box;
 }
-.meals span {
+.meals span,
+.meals input {
   flex: 1;
   text-align: center;
 }
@@ -441,7 +439,6 @@ button,
 button {
   max-width: 175px;
   margin: 10px 10px 10px 0;
-
   padding: 10px 20px;
   font-size: 16px;
   background-color: var(--light-primary-color);
