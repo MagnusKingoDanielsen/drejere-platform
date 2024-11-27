@@ -24,13 +24,10 @@ export async function loader({ request, params }) {
 }
 
 export default function CampEditPage() {
-  const { camp, session } = useLoaderData();
+  const { camp } = useLoaderData();
 
   const startDate = new Date(camp.StartDate).toISOString().slice(0, 16);
   const endDate = new Date(camp.EndDate).toISOString().slice(0, 16);
-  if (session.usertype !== "admin") {
-    return <div>Unauthorized</div>;
-  }
 
   return (
     <Modal>
