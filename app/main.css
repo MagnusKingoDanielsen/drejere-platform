@@ -325,13 +325,17 @@ button,
 .Tabel a:hover {
   text-decoration: underline;
 }
+#ButtonRight {
+  text-align: right;
+}
 
+@media (min-width: 768px) {
+  .Tabel th:nth-child(2),
+  .Tabel td:nth-child(2) {
+    width: 140px;
+  }
+}
 /* -------------------Table Camp details ------------------------------ */
-
-/* .camp-participants {
-  font-size: 14px;
-  margin-bottom: 10px;
-} */
 
 .camp-details {
   display: flex;
@@ -362,6 +366,7 @@ button,
   overflow-x: auto;
   width: 100%;
 }
+
 /* ------------------- Scrollbar ------------------------------ */
 /* Height of the horizontal scrollbar */
 .tablewrapper::-webkit-scrollbar {

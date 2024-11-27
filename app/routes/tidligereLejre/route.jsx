@@ -50,7 +50,7 @@ export default function TidligereLejre() {
                   })}
                 </td>
                 <td id="ParticipantsRow">{camp.Participants.length}</td>
-                <td>
+                <td id="ButtonRight">
                   <Link to={`/lejr/${camp._id}`}>
                     <button> Læs mere</button>
                   </Link>
