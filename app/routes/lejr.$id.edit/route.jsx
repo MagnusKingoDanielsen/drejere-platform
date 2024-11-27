@@ -84,24 +84,18 @@ export async function action({ request, params }) {
     return redirect("/");
   }
 
-  const camp = await mongoose.models.camps.findById(params.id).exec();
-  if (!camp) {
-    throw new Response("Not found", { status: 404 });
-  }
+  if (session.data.usertype === "admin") {
+    const updatedCamp = {
+      CampName: formData.get("CampName"),
+      StartDate: formData.get("StartDate"),
+      EndDate: formData.get("EndDate"),
+      CampLeader: formData.get("CampLeader"),
+      CampDescription: formData.get("CampDescription"),
+    };
 
-  const userName = session.data.username;
-  if (camp.CampLeader !== userName) {
+    await mongoose.models.camps.findByIdAndUpdate(params.id, updatedCamp);
+    return redirect(`/lejr/${params.id}`);
+  } else {
     return json({ error: "Unauthorized" }, { status: 403 });
   }
-
-  const updatedCamp = {
-    CampName: formData.get("CampName"),
-    StartDate: formData.get("StartDate"),
-    EndDate: formData.get("EndDate"),
-    CampLeader: formData.get("CampLeader"),
-    CampDescription: formData.get("CampDescription"),
-  };
-
-  await mongoose.models.camps.findByIdAndUpdate(params.id, updatedCamp);
-  return redirect(`/lejre/${params.id}`);
 }

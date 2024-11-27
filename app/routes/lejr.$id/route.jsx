@@ -233,9 +233,8 @@ export async function action({ request, params }) {
     throw new Response("Not found", { status: 404 });
   }
 
-  const userName = session.data.username;
   if (formData.get("_action") === "delete") {
-    if (camp.CampLeader === userName) {
+    if (session.data.usertype === "admin") {
       await mongoose.models.camps.findByIdAndDelete(params.id);
       return redirect("/lejre");
     } else {
