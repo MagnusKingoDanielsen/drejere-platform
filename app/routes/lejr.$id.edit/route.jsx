@@ -33,13 +33,13 @@ export default function CampEditPage() {
     <Modal>
       <div className="modal">
         <h1>Edit Camp</h1>
-        <Form method="post">
+        <Form method="post" className="edit-camp-form">
           <label>
-            Camp Name:
+            Lejr navn:
             <input type="text" name="CampName" defaultValue={camp.CampName} />
           </label>
           <label>
-            Start Date:
+            Start dato:
             <input
               type="datetime-local"
               name="StartDate"
@@ -47,7 +47,7 @@ export default function CampEditPage() {
             />
           </label>
           <label>
-            End Date:
+            Slut dato:
             <input
               type="datetime-local"
               name="EndDate"
@@ -55,7 +55,7 @@ export default function CampEditPage() {
             />
           </label>
           <label>
-            Camp Leader:
+            Lejr leder:
             <input
               type="text"
               name="CampLeader"
@@ -63,13 +63,13 @@ export default function CampEditPage() {
             />
           </label>
           <label>
-            Description:
+            Beskrivelse:
             <textarea
               name="CampDescription"
               defaultValue={camp.CampDescription}
             />
           </label>
-          <button type="submit">Save</button>
+          <button type="submit">opdatere</button>
         </Form>
       </div>
     </Modal>

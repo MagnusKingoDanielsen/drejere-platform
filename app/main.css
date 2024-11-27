@@ -467,3 +467,25 @@ button {
   gap: 20px;
   margin: 20px 0;
 }
+
+/* ------------------- Edit camp Form styling ------------------------------ */
+.edit-camp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.edit-camp-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.edit-camp-form input,
+.edit-camp-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
