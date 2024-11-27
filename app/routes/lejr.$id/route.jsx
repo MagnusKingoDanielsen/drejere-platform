@@ -35,6 +35,7 @@ export default function CampDetailPage() {
   );
 
   const isPastStartDate = new Date() > new Date(camp.StartDate);
+  const isPastEndDate = new Date() > new Date(camp.EndDate);
 
   const calculateDays = (startDate, endDate) => {
     const start = new Date(startDate);
@@ -89,7 +90,7 @@ export default function CampDetailPage() {
         <h1 className="camp-title">{camp.CampName}</h1>
         <p className="camp-leader">Lejr leder: {camp.CampLeader}</p>
         <p className="camp-date">
-          Start: {formatDate(camp.StartDate)} {" | "} slut:{" "}
+          dato: {formatDate(camp.StartDate)} {" | "}
           {formatDate(camp.EndDate)}
         </p>
         <p className="camp-description">
@@ -187,16 +188,17 @@ export default function CampDetailPage() {
           </table>
         </div>
         <div className="buttonWrapper">
-          {!isPastStartDate && (
+          {!isPastStartDate && !isPastEndDate && (
             <Link to="attend" className="campButton">
               <button type="button">
-                {isUserSignedUp ? "Deltager" : "Tilmeld"}
+                {isUserSignedUp ? "Ændre tilmelding" : "Tilmeld"}
               </button>
             </Link>
           )}
+
           {isPastStartDate && (
             <button type="button" disabled>
-              Lejren er startet
+              {isPastEndDate ? "Lejren er slut" : "Lejren er i gang"}
             </button>
           )}
         </div>

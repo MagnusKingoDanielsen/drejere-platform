@@ -189,7 +189,7 @@ export default function AttendCampPage() {
           <h1 className="camp-title">{camp.CampName}</h1>
           <p className="camp-leader">Lejr leder: {camp.CampLeader}</p>
           <p className="camp-date">
-            Start: {formatDate(camp.StartDate)} {" | "} slut:{" "}
+            dato: {formatDate(camp.StartDate)} {" | "}
             {formatDate(camp.EndDate)}
           </p>
           <p className="camp-description">
