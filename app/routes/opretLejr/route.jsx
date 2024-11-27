@@ -1,4 +1,4 @@
-import { redirect } from "@remix-run/react";
+import { Form, redirect } from "@remix-run/react";
 import mongoose from "mongoose";
 import { getSession } from "../../services/session.server.jsx";
 import Modal from "~/components/modal.jsx";
@@ -19,39 +19,35 @@ export default function OpretLejr() {
   return (
     <Modal>
       <div>
-        <h1>Create a New Camp</h1>
-        <form method="post" action="/opretLejr">
-          <div>
-            <label htmlFor="CampName">Camp Name:</label>
+        <h1>Opret ny lejr</h1>
+        <Form method="post" action="/opretLejr" className="edit-camp-form">
+          <label>
+            Lejr navn:
             <input type="text" id="CampName" name="CampName" required />
-          </div>
-          <div>
-            <label htmlFor="StartDate">Start Date and Time:</label>
+          </label>
+          <label>
+            Start dato og tid:
             <input
               type="datetime-local"
               id="StartDate"
               name="StartDate"
               required
             />
-          </div>
-          <div>
-            <label htmlFor="EndDate">End Date and Time:</label>
+          </label>
+          <label>
+            Slut dato og tid:
             <input type="datetime-local" id="EndDate" name="EndDate" required />
-          </div>
-          <div>
-            <label htmlFor="CampLeader">Camp Leader:</label>
+          </label>
+          <label>
+            Lejr leder:
             <input type="text" id="CampLeader" name="CampLeader" required />
-          </div>
-          <div>
-            <label htmlFor="CampDescription">Camp Description:</label>
-            <textarea
-              id="CampDescription"
-              name="CampDescription"
-              required
-            ></textarea>
-          </div>
+          </label>
+          <label>
+            Beskrivelse:
+            <textarea id="CampDescription" name="CampDescription" required />
+          </label>
           <button type="submit">Create Camp</button>
-        </form>
+        </Form>
       </div>
     </Modal>
   );
@@ -61,37 +57,36 @@ export const action = async ({ request }) => {
   const formData = await request.formData();
   const { CampName, StartDate, EndDate, CampLeader, CampDescription } =
     Object.fromEntries(formData);
+
   const session = await getSession(request.headers.get("cookie"));
   if (!session.data.user) {
     throw new Response("Not authenticated", { status: 401 });
   }
-  const Participants = [];
-  console.log(
-    CampName,
-    StartDate,
-    EndDate,
-    CampLeader,
-    CampDescription,
-    Participants,
-  );
-  if (
-    typeof CampName !== "string" ||
-    typeof StartDate !== "string" ||
-    typeof EndDate !== "string" ||
-    typeof CampLeader !== "string" ||
-    typeof CampDescription !== "string" ||
-    typeof Participants !== "object"
-  ) {
-    throw new Error("Bad request");
-  }
 
-  await mongoose.models.camps.create({
-    CampName,
-    StartDate,
-    EndDate,
-    CampLeader,
-    CampDescription,
-    Participants,
-  });
-  return redirect("/lejre");
+  const Participants = [];
+
+  if (session.data.usertype === "admin") {
+    if (
+      typeof CampName !== "string" ||
+      typeof StartDate !== "string" ||
+      typeof EndDate !== "string" ||
+      typeof CampLeader !== "string" ||
+      typeof CampDescription !== "string" ||
+      typeof Participants !== "object"
+    ) {
+      throw new Error("Bad request");
+    }
+
+    await mongoose.models.camps.create({
+      CampName,
+      StartDate,
+      EndDate,
+      CampLeader,
+      CampDescription,
+      Participants,
+    });
+    return redirect("/lejre");
+  } else {
+    throw new Response("Not authenticated", { status: 401 });
+  }
 };
