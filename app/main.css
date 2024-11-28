@@ -542,8 +542,7 @@ button {
 
 .formGroup input {
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid var(--light-primary-color);
   font-size: 16px;
   width: calc(100% - 100px);
   border-radius: 25px;
@@ -567,4 +566,29 @@ button {
   .loginForm {
     gap: 25px;
   }
+}
+
+/* --------------------------- Signup Page ------------------------- */
+.signupPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signupContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signupForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.signupForm h1 {
+  margin-bottom: 20px;
+  text-align: center;
 }
