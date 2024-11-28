@@ -365,26 +365,32 @@ button,
 .tablewrapper {
   overflow-x: auto;
   width: 100%;
+  padding-bottom: 2px;
 }
 
 /* ------------------- Scrollbar ------------------------------ */
 /* Height of the horizontal scrollbar */
-.tablewrapper::-webkit-scrollbar {
+.tablewrapper::-webkit-scrollbar,
+.profileList::-webkit-scrollbar {
   height: 8px;
+  width: 8px;
 }
 
 /* Color of the scrollbar track */
-.tablewrapper::-webkit-scrollbar-track {
+.tablewrapper::-webkit-scrollbar-track,
+.profileList::-webkit-scrollbar-track {
   background: var(--primary-color);
 }
 
 /* Style of the scrollbar thumb */
-.tablewrapper::-webkit-scrollbar-thumb {
+.tablewrapper::-webkit-scrollbar-thumb,
+.profileList::-webkit-scrollbar-thumb {
   background: var(--light-primary-color);
   border-radius: 4px;
 }
 
-.tablewrapper::-webkit-scrollbar-thumb:hover {
+.tablewrapper::-webkit-scrollbar-thumb:hover,
+.profileList::-webkit-scrollbar-thumb:hover {
   background: var(--black-color);
 }
 
@@ -446,11 +452,11 @@ button {
   max-width: 175px;
   padding: 10px 20px;
   font-size: 16px;
-  background-color: var(--light-primary-color);
-  color: white;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
   font-weight: bold;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
   cursor: pointer;
 }
 
@@ -463,6 +469,7 @@ button {
 .warning button {
   background-color: rgb(200, 0, 0);
   font-size: 14px;
+  color: var(--secondary-color);
 }
 
 .buttonWrapper {
@@ -491,7 +498,7 @@ button {
 .edit-camp-form textarea {
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 25px;
   font-size: 14px;
 }
 
@@ -579,6 +586,7 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .signupForm {
@@ -591,4 +599,65 @@ button {
 .signupForm h1 {
   margin-bottom: 20px;
   text-align: center;
+}
+
+/*------------------- Profile Page ----------------------- */
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.profileContainer h1 {
+  margin: 0px;
+  text-align: center;
+}
+
+.profileList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding-right: 5px;
+  width: 100%;
+  max-height: 90%;
+  overflow-y: auto;
+}
+
+.profileList li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--light-primary-color);
+}
+
+.profileList li strong {
+  width: 30%;
+}
+
+.tagsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tagsList li {
+  display: inline-block;
+  background-color: var(--secondary-color);
+  padding: 10px 15px;
+  color: var(--primary-color);
+  border-radius: 25px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.editButtonContainer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+#tags {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }

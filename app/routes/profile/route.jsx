@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { getSession } from "../../services/session.server";
-import { redirect, useLoaderData } from "@remix-run/react";
+import { Navigate, redirect, useLoaderData } from "@remix-run/react";
 import Modal from "../../components/modal";
 
 export async function loader({ request }) {
@@ -21,44 +21,62 @@ export async function loader({ request }) {
 export default function Profil() {
   const { user } = useLoaderData();
 
+  const getFieldValue = (value) => (value ? value : "-");
+
   return (
     <Modal>
-      <div>
-        <h1>Welcome, {user.username}!</h1>
-        <p>This is your profile</p>
-        <ul>
+      <div className="profileContainer">
+        <h1>Profil</h1>
+        <ul className="profileList">
           <li>
-            <strong>Username:</strong> {user.username}
+            <strong>Username:</strong> {getFieldValue(user.username)}
           </li>
           <li>
-            <strong>Email:</strong> {user.email}
+            <strong>Email:</strong> {getFieldValue(user.email)}
           </li>
           <li>
-            <strong>Telefon nr:</strong> {user.phone}
+            <strong>Telefon nr:</strong> {getFieldValue(user.phone)}
           </li>
           <li>
-            <strong>Addresse:</strong> {user.address}
+            <strong>Addresse:</strong> {getFieldValue(user.address)}
           </li>
           <li>
-            <strong>Type:</strong> {user.type}
+            <strong>Fødselsdag:</strong> {getFieldValue(user.birthday)}
           </li>
           <li>
-            <strong>Tags:</strong>
-            <ul>
-              {user.tags.map((tag, index) => (
-                <li key={index}>{tag}</li>
-              ))}
+            <strong>Type:</strong> {getFieldValue(user.type)}
+          </li>
+          <li id="tags">
+            <strong>Aktiviteter:</strong>
+            <ul className="tagsList">
+              {user.activities.length > 0 ? (
+                user.activities.map((activitiy, index) => (
+                  <li key={index}>{activitiy}</li>
+                ))
+              ) : (
+                <span>-</span>
+              )}
             </ul>
           </li>
-          <li>
-            <strong>Activities:</strong>
-            <ul>
-              {user.activities.map((activity, index) => (
-                <li key={index}>{activity}</li>
-              ))}
+          <li id="tags">
+            <strong>Tags:</strong>
+            <ul className="tagsList">
+              {user.tags.length > 0 ? (
+                user.tags.map((tag, index) => <li key={index}>{tag}</li>)
+              ) : (
+                <span>-</span>
+              )}
             </ul>
           </li>
         </ul>
+        <div className="editButtonContainer">
+          <button
+            className="editButton"
+            onClick={() => Navigate("/profile/edit")}
+          >
+            Rediger
+          </button>
+        </div>
       </div>
     </Modal>
   );
