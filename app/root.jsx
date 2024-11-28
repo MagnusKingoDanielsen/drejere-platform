@@ -10,6 +10,7 @@ import {
 import styles from "./main.css";
 import Nav from "./routes/header/nav";
 import { destroySession, getSession } from "./services/session.server";
+import backgroundimg from "./img/drejerbackground.png";
 
 export const links = () => [
   {
@@ -39,11 +40,23 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Nav />
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
+        <div className="backgroundimg">
+          <img
+            src={backgroundimg}
+            alt="background"
+            style={{
+              position: "absolute",
+              bottom: "0",
+              zIndex: "-1",
+              width: "100%",
+            }}
+          />
+          <Nav />
+          <Outlet />
+          <ScrollRestoration />
+          <Scripts />
+          <LiveReload />
+        </div>
       </body>
     </html>
   );

@@ -12,9 +12,8 @@ export async function loader({ request }) {
 export default function Index() {
   const sessionData = useLoaderData();
   return (
-    <div>
-      <h1>Welcome, {sessionData.username}!</h1>
-      <p>You are now logged in.</p>
+    <div className="welcome">
+      <h1>Velkommen tilbage {sessionData.username}!</h1>
     </div>
   );
 }

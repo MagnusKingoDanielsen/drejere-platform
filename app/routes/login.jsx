@@ -13,20 +13,40 @@ export async function loader({ request }) {
 export default function LoginPage() {
   const error = useActionData();
   return (
-    <div className="loginPage">
+    <div className="loginModal">
       <div className="loginContainer">
         <Form method="post" className="loginForm">
           <h1>Login</h1>
-          <input placeholder="username" name="username" type="text" required />
-          <input
-            placeholder="password"
-            name="password"
-            type="password"
-            required
-          />
-          {error && <p>{error}</p>}
-          <button>Log in</button>
+          <div className="formGroup">
+            <label htmlFor="username">Brugernavn:</label>
+            <input
+              id="username"
+              placeholder="username"
+              name="username"
+              type="text"
+              required
+            />
+          </div>
+          <div className="formGroup">
+            <label htmlFor="password">Password:</label>
+            <input
+              id="password"
+              placeholder="password"
+              name="password"
+              type="password"
+              required
+            />
+          </div>
+          {error && <p className="error">{error}</p>}
+          <div className="center">
+            <button type="submit">Log in</button>
+          </div>
         </Form>
+        <p className="center">
+          Hvis du ikke har et brugernavn/password så send en mail til
+          ick@assenbaek.dk hvori du skriver: dit fulde navn, det ønskede
+          brugernavn og password.
+        </p>
       </div>
     </div>
   );
