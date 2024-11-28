@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { getSession } from "../../services/session.server";
-import { Navigate, redirect, useLoaderData } from "@remix-run/react";
+import { Link, redirect, useLoaderData } from "@remix-run/react";
 import Modal from "../../components/modal";
 
 export async function loader({ request }) {
@@ -11,7 +11,7 @@ export async function loader({ request }) {
 
   const user = await mongoose.models.drejers
     .findOne({ username: session.data.username })
-    .select("-password -__v -_id -lastLogin -createdAt -updatedAt")
+    .select("-password -__v  -lastLogin -createdAt -updatedAt")
     .lean()
     .exec();
 
@@ -70,12 +70,9 @@ export default function Profil() {
           </li>
         </ul>
         <div className="editButtonContainer">
-          <button
-            className="editButton"
-            onClick={() => Navigate("/profile/edit")}
-          >
-            Rediger
-          </button>
+          <Link to={`/profil/${user._id}/edit`}>
+            <button className="editButton">Rediger</button>
+          </Link>
         </div>
       </div>
     </Modal>
