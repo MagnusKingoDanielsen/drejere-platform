@@ -100,6 +100,15 @@ export default function Nav() {
                         <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
                           Opret drejer
                         </Link>
+                        <Link to="/tags" onClick={() => setIsMenuOpen(false)}>
+                          Tags
+                        </Link>
+                        <Link
+                          to="/activities"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          Aktiviteter
+                        </Link>
                       </div>
                     )}
                   </li>
@@ -149,6 +158,8 @@ export default function Nav() {
                 <div className="dropdown-content">
                   <Link to="/opretLejr">Opret lejr</Link>
                   <Link to="/signup">Opret drejer</Link>
+                  <Link to="/tags">Tags</Link>
+                  <Link to="/activities">Aktiviteter</Link>
                 </div>
               </li>
             )}
