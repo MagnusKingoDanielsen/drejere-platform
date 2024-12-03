@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData } from "react-router-dom";
+import { Form, Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import { redirect } from "@remix-run/react";
 import { getSession } from "../../services/session.server.jsx";
 import mongoose from "mongoose";
@@ -16,15 +16,39 @@ export async function loader({ request }) {
 
 export default function CampPage() {
   const { tags } = useLoaderData();
+  const navigate = useNavigate();
+
+  const handleAddTag = () => {
+    navigate("/tags/add");
+  };
+  const handleDeleteTag = (event) => {
+    if (!window.confirm("Er du sikker på du vil slette dette tag?")) {
+      event.preventDefault();
+    }
+  };
   return (
     <Modal>
       <div className="tags">
         <h1>Tags</h1>
-        <button className="addTag">Add tag</button>
+        <button className="addTag" onClick={handleAddTag}>
+          Tilføj tag
+        </button>
         <div className="tagList">
           {tags.map((tag) => (
             <div className="tag" key={tag._id}>
               <p>{tag.tag}</p>
+              <button className="editTag">Rediger</button>
+              <Form method="post" onSubmit={handleDeleteTag}>
+                <input type="hidden" name="tagId" value={tag._id} />
+                <button
+                  type="submit"
+                  name="actionType"
+                  value="delete"
+                  className="deleteTag"
+                >
+                  Slet
+                </button>
+              </Form>
             </div>
           ))}
         </div>
@@ -32,4 +56,15 @@ export default function CampPage() {
       </div>
     </Modal>
   );
+}
+export async function action({ request }) {
+  const formData = await request.formData();
+  const actionType = formData.get("actionType");
+  const tagId = formData.get("tagId");
+
+  if (actionType === "delete") {
+    await mongoose.models.tags.deleteOne({ _id: tagId });
+  }
+
+  return null;
 }
