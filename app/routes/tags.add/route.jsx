@@ -25,13 +25,13 @@ export default function AddTag() {
   return (
     <Modal>
       <div className="addTag">
-        <h1>Add Tag</h1>
-        <Form method="post">
+        <h1>Tilføj Tag</h1>
+        <Form method="post" className="addTagForm">
           <div className="formGroup">
-            <label htmlFor="tag">Tag Name:</label>
+            <label htmlFor="tag">Navn:</label>
             <input id="tag" name="tag" type="text" required />
           </div>
-          <button type="submit">Add</button>
+          <button type="submit">Tilføj</button>
         </Form>
       </div>
     </Modal>

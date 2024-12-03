@@ -627,3 +627,9 @@ button {
   display: flex;
   gap: 10px;
 }
+.addActivityForm,
+.addTagForm {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}

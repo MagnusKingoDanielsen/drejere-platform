@@ -25,13 +25,13 @@ export default function AddActivity() {
   return (
     <Modal>
       <div className="addActivity">
-        <h1>Add Activity</h1>
-        <Form method="post">
+        <h1>Tilføj aktivitet</h1>
+        <Form method="post" className="addActivityForm">
           <div className="formGroup">
-            <label htmlFor="activity">Activity:</label>
+            <label htmlFor="activity">Navn:</label>
             <input id="activity" name="activity" type="text" required />
           </div>
-          <button type="submit">Add</button>
+          <button type="submit">Tilføj</button>
         </Form>
       </div>
     </Modal>
