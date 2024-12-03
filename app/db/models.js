@@ -24,6 +24,10 @@ const drejerSchema = new Schema(
       type: String,
       required: true,
     },
+    birthday: {
+      type: String,
+      required: false,
+    },
     lastLogin: {
       type: String,
       required: true,

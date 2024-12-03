@@ -76,7 +76,6 @@ export default function EditProfile() {
                 name="birthday"
                 type="date"
                 defaultValue={user.birthday}
-                required
               />
             </li>
             <li className="formGroup">
