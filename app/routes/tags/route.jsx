@@ -37,18 +37,20 @@ export default function CampPage() {
           {tags.map((tag) => (
             <div className="tag" key={tag._id}>
               <p>{tag.tag}</p>
-              <button className="editTag">Rediger</button>
-              <Form method="post" onSubmit={handleDeleteTag}>
-                <input type="hidden" name="tagId" value={tag._id} />
-                <button
-                  type="submit"
-                  name="actionType"
-                  value="delete"
-                  className="deleteTag"
-                >
-                  Slet
-                </button>
-              </Form>
+              <div className="tagButtons">
+                <button className="editTag">Rediger</button>
+                <Form method="post" onSubmit={handleDeleteTag}>
+                  <input type="hidden" name="tagId" value={tag._id} />
+                  <button
+                    type="submit"
+                    name="actionType"
+                    value="delete"
+                    className="deleteTag"
+                  >
+                    Slet
+                  </button>
+                </Form>
+              </div>
             </div>
           ))}
         </div>

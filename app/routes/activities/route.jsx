@@ -38,19 +38,21 @@ export default function CampPage() {
           {activities.map((activity) => (
             <div className="activity" key={activity._id}>
               <p>{activity.activity}</p>
-              <button className="editActivity">Rediger</button>
-              <Form method="post" onSubmit={handleDeleteActivity}>
-                <input type="hidden" name="activityId" value={activity._id} />
-                <input type="hidden" name="actionType" value="delete" />
-                <button
-                  type="submit"
-                  name="actionType"
-                  value="delete"
-                  className="deleteActivity"
-                >
-                  Slet
-                </button>
-              </Form>
+              <div className="activitiesButtons">
+                <button className="editActivity">Rediger</button>
+                <Form method="post" onSubmit={handleDeleteActivity}>
+                  <input type="hidden" name="activityId" value={activity._id} />
+                  <input type="hidden" name="actionType" value="delete" />
+                  <button
+                    type="submit"
+                    name="actionType"
+                    value="delete"
+                    className="deleteActivity"
+                  >
+                    Slet
+                  </button>
+                </Form>
+              </div>
             </div>
           ))}
         </div>
