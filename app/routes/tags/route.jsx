@@ -21,6 +21,11 @@ export default function CampPage() {
   const handleAddTag = () => {
     navigate("/tags/add");
   };
+
+  const handleEditTag = (tagId) => {
+    navigate(`/tags/edit/${tagId}`);
+  };
+
   const handleDeleteTag = (event) => {
     if (!window.confirm("Er du sikker på du vil slette dette tag?")) {
       event.preventDefault();
@@ -33,26 +38,33 @@ export default function CampPage() {
         <button className="addTag" onClick={handleAddTag}>
           Tilføj tag
         </button>
-        <div className="tagList">
-          {tags.map((tag) => (
-            <div className="tag" key={tag._id}>
-              <p>{tag.tag}</p>
-              <div className="tagButtons">
-                <button className="editTag">Rediger</button>
-                <Form method="post" onSubmit={handleDeleteTag}>
-                  <input type="hidden" name="tagId" value={tag._id} />
+        <div className="tagWrapper">
+          <div className="tagList">
+            {tags.map((tag) => (
+              <div className="tag" key={tag._id}>
+                <p>{tag.tag}</p>
+                <div className="tagButtons">
                   <button
-                    type="submit"
-                    name="actionType"
-                    value="delete"
-                    className="deleteTag"
+                    className="editTag"
+                    onClick={() => handleEditTag(tag._id)}
                   >
-                    Slet
+                    Rediger
                   </button>
-                </Form>
+                  <Form method="post" onSubmit={handleDeleteTag}>
+                    <input type="hidden" name="tagId" value={tag._id} />
+                    <button
+                      type="submit"
+                      name="actionType"
+                      value="delete"
+                      className="deleteTag"
+                    >
+                      Slet
+                    </button>
+                  </Form>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
         <Outlet />
       </div>

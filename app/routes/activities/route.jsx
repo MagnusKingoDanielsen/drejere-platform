@@ -21,6 +21,11 @@ export default function CampPage() {
   const handleAddActivity = () => {
     navigate("/activities/add");
   };
+
+  const handleEditActivity = (activityId) => {
+    navigate(`/activities/edit/${activityId}`);
+  };
+
   const handleDeleteActivity = (event) => {
     if (!window.confirm("Er du sikker på du vil slette denne aktivitet?")) {
       event.preventDefault();
@@ -34,27 +39,37 @@ export default function CampPage() {
         <button className="addActivity" onClick={handleAddActivity}>
           Tilføj aktivitet
         </button>
-        <div className="activityList">
-          {activities.map((activity) => (
-            <div className="activity" key={activity._id}>
-              <p>{activity.activity}</p>
-              <div className="activitiesButtons">
-                <button className="editActivity">Rediger</button>
-                <Form method="post" onSubmit={handleDeleteActivity}>
-                  <input type="hidden" name="activityId" value={activity._id} />
-                  <input type="hidden" name="actionType" value="delete" />
+        <div className="activityWrapper">
+          <div className="activityList">
+            {activities.map((activity) => (
+              <div className="activity" key={activity._id}>
+                <p>{activity.activity}</p>
+                <div className="activitiesButtons">
                   <button
-                    type="submit"
-                    name="actionType"
-                    value="delete"
-                    className="deleteActivity"
+                    className="editActivity"
+                    onClick={() => handleEditActivity(activity._id)}
                   >
-                    Slet
+                    Rediger
                   </button>
-                </Form>
+                  <Form method="post" onSubmit={handleDeleteActivity}>
+                    <input
+                      type="hidden"
+                      name="activityId"
+                      value={activity._id}
+                    />
+                    <button
+                      type="submit"
+                      name="actionType"
+                      value="delete"
+                      className="deleteActivity"
+                    >
+                      Slet
+                    </button>
+                  </Form>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
         <Outlet />
       </div>
