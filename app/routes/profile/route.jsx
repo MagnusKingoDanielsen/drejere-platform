@@ -46,9 +46,9 @@ export default function Profil() {
           <li>
             <strong>Type:</strong> {getFieldValue(user.type)}
           </li>
-          <li id="tags">
+          <li id="activities">
             <strong>Aktiviteter:</strong>
-            <ul className="tagsList">
+            <ul className="activitiesList">
               {user.activities.length > 0 ? (
                 user.activities.map((activitiy, index) => (
                   <li key={index}>{activitiy}</li>

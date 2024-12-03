@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
 import { getSession } from "../../services/session.server";
-import { redirect, useLoaderData, Form } from "@remix-run/react";
+import { redirect, useLoaderData, Form, useNavigate } from "@remix-run/react";
 import Modal from "../../components/modal";
+import { useState } from "react";
 
 export async function loader({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
   if (!session.data.user) {
     return redirect("/");
   }
+  const allTags = await mongoose.models.tags.find().lean().exec();
+  const allActivities = await mongoose.models.activities.find().lean().exec();
 
   const user = await mongoose.models.drejers
     .findById(params.id)
@@ -15,19 +18,52 @@ export async function loader({ request, params }) {
     .lean()
     .exec();
 
-  return { session: session.data, user: user };
+  return { session: session.data, user: user, allTags, allActivities };
 }
 
 export default function EditProfile() {
-  const { user } = useLoaderData();
-  const tags = user.tags;
-  const activities = user.activities;
+  const { user, allTags, allActivities } = useLoaderData();
+  const [tags, setTags] = useState(user.tags);
+  const [activities, setActivities] = useState(user.activities);
+  const navigate = useNavigate();
+
+  const toggleTag = (tag) => {
+    if (tags.includes(tag)) {
+      setTags(tags.filter((t) => t !== tag));
+    } else {
+      setTags([...tags, tag]);
+    }
+  };
+
+  const toggleActivity = (activity) => {
+    if (activities.includes(activity)) {
+      setActivities(activities.filter((a) => a !== activity));
+    } else {
+      setActivities([...activities, activity]);
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    formData.append("tags", tags.join(","));
+    formData.append("activities", activities.join(","));
+
+    const response = await fetch(event.target.action, {
+      method: event.target.method,
+      body: formData,
+    });
+
+    if (response.ok) {
+      navigate(`/profile`);
+    }
+  };
 
   return (
     <Modal>
       <div className="profileContainer">
         <h1>Edit Profile</h1>
-        <Form method="post" className="profileForm">
+        <Form method="post" className="profileForm" onSubmit={handleSubmit}>
           <ul className="profileList">
             <li className="formGroup">
               <label htmlFor="username">Username:</label>
@@ -90,24 +126,40 @@ export default function EditProfile() {
             </li>
             <li className="formGroup">
               <label htmlFor="tags">activities:</label>
-              <ul className="tagsList">
-                {activities.map((activitiy, index) => (
-                  <li key={index}>{activitiy}</li>
+              <ul className="activitiesList">
+                {allActivities.map((activity) => (
+                  <button
+                    key={activity._id}
+                    type="button"
+                    onClick={() => toggleActivity(activity.activity)}
+                    className={
+                      activities.includes(activity.activity) ? "selected" : ""
+                    }
+                  >
+                    {activity.activity}
+                    {activities.includes(activity.activity) && (
+                      <span style={{ fontSize: "13px" }}> ✔</span>
+                    )}
+                  </button>
                 ))}
-                <li>
-                  <span>+</span>
-                </li>
               </ul>
             </li>
             <li className="formGroup">
               <label htmlFor="tags">Tags:</label>
               <ul className="tagsList">
-                {tags.map((tag, index) => (
-                  <li key={index}>{tag}</li>
+                {allTags.map((tag) => (
+                  <button
+                    key={tag._id}
+                    type="button"
+                    onClick={() => toggleTag(tag.tag)}
+                    className={tags.includes(tag.tag) ? "selected" : ""}
+                  >
+                    {tag.tag}
+                    {tags.includes(tag.tag) && (
+                      <span style={{ fontSize: "13px" }}> ✔</span>
+                    )}
+                  </button>
                 ))}
-                <li>
-                  <span>+</span>
-                </li>
               </ul>
             </li>
           </ul>
@@ -121,14 +173,26 @@ export default function EditProfile() {
 }
 
 export async function action({ request }) {
-  const formData = await request.formData();
-  const { username, email, phone, address, birthday, type, tags } =
-    Object.fromEntries(formData);
-
   const session = await getSession(request.headers.get("Cookie"));
   if (!session.data.user) {
     return redirect("/");
   }
+
+  const formData = await request.formData();
+  const { username, email, phone, address, birthday, type, tags, activities } =
+    Object.fromEntries(formData);
+  const cleanedTags = tags
+    ? tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag)
+    : [];
+  const cleanedActivities = activities
+    ? activities
+        .split(",")
+        .map((activity) => activity.trim())
+        .filter((activity) => activity)
+    : [];
 
   await mongoose.models.drejers.updateOne(
     { username: session.data.username },
@@ -139,7 +203,8 @@ export async function action({ request }) {
       address,
       birthday,
       type,
-      tags: tags.split(",").map((tag) => tag.trim()),
+      tags: cleanedTags,
+      activities: cleanedActivities,
     },
   );
 

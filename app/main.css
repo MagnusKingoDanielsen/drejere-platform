@@ -697,7 +697,7 @@ button {
   margin: 0;
   padding-right: 5px;
   width: 100%;
-  max-height: 90%;
+  max-height: calc(100% - 37px - 38px - 15px);
   overflow-y: auto;
 }
 
@@ -712,13 +712,17 @@ button {
   width: 30%;
 }
 
-.tagsList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.tagsList,
+.activitiesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 0px;
+  width: calc(100% - 100px);
 }
 
-.tagsList li {
+.tagsList li,
+.activitiesList li {
   display: inline-block;
   background-color: var(--secondary-color);
   padding: 10px 15px;
@@ -728,12 +732,17 @@ button {
   margin-bottom: 5px;
 }
 
-.editButtonContainer {
-  margin-top: 20px;
-  text-align: center;
+.tagsList button {
+  max-width: fit-content;
 }
 
-#tags {
+.editButtonContainer {
+  margin-top: 20px;
+  text-align: end;
+}
+
+#tags,
+#activities {
   display: flex;
   flex-direction: column;
   gap: 5px;
