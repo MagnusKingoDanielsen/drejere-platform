@@ -9,22 +9,22 @@ export async function loader({ request }) {
   if (!session.data.user) {
     return redirect("/");
   }
-  const tags = await mongoose.models.tags.find().lean().exec();
+  const activities = await mongoose.models.activities.find().lean().exec();
 
-  return { session: session.data, tags: tags };
+  return { session: session.data, activities: activities };
 }
 
 export default function CampPage() {
-  const { tags } = useLoaderData();
+  const { activities } = useLoaderData();
   return (
     <Modal>
-      <div className="tags">
-        <h1>Tags</h1>
-        <button className="addTag">Add tag</button>
-        <div className="tagList">
-          {tags.map((tag) => (
-            <div className="tag" key={tag._id}>
-              <p>{tag.tag}</p>
+      <div className="activities">
+        <h1>Activities</h1>
+        <button className="addActivity">Add activity</button>
+        <div className="activityList">
+          {activities.map((activity) => (
+            <div className="activity" key={activity._id}>
+              <p>{activity.activity}</p>
             </div>
           ))}
         </div>
