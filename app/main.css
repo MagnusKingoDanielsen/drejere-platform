@@ -365,6 +365,7 @@ button,
 .tablewrapper {
   overflow-x: auto;
   width: 100%;
+  padding-bottom: 2px;
 }
 
 /* ------------------- Scrollbar ------------------------------ */
@@ -374,7 +375,8 @@ button,
  */
 .tablewrapper::-webkit-scrollbar,
 .activityWrapper::-webkit-scrollbar,
-.tagWrapper::-webkit-scrollbar {
+.tagWrapper::-webkit-scrollbar,
+.profileList::-webkit-scrollbar {
   height: 8px;
   width: 8px;
 }
@@ -382,20 +384,23 @@ button,
 /* Color of the scrollbar track */
 .tablewrapper::-webkit-scrollbar-track,
 .activityWrapper::-webkit-scrollbar-track,
-.tagWrapper::-webkit-scrollbar-track {
+.tagWrapper::-webkit-scrollbar-track,
+.profileList::-webkit-scrollbar-track {
   background: var(--primary-color);
 }
 
 /* Style of the scrollbar thumb */
 .tablewrapper::-webkit-scrollbar-thumb,
 .activityWrapper::-webkit-scrollbar-thumb,
-.tagWrapper::-webkit-scrollbar-thumb {
+.tagWrapper::-webkit-scrollbar-thumb,
+.profileList::-webkit-scrollbar-thumb {
   background: var(--light-primary-color);
   border-radius: 4px;
 }
 
 .tablewrapper::-webkit-scrollbar-thumb:hover.activityWrapper::-webkit-scrollbar-thumb:hover,
-.tagWrapper::-webkit-scrollbar-thumb:hover {
+.tagWrapper::-webkit-scrollbar-thumb:hover,
+.profileList::-webkit-scrollbar-thumb:hover {
   background: var(--black-color);
 }
 
@@ -458,11 +463,11 @@ button {
   padding: 10px 20px;
   font-size: 16px;
   height: fit-content;
-  background-color: var(--light-primary-color);
-  color: white;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
   font-weight: bold;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
   cursor: pointer;
 }
 
@@ -475,6 +480,7 @@ button {
 .warning button {
   background-color: rgb(200, 0, 0);
   font-size: 14px;
+  color: var(--secondary-color);
 }
 
 .buttonWrapper {
@@ -503,7 +509,7 @@ button {
 .edit-camp-form textarea {
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 25px;
   font-size: 14px;
 }
 
@@ -591,6 +597,7 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .signupForm {
@@ -669,4 +676,83 @@ button {
   display: flex;
   gap: 25px;
   flex-wrap: wrap;
+}
+
+/*------------------- Profile Page ----------------------- */
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.profileContainer h1 {
+  margin: 0px;
+  text-align: center;
+}
+
+.profileList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding-right: 5px;
+  width: 100%;
+  max-height: calc(100% - 37px - 38px - 15px);
+  overflow-y: auto;
+}
+
+.profileList li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--light-primary-color);
+}
+
+.profileList li strong {
+  width: 30%;
+}
+
+.tagsList,
+.activitiesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 0px;
+  width: calc(100% - 100px);
+}
+
+.tagsList li,
+.activitiesList li {
+  display: inline-block;
+  background-color: var(--secondary-color);
+  padding: 10px 15px;
+  color: var(--primary-color);
+  border-radius: 25px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.tagsList button {
+  max-width: fit-content;
+}
+
+.editButtonContainer {
+  margin-top: 20px;
+  text-align: end;
+}
+
+#tags,
+#activities {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* ------------------------ Edit profile Page----------------------------- */
+.profileForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-height: 100%;
 }
