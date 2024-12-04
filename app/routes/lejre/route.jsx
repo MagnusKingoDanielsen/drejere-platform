@@ -13,6 +13,7 @@ export async function loader({ request }) {
   const camps = await mongoose.models.camps
     .find()
     .select("-EndDate -campLeader -CampDescription -__v")
+    .sort({ createdAt: -1 })
     .lean()
     .exec();
 
