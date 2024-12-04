@@ -30,7 +30,7 @@ export default function CampPage() {
             <tr>
               <th>Lejre </th>
               <th>start dato</th>
-              <th>
+              <th id="ParticipantsRow">
                 <TbUsers />
               </th>
               <th></th>
@@ -49,8 +49,10 @@ export default function CampPage() {
                   })}
                 </td>
                 <td id="ParticipantsRow">{camp.Participants.length}</td>
-                <td>
-                  <Link to={`/lejr/${camp._id}`}>Læs mere</Link>
+                <td id="ButtonRight">
+                  <Link to={`/lejr/${camp._id}`}>
+                    <button> Læs mere</button>
+                  </Link>
                 </td>
               </tr>
             ))}

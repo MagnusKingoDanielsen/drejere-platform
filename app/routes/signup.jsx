@@ -18,35 +18,62 @@ export default function LoginPage() {
     <Modal>
       <div className="signupPage">
         <div className="signupContainer">
-          <Form method="post">
+          <Form method="post" className="signupForm">
             <h1>Sign up</h1>
-            <input placeholder="email" name="userEmail" type="email" required />
-            <input
-              placeholder="username"
-              name="userName"
-              type="text"
-              required
-            />
-            <input
-              placeholder="password"
-              name="userPassword"
-              type="password"
-              required
-            />
-            <input
-              placeholder="mobilnr"
-              name="userPhone"
-              type="text"
-              required
-            />
-            <input
-              placeholder="addresse"
-              name="userAddress"
-              type="text"
-              required
-            />
-            {error && <p>{error}</p>}
-            <button>opret drejer</button>
+            <div className="formGroup">
+              <label htmlFor="userEmail">Email:</label>
+              <input
+                id="userEmail"
+                placeholder="email"
+                name="userEmail"
+                type="email"
+                required
+              />
+            </div>
+            <div className="formGroup">
+              <label htmlFor="userName">Username:</label>
+              <input
+                id="userName"
+                placeholder="username"
+                name="userName"
+                type="text"
+                required
+              />
+            </div>
+            <div className="formGroup">
+              <label htmlFor="userPassword">Password:</label>
+              <input
+                id="userPassword"
+                placeholder="password"
+                name="userPassword"
+                type="password"
+                required
+              />
+            </div>
+            <div className="formGroup">
+              <label htmlFor="userPhone">Mobilnr:</label>
+              <input
+                id="userPhone"
+                placeholder="mobilnr"
+                name="userPhone"
+                type="text"
+                required
+              />
+            </div>
+            <div className="formGroup">
+              <label htmlFor="userAddress">Addresse:</label>
+              <input
+                id="userAddress"
+                placeholder="addresse"
+                name="userAddress"
+                type="text"
+                required
+              />
+            </div>
+            {error && <p className="error">{error}</p>}
+            <div className="center">
+              <button type="submit">Opret drejer</button>
+            </div>
           </Form>
         </div>
       </div>

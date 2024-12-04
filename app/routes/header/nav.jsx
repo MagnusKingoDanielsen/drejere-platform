@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLoaderData, Form } from "@remix-run/react";
 import {
-  RiPrinterLine,
+  // RiPrinterLine,
   RiAccountCircleLine,
   RiLogoutBoxRLine,
 } from "react-icons/ri";
@@ -43,9 +43,9 @@ export default function Nav() {
     setIsAdminMenuOpen(!isAdminMenuOpen);
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
+  // const handlePrint = () => {
+  //   window.print();
+  // };
 
   if (!usertype) {
     return null;
@@ -79,11 +79,11 @@ export default function Nav() {
                     Drejerliste
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/noegleListe" onClick={() => setIsMenuOpen(false)}>
                     Nøgleliste
                   </Link>
-                </li>
+                </li> */}
                 {usertype === "admin" && (
                   <li className="dropdown">
                     <button className="dropbtn" onClick={toggleAdminMenu}>
@@ -100,15 +100,24 @@ export default function Nav() {
                         <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
                           Opret drejer
                         </Link>
+                        <Link to="/tags" onClick={() => setIsMenuOpen(false)}>
+                          Tags
+                        </Link>
+                        <Link
+                          to="/activities"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          Aktiviteter
+                        </Link>
                       </div>
                     )}
                   </li>
                 )}
-                <li className="printerIcon">
+                {/* <li className="printerIcon">
                   <button onClick={handlePrint} className="printerIconButton">
                     <RiPrinterLine />
                   </button>
-                </li>
+                </li> */}
                 <li className="profileIcon">
                   <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
                     <RiAccountCircleLine />
@@ -140,23 +149,25 @@ export default function Nav() {
             <li>
               <Link to="/drejerListe">Drejerliste</Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/noegleListe">Nøgleliste</Link>
-            </li>
+            </li> */}
             {usertype === "admin" && (
               <li className="dropdown">
                 <button className="dropbtn">Admin</button>
                 <div className="dropdown-content">
                   <Link to="/opretLejr">Opret lejr</Link>
                   <Link to="/signup">Opret drejer</Link>
+                  <Link to="/tags">Tags</Link>
+                  <Link to="/activities">Aktiviteter</Link>
                 </div>
               </li>
             )}
-            <li className="printerIcon">
+            {/* <li className="printerIcon">
               <button onClick={handlePrint} className="printerIconButton">
                 <RiPrinterLine />
               </button>
-            </li>
+            </li> */}
             <li className="profileIcon">
               <Link to="/profile">
                 <RiAccountCircleLine />

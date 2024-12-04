@@ -4,10 +4,6 @@ const { Schema } = mongoose;
 
 const drejerSchema = new Schema(
   {
-    date: {
-      type: String,
-      required: true,
-    },
     username: {
       type: String,
       required: true,
@@ -28,12 +24,24 @@ const drejerSchema = new Schema(
       type: String,
       required: true,
     },
+    birthday: {
+      type: String,
+      required: false,
+    },
     lastLogin: {
       type: String,
       required: true,
     },
     type: {
       type: String,
+      required: true,
+    },
+    tags: {
+      type: Array,
+      required: true,
+    },
+    activities: {
+      type: Array,
       required: true,
     },
   },
@@ -67,6 +75,20 @@ const campsSchema = new Schema({
   },
 });
 
+const tags = new Schema({
+  tag: {
+    type: String,
+    required: true,
+  },
+});
+
+const activities = new Schema({
+  activity: {
+    type: String,
+    required: true,
+  },
+});
+
 export const models = [
   {
     name: "drejers",
@@ -77,5 +99,15 @@ export const models = [
     name: "camps",
     schema: campsSchema,
     collection: "camps",
+  },
+  {
+    name: "tags",
+    schema: tags,
+    collection: "tags",
+  },
+  {
+    name: "activities",
+    schema: activities,
+    collection: "activities",
   },
 ];

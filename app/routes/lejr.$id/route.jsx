@@ -22,7 +22,6 @@ export async function loader({ request, params }) {
   if (!camp) {
     throw new Response("Not found", { status: 404 });
   }
-  console.log(camp.Participants);
 
   return { session: session.data, camp: camp };
 }
@@ -30,6 +29,13 @@ export async function loader({ request, params }) {
 export default function CampDetailPage() {
   const { camp, session } = useLoaderData();
   const userName = session.username;
+
+  const isUserSignedUp = camp.Participants.some(
+    (participant) => participant.name === userName,
+  );
+
+  const isPastStartDate = new Date() > new Date(camp.StartDate);
+  const isPastEndDate = new Date() > new Date(camp.EndDate);
 
   const calculateDays = (startDate, endDate) => {
     const start = new Date(startDate);
@@ -56,50 +62,57 @@ export default function CampDetailPage() {
     }
   };
 
+  const formatDate = (date) => {
+    return new Date(date)
+      .toLocaleString("da-DK", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+      .replace(",", "");
+  };
+
+  const formatDateTable = (date) => {
+    return new Date(date)
+      .toLocaleDateString("da-DK", {
+        month: "2-digit",
+        day: "2-digit",
+      })
+      .replace(/\//g, ".");
+  };
+
   return (
     <Modal>
       <div className="camp-details">
         <h1 className="camp-title">{camp.CampName}</h1>
         <p className="camp-leader">Lejr leder: {camp.CampLeader}</p>
         <p className="camp-date">
-          Start:{" "}
-          {new Date(camp.StartDate).toLocaleString([], {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-          {" | "}
-          slut:{" "}
-          {new Date(camp.EndDate).toLocaleString([], {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+          dato: {formatDate(camp.StartDate)} {" | "}
+          {formatDate(camp.EndDate)}
         </p>
-        {/* <p className="camp-date"></p> */}
-        <p className="camp-description">{camp.CampDescription}</p>
+        <p className="camp-description">
+          <strong>Beskrivelse:</strong>
+          <br />
+          {camp.CampDescription}
+        </p>
         <p className="camp-remember">
-          <strong>Husk:</strong> Du kan ændre i din tilmelding indtil lejren går
-          i gang. Ændrer du din tilmelding herefter, skal du stadig betale for
-          de måltider, hvor du ikke spiser med. Det gælder også for drejere, der
-          er tilmeldt guldkort-plus-ordningen.
+          <strong>Husk:</strong>
+          <br />
+          Du kan ændre i din tilmelding indtil lejren går i gang. Ændrer du din
+          tilmelding herefter, skal du stadig betale for de måltider, hvor du
+          ikke spiser med. Det gælder også for drejere, der er tilmeldt
+          guldkort-plus-ordningen.
         </p>
-        <div className="tablewrapper" id="BorderLeft">
+        <div className="tablewrapper">
           <table className="participants-table">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Navn/Dato</th>
                 {days.map((day, index) => (
-                  <th key={index}>
-                    {day.toLocaleDateString([], {
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
-                  </th>
+                  <th key={index}>{formatDateTable(day)}</th>
                 ))}
               </tr>
             </thead>
@@ -109,45 +122,98 @@ export default function CampDetailPage() {
                   <td>{participant.name}</td>
                   {days.map((day, dayIndex) => {
                     const attendance = participant.attendance.find(
-                      (att) => att.date === day.toLocaleDateString(),
+                      (att) => att.date === formatDateTable(day),
                     );
                     return (
                       <td key={dayIndex}>
-                        {attendance &&
-                          attendance.meals.includes("breakfast") && (
-                            <span title="Breakfast">🍳</span>
-                          )}
-                        {attendance && attendance.meals.includes("lunch") && (
-                          <span title="Lunch">🥪</span>
-                        )}
-                        {attendance && attendance.meals.includes("dinner") && (
-                          <span title="Dinner">🍽️</span>
-                        )}
+                        <div className="meals">
+                          <span title="Breakfast">
+                            {attendance &&
+                            attendance.meals.includes("breakfast")
+                              ? "🍳"
+                              : ""}
+                          </span>
+                          <span title="Lunch">
+                            {attendance && attendance.meals.includes("lunch")
+                              ? "🥪"
+                              : ""}
+                          </span>
+                          <span title="Dinner">
+                            {attendance && attendance.meals.includes("dinner")
+                              ? "🍽️"
+                              : ""}
+                          </span>
+                        </div>
                       </td>
                     );
                   })}
                 </tr>
               ))}
+              <tr>
+                <td>Total</td>
+                {days.map((day, dayIndex) => {
+                  let breakfastCount = 0;
+                  let lunchCount = 0;
+                  let dinnerCount = 0;
+
+                  camp.Participants.forEach((participant) => {
+                    const attendance = participant.attendance.find(
+                      (att) => att.date === formatDateTable(day),
+                    );
+                    if (attendance) {
+                      if (attendance.meals.includes("breakfast")) {
+                        breakfastCount++;
+                      }
+                      if (attendance.meals.includes("lunch")) {
+                        lunchCount++;
+                      }
+                      if (attendance.meals.includes("dinner")) {
+                        dinnerCount++;
+                      }
+                    }
+                  });
+
+                  return (
+                    <td key={dayIndex}>
+                      <div className="meals">
+                        <span title="Breakfast">{breakfastCount}</span>
+                        <span title="Lunch">{lunchCount}</span>
+                        <span title="Dinner">{dinnerCount}</span>
+                      </div>
+                    </td>
+                  );
+                })}
+              </tr>
             </tbody>
           </table>
         </div>
-        <Link to="attend">
-          <button type="button">
-            {camp.Participants.includes(userName) ? "Attending" : "Join"}
-          </button>
-        </Link>
+        <div className="buttonWrapper">
+          {!isPastStartDate && !isPastEndDate && (
+            <Link to="attend" className="campButton">
+              <button type="button">
+                {isUserSignedUp ? "Ændre tilmelding" : "Tilmeld"}
+              </button>
+            </Link>
+          )}
+
+          {isPastStartDate && (
+            <button type="button" disabled>
+              {isPastEndDate ? "Lejren er slut" : "Lejren er i gang"}
+            </button>
+          )}
+        </div>
 
         {session.usertype === "admin" && (
-          <>
-            <Form method="post" onSubmit={handleDelete}>
+          <div className="adminButtons">
+            <Link to="edit" className="campButton">
+              <button type="button">Rediger lejr</button>
+            </Link>
+            <Form method="post" onSubmit={handleDelete} className="warning">
               <button name="_action" value="delete" type="submit">
-                Delete Camp
+                Slet lejr
               </button>
             </Form>
-            <Link to="edit">
-              <button type="button">Edit Camp</button>
-            </Link>
-          </>
+          </div>
         )}
         <Outlet />
       </div>
@@ -167,9 +233,8 @@ export async function action({ request, params }) {
     throw new Response("Not found", { status: 404 });
   }
 
-  const userName = session.data.username;
   if (formData.get("_action") === "delete") {
-    if (camp.CampLeader === userName) {
+    if (session.data.usertype === "admin") {
       await mongoose.models.camps.findByIdAndDelete(params.id);
       return redirect("/lejre");
     } else {
