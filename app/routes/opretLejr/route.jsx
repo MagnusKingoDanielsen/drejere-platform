@@ -18,7 +18,7 @@ export async function loader({ request }) {
 export default function OpretLejr() {
   return (
     <Modal>
-      <div>
+      <div className="campWrapper">
         <h1>Opret ny lejr</h1>
         <Form method="post" action="/opretLejr" className="edit-camp-form">
           <label>
