@@ -3,6 +3,8 @@ import { redirect } from "@remix-run/react";
 import { getSession } from "../../services/session.server.jsx";
 import mongoose from "mongoose";
 import Modal from "../../components/modal";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { RiEdit2Line } from "react-icons/ri";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -48,7 +50,7 @@ export default function CampPage() {
                     className="editTag"
                     onClick={() => handleEditTag(tag._id)}
                   >
-                    Rediger
+                    <RiEdit2Line />
                   </button>
                   <Form method="post" onSubmit={handleDeleteTag}>
                     <input type="hidden" name="tagId" value={tag._id} />
@@ -58,7 +60,7 @@ export default function CampPage() {
                       value="delete"
                       className="deleteTag"
                     >
-                      Slet
+                      <RiDeleteBin6Line />
                     </button>
                   </Form>
                 </div>
