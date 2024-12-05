@@ -19,22 +19,22 @@ export default function LoginPage() {
       <div className="signupPage">
         <div className="signupContainer">
           <Form method="post" className="signupForm">
-            <h1>Sign up</h1>
+            <h1>Opret drejer</h1>
             <div className="formGroup">
               <label htmlFor="userEmail">Email:</label>
               <input
                 id="userEmail"
-                placeholder="email"
+                placeholder="Email"
                 name="userEmail"
                 type="email"
                 required
               />
             </div>
             <div className="formGroup">
-              <label htmlFor="userName">Username:</label>
+              <label htmlFor="userName">Brugernavn:</label>
               <input
                 id="userName"
-                placeholder="username"
+                placeholder="Brugernavn"
                 name="userName"
                 type="text"
                 required
@@ -44,7 +44,7 @@ export default function LoginPage() {
               <label htmlFor="userPassword">Password:</label>
               <input
                 id="userPassword"
-                placeholder="password"
+                placeholder="Password"
                 name="userPassword"
                 type="password"
                 required
@@ -54,7 +54,7 @@ export default function LoginPage() {
               <label htmlFor="userPhone">Mobilnr:</label>
               <input
                 id="userPhone"
-                placeholder="mobilnr"
+                placeholder="Mobilnr"
                 name="userPhone"
                 type="text"
                 required
@@ -64,7 +64,7 @@ export default function LoginPage() {
               <label htmlFor="userAddress">Addresse:</label>
               <input
                 id="userAddress"
-                placeholder="addresse"
+                placeholder="Addresse"
                 name="userAddress"
                 type="text"
                 required

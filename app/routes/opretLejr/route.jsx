@@ -53,7 +53,7 @@ export default function OpretLejr() {
             Beskrivelse:
             <textarea id="CampDescription" name="CampDescription" required />
           </label>
-          <button type="submit">Create Camp</button>
+          <button type="submit">Opret lejr</button>
         </Form>
       </div>
     </Modal>
