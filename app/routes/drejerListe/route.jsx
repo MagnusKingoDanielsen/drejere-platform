@@ -46,7 +46,7 @@ export default function DrejerListe() {
         <div className="searchWrapper">
           <input
             type="text"
-            placeholder="Søg efter navn, telefonnummer, email, tags eller aktiviteter"
+            placeholder="Søg efter navn, tlf, email, tags eller aktiviteter"
             value={searchTerm}
             onChange={handleSearchChange}
           />
