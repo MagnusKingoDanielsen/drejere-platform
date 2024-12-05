@@ -62,11 +62,11 @@ export default function EditProfile() {
   return (
     <Modal>
       <div className="profileContainer">
-        <h1>Edit Profile</h1>
+        <h1>Rediger profil</h1>
         <Form method="post" className="profileForm" onSubmit={handleSubmit}>
           <ul className="profileList">
             <li className="formGroup">
-              <label htmlFor="username">Username:</label>
+              <label htmlFor="username">Brugernavn:</label>
               <input
                 id="username"
                 name="username"
@@ -164,7 +164,7 @@ export default function EditProfile() {
             </li>
           </ul>
           <div className="center">
-            <button type="submit">Save Changes</button>
+            <button type="submit">Gem ændringer</button>
           </div>
         </Form>
       </div>

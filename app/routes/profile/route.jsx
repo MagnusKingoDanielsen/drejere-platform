@@ -30,7 +30,7 @@ export default function Profil() {
         <h1>Profil</h1>
         <ul className="profileList">
           <li>
-            <strong>Username:</strong> {getFieldValue(user.username)}
+            <strong>Brugernavn:</strong> {getFieldValue(user.username)}
           </li>
           <li>
             <strong>Email:</strong> {getFieldValue(user.email)}

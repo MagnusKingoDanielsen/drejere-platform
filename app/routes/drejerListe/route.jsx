@@ -55,8 +55,8 @@ export default function DrejerListe() {
           <table className="Tabel">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Phone Number</th>
+                <th>Navn</th>
+                <th>Telefon nr:</th>
                 <th>Email</th>
               </tr>
             </thead>
