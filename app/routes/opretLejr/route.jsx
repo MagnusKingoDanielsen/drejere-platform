@@ -32,11 +32,18 @@ export default function OpretLejr() {
               id="StartDate"
               name="StartDate"
               required
+              max="9999-12-31T23:59"
             />
           </label>
           <label>
             Slut dato og tid:
-            <input type="datetime-local" id="EndDate" name="EndDate" required />
+            <input
+              type="datetime-local"
+              id="EndDate"
+              name="EndDate"
+              required
+              max="9999-12-31T23:59"
+            />
           </label>
           <label>
             Lejr leder:
