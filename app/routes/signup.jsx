@@ -70,6 +70,14 @@ export default function LoginPage() {
                 required
               />
             </div>
+            <div className="formGroup">
+              <label htmlFor="userType">Brugertype:</label>
+              <select id="userType" name="userType" required>
+                <option value="">Vælg brugertype</option>
+                <option value="admin">Admin</option>
+                <option value="user">Drejer</option>
+              </select>
+            </div>
             {error && <p className="error">{error}</p>}
             <div className="center">
               <button type="submit">Opret drejer</button>
@@ -83,8 +91,14 @@ export default function LoginPage() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const { userEmail, userPassword, userName, userPhone, userAddress } =
-    Object.fromEntries(formData);
+  const {
+    userEmail,
+    userPassword,
+    userName,
+    userPhone,
+    userAddress,
+    userType,
+  } = Object.fromEntries(formData);
   //check if email is valid
   let regexForEmailValidation = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -104,6 +118,7 @@ export async function action({ request }) {
     const password = await hashPassword(userPassword);
     const email = userEmail;
     const username = userName;
+    const type = userType;
     const phone = userPhone;
     const address = userAddress;
     const lastLogin = new Date().toLocaleDateString("en-GB");
@@ -116,6 +131,7 @@ export async function action({ request }) {
         username,
         phone,
         address,
+        type,
         lastLogin,
       }),
       redirect("/login")
