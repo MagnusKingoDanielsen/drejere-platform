@@ -6,7 +6,7 @@ import Modal from "../components/modal";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (!session.data.user) {
+  if (!session.data.user || session.data.usertype !== "admin") {
     return redirect("/");
   }
   return session.data;
@@ -99,44 +99,54 @@ export async function action({ request }) {
     userAddress,
     userType,
   } = Object.fromEntries(formData);
-  //check if email is valid
-  let regexForEmailValidation = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  if (regexForEmailValidation.test(userEmail)) {
-    const users = await mongoose.models.drejers.find({});
-    //check if email is already in use
-    if (users.some((user) => user.email === userEmail)) {
-      return "error", "Email already in use. Please try again.";
-    }
-    //check if username is already in use
-    if (users.some((user) => user.username === userName)) {
-      return "error", "Username already in use. Please try again.";
-    }
-    const session = await getSession();
-    session.set("user", true);
-    const date = new Date().toLocaleString() + "";
-    const password = await hashPassword(userPassword);
-    const email = userEmail;
-    const username = userName;
-    const type = userType;
-    const phone = userPhone;
-    const address = userAddress;
-    const lastLogin = new Date().toLocaleDateString("en-GB");
+  const session = await getSession(request.headers.get("cookie"));
 
-    return (
-      await mongoose.models.drejers.create({
-        date,
-        email,
-        password,
-        username,
-        phone,
-        address,
-        type,
-        lastLogin,
-      }),
-      redirect("/login")
-    );
+  if (session.data.usertype === "admin") {
+    //check if email is valid
+    let regexForEmailValidation = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (regexForEmailValidation.test(userEmail)) {
+      const users = await mongoose.models.drejers.find({});
+      //check if email is already in use
+      if (users.some((user) => user.email === userEmail)) {
+        return "error", "Email allerede i brug.";
+      }
+      //check if username is already in use
+      if (users.some((user) => user.username === userName)) {
+        return "error", "Brugernavn allerede i brug.";
+      }
+      const session = await getSession();
+      session.set("user", true);
+      const date = new Date().toLocaleString() + "";
+      const password = await hashPassword(userPassword);
+      const email = userEmail;
+      const username = userName;
+      const type = userType;
+      const phone = userPhone;
+      const address = userAddress;
+      const lastLogin = new Date().toLocaleDateString("en-GB");
+
+      return (
+        await mongoose.models.drejers.create({
+          date,
+          email,
+          password,
+          username,
+          phone,
+          address,
+          type,
+          lastLogin,
+        }),
+        redirect("/login")
+      );
+    } else {
+      return "error", "fejl i email. prøv igen.";
+    }
   } else {
-    return "error", "Invalid email address. Please try again.";
+    throw new Response(
+      "Du har ikke tilladelse til at lave denne ændring. Kontakt venligst en admin",
+      { status: 403 },
+    );
   }
 }

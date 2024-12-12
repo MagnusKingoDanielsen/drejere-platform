@@ -66,9 +66,6 @@ export const action = async ({ request }) => {
     Object.fromEntries(formData);
 
   const session = await getSession(request.headers.get("cookie"));
-  if (!session.data.user) {
-    throw new Response("Not authenticated", { status: 401 });
-  }
 
   const Participants = [];
 
@@ -94,6 +91,9 @@ export const action = async ({ request }) => {
     });
     return redirect("/lejre");
   } else {
-    throw new Response("Not authenticated", { status: 401 });
+    throw new Response(
+      "Du har ikke tilladelse til at lave denne ændring. Kontakt venligst en admin",
+      { status: 403 },
+    );
   }
 };

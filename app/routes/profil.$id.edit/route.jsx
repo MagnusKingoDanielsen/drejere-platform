@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 import { getSession } from "../../services/session.server";
-import { redirect, useLoaderData, Form, useNavigate } from "@remix-run/react";
+import {
+  redirect,
+  useLoaderData,
+  Form,
+  useNavigate,
+  json,
+} from "@remix-run/react";
 import Modal from "../../components/modal";
 import { useState } from "react";
 
@@ -114,16 +120,22 @@ export default function EditProfile() {
                 defaultValue={user.birthday}
               />
             </li>
-            <li className="formGroup">
-              <label htmlFor="type">Type:</label>
-              <input
-                id="type"
-                name="type"
-                type="text"
-                defaultValue={user.type}
-                required
-              />
-            </li>
+            {user.type === "admin" ? (
+              <li className="formGroup">
+                <label htmlFor="type">Type:</label>
+                <select
+                  id="userType"
+                  name="userType"
+                  required
+                  defaultValue={user.type}
+                >
+                  <option value="">Vælg brugertype</option>
+                  <option value="admin">Admin</option>
+                  <option value="user">Drejer</option>
+                </select>
+              </li>
+            ) : null}
+
             <li className="formGroup">
               <label htmlFor="tags">activities:</label>
               <ul className="activitiesList">
@@ -144,24 +156,26 @@ export default function EditProfile() {
                 ))}
               </ul>
             </li>
-            <li className="formGroup">
-              <label htmlFor="tags">Tags:</label>
-              <ul className="tagsList">
-                {allTags.map((tag) => (
-                  <button
-                    key={tag._id}
-                    type="button"
-                    onClick={() => toggleTag(tag.tag)}
-                    className={tags.includes(tag.tag) ? "selected" : ""}
-                  >
-                    {tag.tag}
-                    {tags.includes(tag.tag) && (
-                      <span style={{ fontSize: "13px" }}> ✔</span>
-                    )}
-                  </button>
-                ))}
-              </ul>
-            </li>
+            {user.type === "admin" ? (
+              <li className="formGroup">
+                <label htmlFor="tags">Tags:</label>
+                <ul className="tagsList">
+                  {allTags.map((tag) => (
+                    <button
+                      key={tag._id}
+                      type="button"
+                      onClick={() => toggleTag(tag.tag)}
+                      className={tags.includes(tag.tag) ? "selected" : ""}
+                    >
+                      {tag.tag}
+                      {tags.includes(tag.tag) && (
+                        <span style={{ fontSize: "13px" }}> ✔</span>
+                      )}
+                    </button>
+                  ))}
+                </ul>
+              </li>
+            ) : null}
           </ul>
           <div className="center">
             <button type="submit">Gem ændringer</button>
@@ -174,39 +188,45 @@ export default function EditProfile() {
 
 export async function action({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (!session.data.user) {
-    return redirect("/");
-  }
-
   const formData = await request.formData();
   const { username, email, phone, address, birthday, type, tags, activities } =
     Object.fromEntries(formData);
-  const cleanedTags = tags
-    ? tags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter((tag) => tag)
-    : [];
-  const cleanedActivities = activities
-    ? activities
-        .split(",")
-        .map((activity) => activity.trim())
-        .filter((activity) => activity)
-    : [];
+  if (session.data.username === username || session.data.usertype === "admin") {
+    const cleanedTags = tags
+      ? tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter((tag) => tag)
+      : [];
+    const cleanedActivities = activities
+      ? activities
+          .split(",")
+          .map((activity) => activity.trim())
+          .filter((activity) => activity)
+      : [];
 
-  await mongoose.models.drejers.updateOne(
-    { username: session.data.username },
-    {
-      username,
-      email,
-      phone,
-      address,
-      birthday,
-      type,
-      tags: cleanedTags,
-      activities: cleanedActivities,
-    },
-  );
+    await mongoose.models.drejers.updateOne(
+      { username: session.data.username },
+      {
+        username,
+        email,
+        phone,
+        address,
+        birthday,
+        type,
+        tags: cleanedTags,
+        activities: cleanedActivities,
+      },
+    );
 
-  return redirect("/profile");
+    return redirect("/profile");
+  } else {
+    return json(
+      {
+        error:
+          "Du har ikke tilladelse til at lave denne ændring. Kontakt venligst en admin",
+      },
+      { status: 403 },
+    );
+  }
 }
