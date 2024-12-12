@@ -45,9 +45,7 @@ export async function action({ request, params }) {
   if (session.data.usertype === "admin") {
     const formData = await request.formData();
     const activity = formData.get("activity");
-
     await mongoose.models.activities.findByIdAndUpdate(params.id, { activity });
-
     return redirect("/activities");
   } else {
     return json(
