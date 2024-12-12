@@ -10,6 +10,7 @@ import { getSession } from "../../services/session.server.jsx";
 import mongoose from "mongoose";
 import Modal from "~/components/modal.jsx";
 import { RiEdit2Line } from "react-icons/ri";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 export async function loader({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -217,7 +218,7 @@ export default function CampDetailPage() {
             </Link>
             <Form method="post" onSubmit={handleDelete} className="warning">
               <button name="_action" value="delete" type="submit">
-                Slet lejr
+                Slet lejr <RiDeleteBin6Line />
               </button>
             </Form>
           </div>

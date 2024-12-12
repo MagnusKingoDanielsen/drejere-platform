@@ -765,7 +765,8 @@ button {
   gap: 5px;
 }
 
-.editButton svg {
+.editButton svg,
+.warning svg {
   position: relative;
   top: 3px;
   height: 20px;
