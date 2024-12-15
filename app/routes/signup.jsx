@@ -6,7 +6,7 @@ import Modal from "../components/modal";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (!session.data.user) {
+  if (!session.data.user || session.data.usertype !== "admin") {
     return redirect("/");
   }
   return session.data;
@@ -19,22 +19,22 @@ export default function LoginPage() {
       <div className="signupPage">
         <div className="signupContainer">
           <Form method="post" className="signupForm">
-            <h1>Sign up</h1>
+            <h1>Opret drejer</h1>
             <div className="formGroup">
               <label htmlFor="userEmail">Email:</label>
               <input
                 id="userEmail"
-                placeholder="email"
+                placeholder="Email"
                 name="userEmail"
                 type="email"
                 required
               />
             </div>
             <div className="formGroup">
-              <label htmlFor="userName">Username:</label>
+              <label htmlFor="userName">Brugernavn:</label>
               <input
                 id="userName"
-                placeholder="username"
+                placeholder="Brugernavn"
                 name="userName"
                 type="text"
                 required
@@ -44,7 +44,7 @@ export default function LoginPage() {
               <label htmlFor="userPassword">Password:</label>
               <input
                 id="userPassword"
-                placeholder="password"
+                placeholder="Password"
                 name="userPassword"
                 type="password"
                 required
@@ -54,7 +54,7 @@ export default function LoginPage() {
               <label htmlFor="userPhone">Mobilnr:</label>
               <input
                 id="userPhone"
-                placeholder="mobilnr"
+                placeholder="Mobilnr"
                 name="userPhone"
                 type="text"
                 required
@@ -64,11 +64,19 @@ export default function LoginPage() {
               <label htmlFor="userAddress">Addresse:</label>
               <input
                 id="userAddress"
-                placeholder="addresse"
+                placeholder="Addresse"
                 name="userAddress"
                 type="text"
                 required
               />
+            </div>
+            <div className="formGroup">
+              <label htmlFor="userType">Brugertype:</label>
+              <select id="userType" name="userType" required>
+                <option value="">Vælg brugertype</option>
+                <option value="admin">Admin</option>
+                <option value="user">Drejer</option>
+              </select>
             </div>
             {error && <p className="error">{error}</p>}
             <div className="center">
@@ -83,44 +91,62 @@ export default function LoginPage() {
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const { userEmail, userPassword, userName, userPhone, userAddress } =
-    Object.fromEntries(formData);
-  //check if email is valid
-  let regexForEmailValidation = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const {
+    userEmail,
+    userPassword,
+    userName,
+    userPhone,
+    userAddress,
+    userType,
+  } = Object.fromEntries(formData);
 
-  if (regexForEmailValidation.test(userEmail)) {
-    const users = await mongoose.models.drejers.find({});
-    //check if email is already in use
-    if (users.some((user) => user.email === userEmail)) {
-      return "error", "Email already in use. Please try again.";
-    }
-    //check if username is already in use
-    if (users.some((user) => user.username === userName)) {
-      return "error", "Username already in use. Please try again.";
-    }
-    const session = await getSession();
-    session.set("user", true);
-    const date = new Date().toLocaleString() + "";
-    const password = await hashPassword(userPassword);
-    const email = userEmail;
-    const username = userName;
-    const phone = userPhone;
-    const address = userAddress;
-    const lastLogin = new Date().toLocaleDateString("en-GB");
+  const session = await getSession(request.headers.get("cookie"));
 
-    return (
-      await mongoose.models.drejers.create({
-        date,
-        email,
-        password,
-        username,
-        phone,
-        address,
-        lastLogin,
-      }),
-      redirect("/login")
-    );
+  if (session.data.usertype === "admin") {
+    //check if email is valid
+    let regexForEmailValidation = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (regexForEmailValidation.test(userEmail)) {
+      const users = await mongoose.models.drejers.find({});
+      //check if email is already in use
+      if (users.some((user) => user.email === userEmail)) {
+        return "error", "Email allerede i brug.";
+      }
+      //check if username is already in use
+      if (users.some((user) => user.username === userName)) {
+        return "error", "Brugernavn allerede i brug.";
+      }
+      const session = await getSession();
+      session.set("user", true);
+      const date = new Date().toLocaleString() + "";
+      const password = await hashPassword(userPassword);
+      const email = userEmail;
+      const username = userName;
+      const type = userType;
+      const phone = userPhone;
+      const address = userAddress;
+      const lastLogin = new Date().toLocaleDateString("en-GB");
+
+      return (
+        await mongoose.models.drejers.create({
+          date,
+          email,
+          password,
+          username,
+          phone,
+          address,
+          type,
+          lastLogin,
+        }),
+        redirect("/login")
+      );
+    } else {
+      return "error", "fejl i email. prøv igen.";
+    }
   } else {
-    return "error", "Invalid email address. Please try again.";
+    throw new Response(
+      "Du har ikke tilladelse til at lave denne ændring. Kontakt venligst en admin",
+      { status: 403 },
+    );
   }
 }

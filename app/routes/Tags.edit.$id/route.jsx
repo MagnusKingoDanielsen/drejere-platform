@@ -1,26 +1,20 @@
-import { Form, useLoaderData, redirect } from "react-router-dom";
+import { Form, useLoaderData, redirect, json } from "react-router-dom";
 import { getSession } from "../../services/session.server.jsx";
 import mongoose from "mongoose";
 import Modal from "../../components/modal";
 
 export async function loader({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (!session.data.user) {
+  if (!session.data.user || session.data.usertype !== "admin") {
     return redirect("/");
   }
-
-  console.log("params", params.id);
-
   const tag = await mongoose.models.tags.findById(params.id).lean().exec();
-
-  console.log(tag);
 
   return { session: session.data, tag: tag };
 }
 
 export default function EditTag() {
   const { tag } = useLoaderData();
-  console.log(tag);
 
   return (
     <Modal>
@@ -37,7 +31,7 @@ export default function EditTag() {
               required
             />
           </div>
-          <button type="submit">Opdater</button>
+          <button type="submit">Gem ændringer</button>
         </Form>
       </div>
     </Modal>
@@ -45,10 +39,21 @@ export default function EditTag() {
 }
 
 export async function action({ request, params }) {
-  const formData = await request.formData();
-  const tag = formData.get("tag");
+  const session = await getSession(request.headers.get("Cookie"));
+  if (session.data.usertype === "admin") {
+    const formData = await request.formData();
+    const tag = formData.get("tag");
 
-  await mongoose.models.tags.findByIdAndUpdate(params.id, { tag });
+    await mongoose.models.tags.findByIdAndUpdate(params.id, { tag });
 
-  return redirect("/tags");
+    return redirect("/tags");
+  } else {
+    return json(
+      {
+        error:
+          "Du har ikke tilladelse til at lave denne ændring. Kontakt venligst en admin",
+      },
+      { status: 403 },
+    );
+  }
 }

@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { getSession } from "../../services/session.server";
 import { Link, redirect, useLoaderData } from "@remix-run/react";
 import Modal from "../../components/modal";
+import { RiEdit2Line } from "react-icons/ri";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -29,7 +30,7 @@ export default function Profil() {
         <h1>Profil</h1>
         <ul className="profileList">
           <li>
-            <strong>Username:</strong> {getFieldValue(user.username)}
+            <strong>Brugernavn:</strong> {getFieldValue(user.username)}
           </li>
           <li>
             <strong>Email:</strong> {getFieldValue(user.email)}
@@ -71,7 +72,9 @@ export default function Profil() {
         </ul>
         <div className="editButtonContainer">
           <Link to={`/profil/${user._id}/edit`}>
-            <button className="editButton">Rediger</button>
+            <button className="editButton">
+              Rediger <RiEdit2Line />
+            </button>
           </Link>
         </div>
       </div>

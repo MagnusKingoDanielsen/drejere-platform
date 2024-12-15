@@ -21,7 +21,7 @@ export default function LoginPage() {
             <label htmlFor="username">Brugernavn:</label>
             <input
               id="username"
-              placeholder="username"
+              placeholder="Brugernavn"
               name="username"
               type="text"
               required
@@ -31,7 +31,7 @@ export default function LoginPage() {
             <label htmlFor="password">Password:</label>
             <input
               id="password"
-              placeholder="password"
+              placeholder="Password"
               name="password"
               type="password"
               required

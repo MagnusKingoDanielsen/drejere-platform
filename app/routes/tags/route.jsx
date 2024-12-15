@@ -1,14 +1,23 @@
-import { Form, Outlet, useLoaderData, useNavigate } from "react-router-dom";
+import {
+  Form,
+  json,
+  Outlet,
+  useLoaderData,
+  useNavigate,
+} from "react-router-dom";
 import { redirect } from "@remix-run/react";
 import { getSession } from "../../services/session.server.jsx";
 import mongoose from "mongoose";
 import Modal from "../../components/modal";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { RiEdit2Line } from "react-icons/ri";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (!session.data.user) {
+  if (!session.data.user || session.data.usertype !== "admin") {
     return redirect("/");
   }
+
   const tags = await mongoose.models.tags.find().lean().exec();
 
   return { session: session.data, tags: tags };
@@ -48,7 +57,7 @@ export default function CampPage() {
                     className="editTag"
                     onClick={() => handleEditTag(tag._id)}
                   >
-                    Rediger
+                    <RiEdit2Line />
                   </button>
                   <Form method="post" onSubmit={handleDeleteTag}>
                     <input type="hidden" name="tagId" value={tag._id} />
@@ -58,7 +67,7 @@ export default function CampPage() {
                       value="delete"
                       className="deleteTag"
                     >
-                      Slet
+                      <RiDeleteBin6Line />
                     </button>
                   </Form>
                 </div>
@@ -72,13 +81,24 @@ export default function CampPage() {
   );
 }
 export async function action({ request }) {
-  const formData = await request.formData();
-  const actionType = formData.get("actionType");
-  const tagId = formData.get("tagId");
+  const session = await getSession(request.headers.get("Cookie"));
+  if (session.data.usertype === "admin") {
+    const formData = await request.formData();
+    const actionType = formData.get("actionType");
+    const tagId = formData.get("tagId");
 
-  if (actionType === "delete") {
-    await mongoose.models.tags.deleteOne({ _id: tagId });
+    if (actionType === "delete") {
+      await mongoose.models.tags.deleteOne({ _id: tagId });
+    }
+
+    return null;
+  } else {
+    return json(
+      {
+        error:
+          "Du har ikke tilladelse til at lave denne ændring. Kontakt venligst en admin",
+      },
+      { status: 403 },
+    );
   }
-
-  return null;
 }

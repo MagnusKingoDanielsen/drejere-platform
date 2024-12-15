@@ -30,7 +30,7 @@ export default function TidligereLejre() {
           <thead>
             <tr>
               <th>Lejre </th>
-              <th>start dato</th>
+              <th>Start dato</th>
               <th id="ParticipantsRow">
                 <TbUsers />
               </th>

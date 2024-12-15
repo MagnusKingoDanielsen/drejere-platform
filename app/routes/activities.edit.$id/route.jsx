@@ -1,29 +1,22 @@
-import { Form, useLoaderData, redirect } from "react-router-dom";
+import { Form, useLoaderData, redirect, json } from "react-router-dom";
 import { getSession } from "../../services/session.server.jsx";
 import mongoose from "mongoose";
 import Modal from "../../components/modal";
 
 export async function loader({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (!session.data.user) {
+  if (!session.data.user || session.data.usertype !== "admin") {
     return redirect("/");
   }
-
-  console.log("params", params.id);
-
   const activity = await mongoose.models.activities
     .findById(params.id)
     .lean()
     .exec();
-
-  console.log(activity);
-
   return { session: session.data, activity: activity };
 }
 
 export default function EditActivity() {
   const { activity } = useLoaderData();
-  console.log(activity);
 
   return (
     <Modal>
@@ -40,7 +33,7 @@ export default function EditActivity() {
               required
             />
           </div>
-          <button type="submit">Opdater</button>
+          <button type="submit">Gem ændringer</button>
         </Form>
       </div>
     </Modal>
@@ -48,13 +41,19 @@ export default function EditActivity() {
 }
 
 export async function action({ request, params }) {
-  const formData = await request.formData();
-  const activity = formData.get("activity");
-
-  console.log("activity", activity);
-  console.log("params", params.id);
-
-  await mongoose.models.activities.findByIdAndUpdate(params.id, { activity });
-
-  return redirect("/activities");
+  const session = await getSession(request.headers.get("Cookie"));
+  if (session.data.usertype === "admin") {
+    const formData = await request.formData();
+    const activity = formData.get("activity");
+    await mongoose.models.activities.findByIdAndUpdate(params.id, { activity });
+    return redirect("/activities");
+  } else {
+    return json(
+      {
+        error:
+          "Du har ikke tilladelse til at lave denne ændring. Kontakt venligst en admin",
+      },
+      { status: 403 },
+    );
+  }
 }

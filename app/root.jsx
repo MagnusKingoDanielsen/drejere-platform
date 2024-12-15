@@ -10,7 +10,7 @@ import {
 import styles from "./main.css";
 import Nav from "./routes/header/nav";
 import { destroySession, getSession } from "./services/session.server";
-import backgroundimg from "./img/drejerbackground.png";
+import backgroundimg from "./img/drejerbackground.jpg";
 
 export const links = () => [
   {

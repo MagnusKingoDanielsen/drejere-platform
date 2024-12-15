@@ -18,7 +18,7 @@ export async function loader({ request }) {
 export default function OpretLejr() {
   return (
     <Modal>
-      <div>
+      <div className="campWrapper">
         <h1>Opret ny lejr</h1>
         <Form method="post" action="/opretLejr" className="edit-camp-form">
           <label>
@@ -53,7 +53,7 @@ export default function OpretLejr() {
             Beskrivelse:
             <textarea id="CampDescription" name="CampDescription" required />
           </label>
-          <button type="submit">Create Camp</button>
+          <button type="submit">Opret lejr</button>
         </Form>
       </div>
     </Modal>
@@ -66,9 +66,6 @@ export const action = async ({ request }) => {
     Object.fromEntries(formData);
 
   const session = await getSession(request.headers.get("cookie"));
-  if (!session.data.user) {
-    throw new Response("Not authenticated", { status: 401 });
-  }
 
   const Participants = [];
 
@@ -94,6 +91,9 @@ export const action = async ({ request }) => {
     });
     return redirect("/lejre");
   } else {
-    throw new Response("Not authenticated", { status: 401 });
+    throw new Response(
+      "Du har ikke tilladelse til at lave denne ændring. Kontakt venligst en admin",
+      { status: 403 },
+    );
   }
 };
