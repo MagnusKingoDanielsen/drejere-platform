@@ -80,6 +80,16 @@ export default function LoginPage() {
                 <option value="Aspirant">Aspirant</option>
               </select>
             </div>
+            <div className="formGroup">
+              <label htmlFor="userType">Brugertype:</label>
+              <select id="userType" name="userType" required>
+                <option value="">Vælg brugertype</option>
+                <option value="Admin">Admin</option>
+                <option value="Drejer">Drejer</option>
+                <option value="Barn">Barn</option>
+                <option value="Aspirant">Aspirant</option>
+              </select>
+            </div>
             {error && <p className="error">{error}</p>}
             <div className="center">
               <button type="submit">Opret drejer</button>
