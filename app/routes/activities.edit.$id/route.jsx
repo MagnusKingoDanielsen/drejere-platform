@@ -5,7 +5,7 @@ import Modal from "../../components/modal";
 
 export async function loader({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (!session.data.user) {
+  if (!session.data.user || session.data.usertype !== "Admin") {
     return redirect("/");
   }
 
@@ -48,13 +48,19 @@ export default function EditActivity() {
 }
 
 export async function action({ request, params }) {
-  const formData = await request.formData();
-  const activity = formData.get("activity");
-
-  console.log("activity", activity);
-  console.log("params", params.id);
-
-  await mongoose.models.activities.findByIdAndUpdate(params.id, { activity });
-
-  return redirect("/activities");
+  const session = await getSession(request.headers.get("Cookie"));
+  if (session.data.usertype === "Admin") {
+    const formData = await request.formData();
+    const activity = formData.get("activity");
+    await mongoose.models.activities.findByIdAndUpdate(params.id, { activity });
+    return redirect("/activities");
+  } else {
+    return json(
+      {
+        error:
+          "Du har ikke tilladelse til at lave denne ændring. Kontakt venligst en admin",
+      },
+      { status: 403 },
+    );
+  }
 }
