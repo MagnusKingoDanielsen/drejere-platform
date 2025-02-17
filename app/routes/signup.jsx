@@ -75,9 +75,9 @@ export default function LoginPage() {
               <select id="userType" name="userType" required>
                 <option value="">Vælg brugertype</option>
                 <option value="Admin">Admin</option>
-                <option value="Drejer">Drejer</option>
-                <option value="Barn">Barn</option>
                 <option value="Aspirant">Aspirant</option>
+                <option value="Barn">Barn</option>
+                <option value="Drejer">Drejer</option>
               </select>
             </div>
             {error && <p className="error">{error}</p>}
