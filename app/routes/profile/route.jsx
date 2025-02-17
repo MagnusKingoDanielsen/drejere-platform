@@ -3,6 +3,7 @@ import { getSession } from "../../services/session.server";
 import { Link, redirect, useLoaderData } from "@remix-run/react";
 import Modal from "../../components/modal";
 import { RiEdit2Line } from "react-icons/ri";
+import { format } from "date-fns";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -24,6 +25,10 @@ export default function Profil() {
 
   const getFieldValue = (value) => (value ? value : "-");
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "-";
+    return format(new Date(dateString), "dd/MM/yyyy");
+  };
   return (
     <Modal>
       <div className="profileContainer">
@@ -42,7 +47,7 @@ export default function Profil() {
             <strong>Addresse:</strong> {getFieldValue(user.address)}
           </li>
           <li>
-            <strong>Fødselsdag:</strong> {getFieldValue(user.birthday)}
+            <strong>Fødselsdag:</strong> {formatDate(user.birthday)}
           </li>
           <li>
             <strong>Type:</strong> {getFieldValue(user.type)}
