@@ -13,6 +13,7 @@ export async function loader({ request }) {
   const camps = await mongoose.models.camps
     .find()
     .select("-EndDate -campLeader -CampDescription -__v")
+    .sort({ createdAt: -1 })
     .lean()
     .exec();
 
@@ -25,12 +26,12 @@ export default function CampPage() {
     <Modal>
       <div>
         <h1>Lejre</h1>
-        <table className="lejreTabel">
+        <table className="Tabel">
           <thead>
             <tr>
               <th>Lejre </th>
-              <th>start dato</th>
-              <th>
+              <th>Start dato</th>
+              <th id="ParticipantsRow">
                 <TbUsers />
               </th>
               <th></th>
@@ -48,9 +49,11 @@ export default function CampPage() {
                     minute: "2-digit",
                   })}
                 </td>
-                <td>{camp.Participants.length}</td>
-                <td>
-                  <Link to={`/lejr/${camp._id}`}>Læs mere</Link>
+                <td id="ParticipantsRow">{camp.Participants.length}</td>
+                <td id="ButtonRight">
+                  <Link to={`/lejr/${camp._id}`}>
+                    <button> Læs mere</button>
+                  </Link>
                 </td>
               </tr>
             ))}

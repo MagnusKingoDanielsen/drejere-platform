@@ -24,41 +24,45 @@ export async function loader({ request, params }) {
 }
 
 export default function CampEditPage() {
-  const { camp, session } = useLoaderData();
+  const { camp } = useLoaderData();
 
   const startDate = new Date(camp.StartDate).toISOString().slice(0, 16);
   const endDate = new Date(camp.EndDate).toISOString().slice(0, 16);
-  if (session.usertype !== "admin") {
-    return <div>Unauthorized</div>;
-  }
 
   return (
     <Modal>
       <div className="modal">
         <h1>Edit Camp</h1>
-        <Form method="post">
+        <Form method="post" className="edit-camp-form">
           <label>
-            Camp Name:
-            <input type="text" name="CampName" defaultValue={camp.CampName} />
+            Lejr navn:
+            <input
+              type="text"
+              name="CampName"
+              defaultValue={camp.CampName}
+              required
+            />
           </label>
           <label>
-            Start Date:
+            Start dato:
             <input
               type="datetime-local"
               name="StartDate"
               defaultValue={startDate}
+              required
             />
           </label>
           <label>
-            End Date:
+            Slut dato:
             <input
               type="datetime-local"
               name="EndDate"
               defaultValue={endDate}
+              required
             />
           </label>
           <label>
-            Camp Leader:
+            Lejr leder:
             <input
               type="text"
               name="CampLeader"
@@ -66,13 +70,13 @@ export default function CampEditPage() {
             />
           </label>
           <label>
-            Description:
+            Beskrivelse:
             <textarea
               name="CampDescription"
               defaultValue={camp.CampDescription}
             />
           </label>
-          <button type="submit">Save</button>
+          <button type="submit">Gem ændringer</button>
         </Form>
       </div>
     </Modal>
@@ -81,30 +85,27 @@ export default function CampEditPage() {
 
 // Action
 export async function action({ request, params }) {
-  const formData = await request.formData();
   const session = await getSession(request.headers.get("Cookie"));
-  if (!session.data.user) {
-    return redirect("/");
+  const formData = await request.formData();
+
+  if (session.data.usertype === "admin") {
+    const updatedCamp = {
+      CampName: formData.get("CampName"),
+      StartDate: formData.get("StartDate"),
+      EndDate: formData.get("EndDate"),
+      CampLeader: formData.get("CampLeader"),
+      CampDescription: formData.get("CampDescription"),
+    };
+
+    await mongoose.models.camps.findByIdAndUpdate(params.id, updatedCamp);
+    return redirect(`/lejr/${params.id}`);
+  } else {
+    return json(
+      {
+        error:
+          "Du har ikke tilladelse til at lave denne ændring. Kontakt venligst en admin",
+      },
+      { status: 403 },
+    );
   }
-
-  const camp = await mongoose.models.camps.findById(params.id).exec();
-  if (!camp) {
-    throw new Response("Not found", { status: 404 });
-  }
-
-  const userName = session.data.username;
-  if (camp.CampLeader !== userName) {
-    return json({ error: "Unauthorized" }, { status: 403 });
-  }
-
-  const updatedCamp = {
-    CampName: formData.get("CampName"),
-    StartDate: formData.get("StartDate"),
-    EndDate: formData.get("EndDate"),
-    CampLeader: formData.get("CampLeader"),
-    CampDescription: formData.get("CampDescription"),
-  };
-
-  await mongoose.models.camps.findByIdAndUpdate(params.id, updatedCamp);
-  return redirect(`/lejre/${params.id}`);
 }
