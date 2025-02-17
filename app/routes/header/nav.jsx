@@ -7,6 +7,7 @@ import {
 } from "react-icons/ri";
 import { getSession } from "~/services/session.server";
 import Logo from "../../img/Logo_hvid.svg";
+import navRef from "../../utils/navRef";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -53,7 +54,7 @@ export default function Nav() {
 
   return (
     <header className="sticky-header">
-      <nav className="nav-container">
+      <nav className="nav-container" ref={navRef}>
         {isMobile ? (
           <>
             <button className="burger-menu" onClick={toggleMenu}>
@@ -76,7 +77,7 @@ export default function Nav() {
                 </li>
                 <li>
                   <Link to="/drejerListe" onClick={() => setIsMenuOpen(false)}>
-                    Drejerliste
+                    Brugerliste
                   </Link>
                 </li>
                 {/* <li>
@@ -84,7 +85,7 @@ export default function Nav() {
                     Nøgleliste
                   </Link>
                 </li> */}
-                {usertype === "admin" && (
+                {usertype === "Admin" && (
                   <li className="dropdown">
                     <button className="dropbtn" onClick={toggleAdminMenu}>
                       Admin
@@ -147,12 +148,12 @@ export default function Nav() {
               <Link to="/tidligereLejre">Tidligere Lejre</Link>
             </li>
             <li>
-              <Link to="/drejerListe">Drejerliste</Link>
+              <Link to="/drejerListe">Brugerliste</Link>
             </li>
             {/* <li>
               <Link to="/noegleListe">Nøgleliste</Link>
             </li> */}
-            {usertype === "admin" && (
+            {usertype === "Admin" && (
               <li className="dropdown">
                 <button className="dropbtn">Admin</button>
                 <div className="dropdown-content">

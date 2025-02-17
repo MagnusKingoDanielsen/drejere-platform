@@ -120,7 +120,7 @@ export default function EditProfile() {
                 defaultValue={user.birthday}
               />
             </li>
-            {user.type === "admin" ? (
+            {user.type === "Admin" ? (
               <li className="formGroup">
                 <label htmlFor="type">Type:</label>
                 <select
@@ -130,7 +130,7 @@ export default function EditProfile() {
                   defaultValue={user.type}
                 >
                   <option value="">Vælg brugertype</option>
-                  <option value="admin">Admin</option>
+                  <option value="Admin">Admin</option>
                   <option value="user">Drejer</option>
                 </select>
               </li>
@@ -156,7 +156,7 @@ export default function EditProfile() {
                 ))}
               </ul>
             </li>
-            {user.type === "admin" ? (
+            {user.type === "Admin" ? (
               <li className="formGroup">
                 <label htmlFor="tags">Tags:</label>
                 <ul className="tagsList">
@@ -191,7 +191,7 @@ export async function action({ request }) {
   const formData = await request.formData();
   const { username, email, phone, address, birthday, type, tags, activities } =
     Object.fromEntries(formData);
-  if (session.data.username === username || session.data.usertype === "admin") {
+  if (session.data.username === username || session.data.usertype === "Admin") {
     const cleanedTags = tags
       ? tags
           .split(",")

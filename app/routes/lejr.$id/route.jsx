@@ -209,7 +209,7 @@ export default function CampDetailPage() {
           )}
         </div>
 
-        {session.usertype === "admin" && (
+        {session.usertype === "Admin" && (
           <div className="adminButtons">
             <Link to="edit" className="campButton">
               <button type="button" className="editButton">
@@ -242,7 +242,7 @@ export async function action({ request, params }) {
   }
 
   if (formData.get("_action") === "delete") {
-    if (session.data.usertype === "admin") {
+    if (session.data.usertype === "Admin") {
       await mongoose.models.camps.findByIdAndDelete(params.id);
       return redirect("/lejre");
     } else {
