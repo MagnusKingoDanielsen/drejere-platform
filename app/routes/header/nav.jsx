@@ -7,6 +7,7 @@ import {
 } from "react-icons/ri";
 import { getSession } from "~/services/session.server";
 import Logo from "../../img/Logo_hvid.svg";
+import navRef from "../../utils/navRef";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -53,7 +54,7 @@ export default function Nav() {
 
   return (
     <header className="sticky-header">
-      <nav className="nav-container">
+      <nav className="nav-container" ref={navRef}>
         {isMobile ? (
           <>
             <button className="burger-menu" onClick={toggleMenu}>
