@@ -6,7 +6,7 @@ import Modal from "../components/modal";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (!session.data.user || session.data.usertype !== "admin") {
+  if (!session.data.user || session.data.usertype !== "Admin") {
     return redirect("/");
   }
   return session.data;
@@ -74,8 +74,10 @@ export default function LoginPage() {
               <label htmlFor="userType">Brugertype:</label>
               <select id="userType" name="userType" required>
                 <option value="">Vælg brugertype</option>
-                <option value="admin">Admin</option>
-                <option value="user">Drejer</option>
+                <option value="Admin">Admin</option>
+                <option value="Drejer">Drejer</option>
+                <option value="Barn">Barn</option>
+                <option value="Aspirant">Aspirant</option>
               </select>
             </div>
             {error && <p className="error">{error}</p>}
@@ -102,7 +104,7 @@ export async function action({ request }) {
 
   const session = await getSession(request.headers.get("cookie"));
 
-  if (session.data.usertype === "admin") {
+  if (session.data.usertype === "Admin") {
     //check if email is valid
     let regexForEmailValidation = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

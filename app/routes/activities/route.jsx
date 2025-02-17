@@ -14,7 +14,7 @@ import { RiEdit2Line } from "react-icons/ri";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (!session.data.user || session.data.usertype !== "admin") {
+  if (!session.data.user || session.data.usertype !== "Admin") {
     return redirect("/");
   }
   const activities = await mongoose.models.activities.find().lean().exec();
@@ -87,7 +87,7 @@ export default function CampPage() {
 
 export async function action({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (session.data.usertype === "admin") {
+  if (session.data.usertype === "Admin") {
     const formData = await request.formData();
     const actionType = formData.get("actionType");
     const activityId = formData.get("activityId");

@@ -76,7 +76,7 @@ export default function Nav() {
                 </li>
                 <li>
                   <Link to="/drejerListe" onClick={() => setIsMenuOpen(false)}>
-                    Drejerliste
+                    Brugerliste
                   </Link>
                 </li>
                 {/* <li>
@@ -84,7 +84,7 @@ export default function Nav() {
                     Nøgleliste
                   </Link>
                 </li> */}
-                {usertype === "admin" && (
+                {usertype === "Admin" && (
                   <li className="dropdown">
                     <button className="dropbtn" onClick={toggleAdminMenu}>
                       Admin
@@ -147,12 +147,12 @@ export default function Nav() {
               <Link to="/tidligereLejre">Tidligere Lejre</Link>
             </li>
             <li>
-              <Link to="/drejerListe">Drejerliste</Link>
+              <Link to="/drejerListe">Brugerliste</Link>
             </li>
             {/* <li>
               <Link to="/noegleListe">Nøgleliste</Link>
             </li> */}
-            {usertype === "admin" && (
+            {usertype === "Admin" && (
               <li className="dropdown">
                 <button className="dropbtn">Admin</button>
                 <div className="dropdown-content">

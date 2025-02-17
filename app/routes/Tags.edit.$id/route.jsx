@@ -5,7 +5,7 @@ import Modal from "../../components/modal";
 
 export async function loader({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (!session.data.user || session.data.usertype !== "admin") {
+  if (!session.data.user || session.data.usertype !== "Admin") {
     return redirect("/");
   }
   const tag = await mongoose.models.tags.findById(params.id).lean().exec();
@@ -40,7 +40,7 @@ export default function EditTag() {
 
 export async function action({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (session.data.usertype === "admin") {
+  if (session.data.usertype === "Admin") {
     const formData = await request.formData();
     const tag = formData.get("tag");
 
