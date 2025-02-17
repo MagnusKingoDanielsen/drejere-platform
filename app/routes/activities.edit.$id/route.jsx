@@ -5,7 +5,7 @@ import Modal from "../../components/modal";
 
 export async function loader({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (!session.data.user || session.data.usertype !== "admin") {
+  if (!session.data.user || session.data.usertype !== "Admin") {
     return redirect("/");
   }
   const activity = await mongoose.models.activities
@@ -42,7 +42,7 @@ export default function EditActivity() {
 
 export async function action({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (session.data.usertype === "admin") {
+  if (session.data.usertype === "Admin") {
     const formData = await request.formData();
     const activity = formData.get("activity");
     await mongoose.models.activities.findByIdAndUpdate(params.id, { activity });
