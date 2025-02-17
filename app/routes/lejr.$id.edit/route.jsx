@@ -8,7 +8,7 @@ export async function loader({ request, params }) {
   if (!session.data.user) {
     return redirect("/");
   }
-  if (session.data.usertype !== "admin") {
+  if (session.data.usertype !== "Admin") {
     return redirect("/lejre");
   }
 
@@ -88,7 +88,7 @@ export async function action({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
   const formData = await request.formData();
 
-  if (session.data.usertype === "admin") {
+  if (session.data.usertype === "Admin") {
     const updatedCamp = {
       CampName: formData.get("CampName"),
       StartDate: formData.get("StartDate"),

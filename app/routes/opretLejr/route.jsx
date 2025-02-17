@@ -8,7 +8,7 @@ export async function loader({ request }) {
   if (!session.data.user) {
     return redirect("/login");
   }
-  if (session.data.usertype !== "admin") {
+  if (session.data.usertype !== "Admin") {
     return redirect("/lejre");
   }
 
@@ -69,7 +69,7 @@ export const action = async ({ request }) => {
 
   const Participants = [];
 
-  if (session.data.usertype === "admin") {
+  if (session.data.usertype === "Admin") {
     if (
       typeof CampName !== "string" ||
       typeof StartDate !== "string" ||
