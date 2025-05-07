@@ -10,7 +10,6 @@ export async function loader({ request }) {
   if (!session.data.user) {
     return redirect("/");
   }
-
   const drejers = await mongoose.models.drejers
     .find()
     .select("username phone email tags activities type")
@@ -58,11 +57,9 @@ export default function DrejerListe() {
     setSelectedEmails((prevSelectedEmails) => {
       if (checked) {
         // Add the email if checked
-        console.log("checked", prevSelectedEmails);
         return [...prevSelectedEmails, value];
       } else {
         // Remove the email if unchecked
-        console.log("unchecked", prevSelectedEmails);
         return prevSelectedEmails.filter((email) => email !== value);
       }
     });
