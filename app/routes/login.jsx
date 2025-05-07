@@ -66,6 +66,7 @@ export async function action({ request }) {
   session.set("user", true);
   session.set("username", loginResult.username);
   session.set("usertype", loginResult.usertype);
+  session.set("userid", loginResult.id);
 
   return redirect("/", {
     headers: { "Set-Cookie": await commitSession(session) },

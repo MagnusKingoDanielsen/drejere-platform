@@ -23,7 +23,7 @@ export async function loader({ request }) {
   if (!session.data.user) {
     return { user: null };
   }
-  return { user: session.data.usertype };
+  return { user: session.data };
 }
 
 export function meta() {
