@@ -22,7 +22,7 @@ export async function loader({ request }) {
 }
 
 export default function DrejerListe() {
-  const userTypes = ["Admin", "Drejer", "Barn"];
+  const userTypes = ["Admin", "Aspirant", "Barn", "Drejer"];
   const { drejers } = useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTypes, setSelectedTypes] = useState([]);
@@ -59,12 +59,13 @@ export default function DrejerListe() {
         <h1>Drejerliste</h1>
         <div className="searchWrapper">
           <input
+            className="search"
             type="text"
-            placeholder="Søg efter navn, telefonnummer, email, tags eller aktiviteter"
+            placeholder="Søg efter navn, tlf, email, tags eller aktiviteter"
             value={searchTerm}
             onChange={handleSearchChange}
           />
-          <div>
+          <div className="typeFilter">
             {userTypes.map((type) => (
               <label key={type}>
                 <input
@@ -81,8 +82,8 @@ export default function DrejerListe() {
           <table className="Tabel">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Phone Number</th>
+                <th>Navn</th>
+                <th>Telefon nr:</th>
                 <th>Email</th>
               </tr>
             </thead>

@@ -13,6 +13,7 @@ export async function loader({ request }) {
   const camps = await mongoose.models.camps
     .find()
     .select("-EndDate -campLeader -CampDescription -__v")
+    .sort({ createdAt: -1 })
     .lean()
     .exec();
 
@@ -21,6 +22,12 @@ export async function loader({ request }) {
 
 export default function CampPage() {
   const { camps } = useLoaderData();
+  const filteredCamps = camps.filter((camp) => {
+    return new Date(camp.StartDate) > new Date();
+  });
+  const sortedCamps = filteredCamps.sort((a, b) =>
+    a.StartDate.localeCompare(b.StartDate),
+  );
   return (
     <Modal>
       <div>
@@ -29,7 +36,7 @@ export default function CampPage() {
           <thead>
             <tr>
               <th>Lejre </th>
-              <th>start dato</th>
+              <th>Start dato</th>
               <th id="ParticipantsRow">
                 <TbUsers />
               </th>
@@ -37,7 +44,7 @@ export default function CampPage() {
             </tr>
           </thead>
           <tbody>
-            {camps.map((camp) => (
+            {sortedCamps.map((camp) => (
               <tr key={camp._id}>
                 <td>{camp.CampName}</td>
                 <td>

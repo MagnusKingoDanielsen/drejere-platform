@@ -8,7 +8,7 @@ export async function loader({ request, params }) {
   if (!session.data.user) {
     return redirect("/");
   }
-  if (session.data.usertype !== "admin") {
+  if (session.data.usertype !== "Admin") {
     return redirect("/lejre");
   }
 
@@ -36,7 +36,12 @@ export default function CampEditPage() {
         <Form method="post" className="edit-camp-form">
           <label>
             Lejr navn:
-            <input type="text" name="CampName" defaultValue={camp.CampName} />
+            <input
+              type="text"
+              name="CampName"
+              defaultValue={camp.CampName}
+              required
+            />
           </label>
           <label>
             Start dato:
@@ -44,6 +49,7 @@ export default function CampEditPage() {
               type="datetime-local"
               name="StartDate"
               defaultValue={startDate}
+              required
             />
           </label>
           <label>
@@ -52,6 +58,7 @@ export default function CampEditPage() {
               type="datetime-local"
               name="EndDate"
               defaultValue={endDate}
+              required
             />
           </label>
           <label>
@@ -69,7 +76,7 @@ export default function CampEditPage() {
               defaultValue={camp.CampDescription}
             />
           </label>
-          <button type="submit">opdatere</button>
+          <button type="submit">Gem ændringer</button>
         </Form>
       </div>
     </Modal>
@@ -78,13 +85,10 @@ export default function CampEditPage() {
 
 // Action
 export async function action({ request, params }) {
-  const formData = await request.formData();
   const session = await getSession(request.headers.get("Cookie"));
-  if (!session.data.user) {
-    return redirect("/");
-  }
+  const formData = await request.formData();
 
-  if (session.data.usertype === "admin") {
+  if (session.data.usertype === "Admin") {
     const updatedCamp = {
       CampName: formData.get("CampName"),
       StartDate: formData.get("StartDate"),
@@ -96,6 +100,12 @@ export async function action({ request, params }) {
     await mongoose.models.camps.findByIdAndUpdate(params.id, updatedCamp);
     return redirect(`/lejr/${params.id}`);
   } else {
-    return json({ error: "Unauthorized" }, { status: 403 });
+    return json(
+      {
+        error:
+          "Du har ikke tilladelse til at lave denne ændring. Kontakt venligst en admin",
+      },
+      { status: 403 },
+    );
   }
 }

@@ -22,6 +22,10 @@ export async function loader({ request }) {
 
 export default function TidligereLejre() {
   const { camps } = useLoaderData();
+  const sortedCamps = camps.sort((b, a) =>
+    a.StartDate.localeCompare(b.StartDate),
+  );
+
   return (
     <Modal>
       <div>
@@ -30,7 +34,7 @@ export default function TidligereLejre() {
           <thead>
             <tr>
               <th>Lejre </th>
-              <th>start dato</th>
+              <th>Start dato</th>
               <th id="ParticipantsRow">
                 <TbUsers />
               </th>
@@ -38,7 +42,7 @@ export default function TidligereLejre() {
             </tr>
           </thead>
           <tbody>
-            {camps.map((camp) => (
+            {sortedCamps.map((camp) => (
               <tr key={camp._id}>
                 <td>{camp.CampName}</td>
                 <td>

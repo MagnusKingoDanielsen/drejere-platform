@@ -1,4 +1,4 @@
-import { Form, useLoaderData, redirect } from "react-router-dom";
+import { Form, useLoaderData, redirect, json } from "react-router-dom";
 import { getSession } from "../../services/session.server.jsx";
 import mongoose from "mongoose";
 import Modal from "../../components/modal";
@@ -8,22 +8,15 @@ export async function loader({ request, params }) {
   if (!session.data.user || session.data.usertype !== "Admin") {
     return redirect("/");
   }
-
-  console.log("params", params.id);
-
   const activity = await mongoose.models.activities
     .findById(params.id)
     .lean()
     .exec();
-
-  console.log(activity);
-
   return { session: session.data, activity: activity };
 }
 
 export default function EditActivity() {
   const { activity } = useLoaderData();
-  console.log(activity);
 
   return (
     <Modal>
@@ -40,7 +33,7 @@ export default function EditActivity() {
               required
             />
           </div>
-          <button type="submit">Opdater</button>
+          <button type="submit">Gem ændringer</button>
         </Form>
       </div>
     </Modal>

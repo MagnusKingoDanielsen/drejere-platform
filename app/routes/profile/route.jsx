@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { getSession } from "../../services/session.server";
 import { Link, redirect, useLoaderData } from "@remix-run/react";
 import Modal from "../../components/modal";
+import { RiEdit2Line } from "react-icons/ri";
+import { format } from "date-fns";
 
 export async function loader({ request }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -23,13 +25,17 @@ export default function Profil() {
 
   const getFieldValue = (value) => (value ? value : "-");
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "-";
+    return format(new Date(dateString), "dd/MM/yyyy");
+  };
   return (
     <Modal>
       <div className="profileContainer">
         <h1>Profil</h1>
         <ul className="profileList">
           <li>
-            <strong>Username:</strong> {getFieldValue(user.username)}
+            <strong>Brugernavn:</strong> {getFieldValue(user.username)}
           </li>
           <li>
             <strong>Email:</strong> {getFieldValue(user.email)}
@@ -41,7 +47,7 @@ export default function Profil() {
             <strong>Addresse:</strong> {getFieldValue(user.address)}
           </li>
           <li>
-            <strong>Fødselsdag:</strong> {getFieldValue(user.birthday)}
+            <strong>Fødselsdag:</strong> {formatDate(user.birthday)}
           </li>
           <li>
             <strong>Type:</strong> {getFieldValue(user.type)}
@@ -71,7 +77,9 @@ export default function Profil() {
         </ul>
         <div className="editButtonContainer">
           <Link to={`/profil/${user._id}/edit`}>
-            <button className="editButton">Rediger</button>
+            <button className="editButton">
+              Rediger <RiEdit2Line />
+            </button>
           </Link>
         </div>
       </div>
