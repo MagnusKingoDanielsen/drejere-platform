@@ -5,14 +5,14 @@ import Modal from "../../components/modal";
 import { RiEdit2Line } from "react-icons/ri";
 import { format } from "date-fns";
 
-export async function loader({ request }) {
+export async function loader({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
   if (!session.data.user) {
     return redirect("/");
   }
 
   const user = await mongoose.models.drejers
-    .findOne({ username: session.data.username })
+    .findById(params.id)
     .select("-password -__v  -lastLogin -createdAt -updatedAt")
     .lean()
     .exec();
