@@ -9,6 +9,8 @@ import {
 import { getSession } from "../../services/session.server.jsx";
 import mongoose from "mongoose";
 import Modal from "~/components/modal.jsx";
+import { RiEdit2Line } from "react-icons/ri";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 export async function loader({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -190,8 +192,12 @@ export default function CampDetailPage() {
         <div className="buttonWrapper">
           {!isPastStartDate && !isPastEndDate && (
             <Link to="attend" className="campButton">
-              <button type="button">
-                {isUserSignedUp ? "Ændre tilmelding" : "Tilmeld"}
+              <button type="button" className="editButton">
+                {isUserSignedUp ? (
+                  <>Ret tilmelding {<RiEdit2Line />}</>
+                ) : (
+                  "Tilmeld"
+                )}
               </button>
             </Link>
           )}
@@ -203,14 +209,16 @@ export default function CampDetailPage() {
           )}
         </div>
 
-        {session.usertype === "admin" && (
+        {session.usertype === "Admin" && (
           <div className="adminButtons">
             <Link to="edit" className="campButton">
-              <button type="button">Rediger lejr</button>
+              <button type="button" className="editButton">
+                Rediger lejr <RiEdit2Line />
+              </button>
             </Link>
             <Form method="post" onSubmit={handleDelete} className="warning">
               <button name="_action" value="delete" type="submit">
-                Slet lejr
+                Slet lejr <RiDeleteBin6Line />
               </button>
             </Form>
           </div>
@@ -234,7 +242,7 @@ export async function action({ request, params }) {
   }
 
   if (formData.get("_action") === "delete") {
-    if (session.data.usertype === "admin") {
+    if (session.data.usertype === "Admin") {
       await mongoose.models.camps.findByIdAndDelete(params.id);
       return redirect("/lejre");
     } else {

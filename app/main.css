@@ -10,9 +10,13 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  background-color: #3ea9c4;
+  background-color: #6fa6be;
   color: var(--secondary-color);
   /* font-family: "Courier New", Courier, monospace; */
+}
+
+body h1 {
+  margin-top: 0px;
 }
 /* -------------------------Nav------------------------------ */
 button,
@@ -268,7 +272,7 @@ button,
   .modal-content {
     position: relative;
     height: 600px;
-    width: 1000px;
+    width: 1200px;
     background: var(--primary-color);
     color: white;
     box-sizing: border-box;
@@ -285,6 +289,12 @@ button,
   height: 100%;
 }
 
+.welcome h1 {
+  margin-top: 200px;
+  font-size: 48px;
+  text-align: center;
+}
+
 /* -------------------Table Camp list------------------------------ */
 .Tabel {
   width: 100%;
@@ -294,7 +304,6 @@ button,
 }
 
 .Tabel tr {
-  border-top: solid 1px var(--light-primary-color);
   border-bottom: solid 1px var(--light-primary-color);
 }
 
@@ -363,20 +372,26 @@ button,
 }
 
 .tablewrapper {
+  max-height: 450px;
   overflow-x: auto;
   width: 100%;
   padding-bottom: 2px;
+  /* border-top: var(--light-primary-color) solid 1px; */
+}
+.tablewrapper thead {
+  position: sticky; /* Make the header sticky */
+  top: 0; /* Stick to the top of the container */
+  background-color: var(--primary-color); /* Optional: Set a background color */
+  color: var(--secondary-color); /* Optional: Set text color */
 }
 
 /* ------------------- Scrollbar ------------------------------ */
-/* Height of the horizontal scrollbar
-.activityWrapper,
-.tagWrapper
- */
+/* Height of the horizontal scrollbar*/
 .tablewrapper::-webkit-scrollbar,
 .activityWrapper::-webkit-scrollbar,
 .tagWrapper::-webkit-scrollbar,
-.profileList::-webkit-scrollbar {
+.profileList::-webkit-scrollbar,
+.campWrapper::-webkit-scrollbar {
   height: 8px;
   width: 8px;
 }
@@ -385,7 +400,8 @@ button,
 .tablewrapper::-webkit-scrollbar-track,
 .activityWrapper::-webkit-scrollbar-track,
 .tagWrapper::-webkit-scrollbar-track,
-.profileList::-webkit-scrollbar-track {
+.profileList::-webkit-scrollbar-track,
+.campWrapper::-webkit-scrollbar-track {
   background: var(--primary-color);
 }
 
@@ -393,14 +409,16 @@ button,
 .tablewrapper::-webkit-scrollbar-thumb,
 .activityWrapper::-webkit-scrollbar-thumb,
 .tagWrapper::-webkit-scrollbar-thumb,
-.profileList::-webkit-scrollbar-thumb {
+.profileList::-webkit-scrollbar-thumb,
+.campWrapper::-webkit-scrollbar-thumb {
   background: var(--light-primary-color);
   border-radius: 4px;
 }
 
 .tablewrapper::-webkit-scrollbar-thumb:hover.activityWrapper::-webkit-scrollbar-thumb:hover,
 .tagWrapper::-webkit-scrollbar-thumb:hover,
-.profileList::-webkit-scrollbar-thumb:hover {
+.profileList::-webkit-scrollbar-thumb:hover,
+.campWrapper::-webkit-scrollbar-thumb:hover {
   background: var(--black-color);
 }
 
@@ -462,7 +480,7 @@ button {
   max-width: 175px;
   padding: 10px 20px;
   font-size: 16px;
-  height: fit-content;
+  height: 38px;
   background-color: var(--secondary-color);
   color: var(--primary-color);
   font-weight: bold;
@@ -477,9 +495,8 @@ button {
   align-items: center;
   gap: 20px;
 }
-.warning button {
+.warningbutton {
   background-color: rgb(200, 0, 0);
-  font-size: 14px;
   color: var(--secondary-color);
 }
 
@@ -492,6 +509,12 @@ button {
 }
 
 /* ------------------- Edit camp Form styling ------------------------------ */
+.campWrapper {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .edit-camp-form {
   display: flex;
   flex-direction: column;
@@ -558,7 +581,8 @@ button {
   width: 100px;
 }
 
-.formGroup input {
+.formGroup input,
+.formGroup select {
   padding: 10px;
   border: 1px solid var(--light-primary-color);
   font-size: 16px;
@@ -741,6 +765,20 @@ button {
   text-align: end;
 }
 
+.editButton {
+  text-decoration: none;
+  font-size: 16px;
+  gap: 5px;
+}
+
+.editButton svg,
+.warning svg {
+  position: relative;
+  top: 3px;
+  height: 20px;
+  width: 20px;
+}
+
 #tags,
 #activities {
   display: flex;
@@ -755,4 +793,42 @@ button {
   gap: 15px;
   width: 100%;
   max-height: 100%;
+}
+
+/* -------------------------- Drejer Page --------------------------------- */
+.searchWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  height: 50px;
+  border-bottom: 1px solid var(--light-primary-color);
+}
+.search {
+  display: flex;
+  padding: 10px 15px;
+  border-radius: 25px;
+  border: 1px solid var(--light-primary-color);
+  width: 275px;
+  margin-bottom: 10px;
+}
+.typeFilter {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.typeFilter label {
+  display: flex;
+  align-items: center;
+}
+.getMail {
+  width: 150px;
+  text-align: center;
+}
+.adminButtons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 175px;
+  gap: 20px;
 }
