@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLoaderData, Form } from "@remix-run/react";
+import { Link, useLoaderData, Form, redirect } from "@remix-run/react";
 import {
   // RiPrinterLine,
   RiAccountCircleLine,
@@ -14,11 +14,11 @@ export async function loader({ request }) {
   if (!session.data.user) {
     return { user: null };
   }
-  return { user: session.data.usertype };
+  return null;
 }
 
 export default function Nav() {
-  const { user: usertype } = useLoaderData();
+  const { user: user } = useLoaderData();
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
@@ -48,7 +48,7 @@ export default function Nav() {
   //   window.print();
   // };
 
-  if (!usertype) {
+  if (!user) {
     return null;
   }
 
@@ -85,7 +85,7 @@ export default function Nav() {
                     Nøgleliste
                   </Link>
                 </li> */}
-                {usertype === "Admin" && (
+                {user.usertype === "Admin" && (
                   <li className="dropdown">
                     <button className="dropbtn" onClick={toggleAdminMenu}>
                       Admin
@@ -120,7 +120,10 @@ export default function Nav() {
                   </button>
                 </li> */}
                 <li className="profileIcon">
-                  <Link to="/profile" onClick={() => setIsMenuOpen(false)}>
+                  <Link
+                    to={`/profile/${user.userid}`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
                     <RiAccountCircleLine />
                   </Link>
                 </li>
@@ -153,7 +156,7 @@ export default function Nav() {
             {/* <li>
               <Link to="/noegleListe">Nøgleliste</Link>
             </li> */}
-            {usertype === "Admin" && (
+            {user.usertype === "Admin" && (
               <li className="dropdown">
                 <button className="dropbtn">Admin</button>
                 <div className="dropdown-content">
@@ -170,7 +173,7 @@ export default function Nav() {
               </button>
             </li> */}
             <li className="profileIcon">
-              <Link to="/profile">
+              <Link to={`/profile/${user.userid}`}>
                 <RiAccountCircleLine />
               </Link>
             </li>

@@ -22,43 +22,51 @@ export async function loader({ request }) {
 
 export default function CampPage() {
   const { camps } = useLoaderData();
+  const filteredCamps = camps.filter((camp) => {
+    return new Date(camp.StartDate) > new Date();
+  });
+  const sortedCamps = filteredCamps.sort((a, b) =>
+    a.StartDate.localeCompare(b.StartDate),
+  );
   return (
     <Modal>
       <div>
         <h1>Lejre</h1>
-        <table className="Tabel">
-          <thead>
-            <tr>
-              <th>Lejre </th>
-              <th>Start dato</th>
-              <th id="ParticipantsRow">
-                <TbUsers />
-              </th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {camps.map((camp) => (
-              <tr key={camp._id}>
-                <td>{camp.CampName}</td>
-                <td>
-                  {new Date(camp.StartDate).toLocaleDateString()}
-                  <br />
-                  {new Date(camp.StartDate).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </td>
-                <td id="ParticipantsRow">{camp.Participants.length}</td>
-                <td id="ButtonRight">
-                  <Link to={`/lejr/${camp._id}`}>
-                    <button> Læs mere</button>
-                  </Link>
-                </td>
+        <div className="tablewrapper">
+          <table className="Tabel">
+            <thead>
+              <tr>
+                <th>Lejre </th>
+                <th>Start dato</th>
+                <th id="ParticipantsRow">
+                  <TbUsers />
+                </th>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {sortedCamps.map((camp) => (
+                <tr key={camp._id}>
+                  <td>{camp.CampName}</td>
+                  <td>
+                    {new Date(camp.StartDate).toLocaleDateString()}
+                    <br />
+                    {new Date(camp.StartDate).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </td>
+                  <td id="ParticipantsRow">{camp.Participants.length}</td>
+                  <td id="ButtonRight">
+                    <Link to={`/lejr/${camp._id}`}>
+                      <button> Læs mere</button>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <Outlet />
       </div>
     </Modal>

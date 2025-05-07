@@ -22,43 +22,49 @@ export async function loader({ request }) {
 
 export default function TidligereLejre() {
   const { camps } = useLoaderData();
+  const sortedCamps = camps.sort((b, a) =>
+    a.StartDate.localeCompare(b.StartDate),
+  );
+
   return (
     <Modal>
       <div>
         <h1>Tidligere lejre</h1>
-        <table className="Tabel">
-          <thead>
-            <tr>
-              <th>Lejre </th>
-              <th>Start dato</th>
-              <th id="ParticipantsRow">
-                <TbUsers />
-              </th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {camps.map((camp) => (
-              <tr key={camp._id}>
-                <td>{camp.CampName}</td>
-                <td>
-                  {new Date(camp.StartDate).toLocaleDateString()}
-                  <br />
-                  {new Date(camp.StartDate).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </td>
-                <td id="ParticipantsRow">{camp.Participants.length}</td>
-                <td id="ButtonRight">
-                  <Link to={`/lejr/${camp._id}`}>
-                    <button> Læs mere</button>
-                  </Link>
-                </td>
+        <div className="tablewrapper">
+          <table className="Tabel">
+            <thead>
+              <tr>
+                <th>Lejre </th>
+                <th>Start dato</th>
+                <th id="ParticipantsRow">
+                  <TbUsers />
+                </th>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {sortedCamps.map((camp) => (
+                <tr key={camp._id}>
+                  <td>{camp.CampName}</td>
+                  <td>
+                    {new Date(camp.StartDate).toLocaleDateString()}
+                    <br />
+                    {new Date(camp.StartDate).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </td>
+                  <td id="ParticipantsRow">{camp.Participants.length}</td>
+                  <td id="ButtonRight">
+                    <Link to={`/lejr/${camp._id}`}>
+                      <button> Læs mere</button>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <Outlet />
       </div>
     </Modal>

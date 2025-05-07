@@ -9,7 +9,6 @@ export function hashPassword(password) {
 export async function login(loginUsername, loginPassword) {
   const users = await mongoose.models.drejers.find({});
   const user = users.find((user) => user.username === loginUsername);
-
   if (user) {
     const hashedpassword = user.password;
 
@@ -18,7 +17,12 @@ export async function login(loginUsername, loginPassword) {
 
     if (result) {
       // Passwords match
-      return { result: true, username: user.username, usertype: user.type };
+      return {
+        result: true,
+        username: user.username,
+        usertype: user.type,
+        id: user._id.toString(),
+      };
     } else {
       // Passwords don't match
       return false;

@@ -17,6 +17,7 @@ export async function loader({ request, params }) {
   }
   const allTags = await mongoose.models.tags.find().lean().exec();
   const allActivities = await mongoose.models.activities.find().lean().exec();
+  const paramsId = params.id;
 
   const user = await mongoose.models.drejers
     .findById(params.id)
@@ -24,14 +25,22 @@ export async function loader({ request, params }) {
     .lean()
     .exec();
 
-  return { session: session.data, user: user, allTags, allActivities };
+  return {
+    session: session.data,
+    user: user,
+    allTags,
+    allActivities,
+    paramsId,
+  };
 }
 
 export default function EditProfile() {
-  const { user, allTags, allActivities } = useLoaderData();
+  const { user, allTags, allActivities, paramsId } = useLoaderData();
   const [tags, setTags] = useState(user.tags);
   const [activities, setActivities] = useState(user.activities);
   const navigate = useNavigate();
+
+  console.log("user", user);
 
   const toggleTag = (tag) => {
     if (tags.includes(tag)) {
@@ -61,7 +70,7 @@ export default function EditProfile() {
     });
 
     if (response.ok) {
-      navigate(`/profile`);
+      navigate(`/profile/${paramsId}`);
     }
   };
 
@@ -186,9 +195,10 @@ export default function EditProfile() {
   );
 }
 
-export async function action({ request }) {
+export async function action({ request, params }) {
   const session = await getSession(request.headers.get("Cookie"));
   const formData = await request.formData();
+  console.log("params", params.id);
   const { username, email, phone, address, birthday, type, tags, activities } =
     Object.fromEntries(formData);
   if (session.data.username === username || session.data.usertype === "Admin") {
@@ -206,7 +216,7 @@ export async function action({ request }) {
       : [];
 
     await mongoose.models.drejers.updateOne(
-      { username: session.data.username },
+      { _id: params.id },
       {
         username,
         email,
@@ -219,7 +229,7 @@ export async function action({ request }) {
       },
     );
 
-    return redirect("/profile");
+    return redirect(`/profile/${params.id}`);
   } else {
     return json(
       {
